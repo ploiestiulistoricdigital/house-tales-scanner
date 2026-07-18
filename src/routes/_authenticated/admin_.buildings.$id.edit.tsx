@@ -11,7 +11,7 @@ import {
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/buildings/$id/edit")({
+export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
   component: EditBuilding,
 });

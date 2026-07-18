@@ -14,8 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BSlugRouteImport } from './routes/b.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin.buildings.new'
-import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin.buildings.$id.edit'
+import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
+import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -43,21 +43,21 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 } as any)
 const AuthenticatedAdminBuildingsNewRoute =
   AuthenticatedAdminBuildingsNewRouteImport.update({
-    id: '/buildings/new',
-    path: '/buildings/new',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin_/buildings/new',
+    path: '/admin/buildings/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminBuildingsIdEditRoute =
   AuthenticatedAdminBuildingsIdEditRouteImport.update({
-    id: '/buildings/$id/edit',
-    path: '/buildings/$id/edit',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin_/buildings/$id/edit',
+    path: '/admin/buildings/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
@@ -65,7 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
@@ -75,10 +75,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
-  '/_authenticated/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
-  '/_authenticated/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
+  '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -104,8 +104,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/admin'
     | '/b/$slug'
-    | '/_authenticated/admin/buildings/new'
-    | '/_authenticated/admin/buildings/$id/edit'
+    | '/_authenticated/admin_/buildings/new'
+    | '/_authenticated/admin_/buildings/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -152,43 +152,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/buildings/new': {
-      id: '/_authenticated/admin/buildings/new'
-      path: '/buildings/new'
+    '/_authenticated/admin_/buildings/new': {
+      id: '/_authenticated/admin_/buildings/new'
+      path: '/admin/buildings/new'
       fullPath: '/admin/buildings/new'
       preLoaderRoute: typeof AuthenticatedAdminBuildingsNewRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/buildings/$id/edit': {
-      id: '/_authenticated/admin/buildings/$id/edit'
-      path: '/buildings/$id/edit'
+    '/_authenticated/admin_/buildings/$id/edit': {
+      id: '/_authenticated/admin_/buildings/$id/edit'
+      path: '/admin/buildings/$id/edit'
       fullPath: '/admin/buildings/$id/edit'
       preLoaderRoute: typeof AuthenticatedAdminBuildingsIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
-}
-
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -203,13 +194,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
