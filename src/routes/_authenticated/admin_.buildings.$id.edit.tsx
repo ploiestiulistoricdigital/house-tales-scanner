@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ArrowLeft, Trash2, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
+import { ImageUploader } from "@/components/ImageUploader";
 import {
   updateBuilding,
   addBuildingImage,
