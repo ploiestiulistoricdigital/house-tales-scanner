@@ -22,12 +22,23 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
   if (!data) throw new Error("Forbidden: admin role required");
 }
 
+const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
+function qrUrlFor(slug: string) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&format=png&data=${encodeURIComponent(
+    `${PUBLIC_BASE}/b/${slug}`,
+  )}`;
+}
+
 export const createBuilding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: z.infer<typeof buildingInput>) => buildingInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const payload = { ...data, cover_image_url: data.cover_image_url || null };
+    const payload = {
+      ...data,
+      cover_image_url: data.cover_image_url || null,
+      qr_code_url: qrUrlFor(data.slug),
+    };
     const { data: row, error } = await context.supabase
       .from("buildings")
       .insert(payload)
@@ -45,7 +56,11 @@ export const updateBuilding = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { id, ...rest } = data;
-    const payload = { ...rest, cover_image_url: rest.cover_image_url || null };
+    const payload = {
+      ...rest,
+      cover_image_url: rest.cover_image_url || null,
+      qr_code_url: qrUrlFor(rest.slug),
+    };
     const { data: row, error } = await context.supabase
       .from("buildings")
       .update(payload)
