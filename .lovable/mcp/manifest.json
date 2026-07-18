@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://qbfbbpmpgzsairoejztx.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "poveștile-caselor-mcp",
+      "version": "0.1.0",
+      "title": "Poveștile Caselor"
+    },
+    "tools": [
+      {
+        "name": "list_buildings",
+        "title": "Listează clădirile",
+        "description": "Returnează toate clădirile din catalog (nume, slug, adresă, descriere scurtă).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_building",
+        "title": "Detalii clădire",
+        "description": "Returnează detalii complete despre o clădire (după slug) inclusiv galeria de imagini.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Slug-ul clădirii, ex: 'casa-batllo'."
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_building",
+        "title": "Creează clădire",
+        "description": "Adaugă o clădire nouă în catalog. Necesită drept de administrator.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "address": {
+              "type": "string"
+            },
+            "short_description": {
+              "type": "string"
+            },
+            "history": {
+              "type": "string"
+            },
+            "year_built": {
+              "type": "string"
+            },
+            "architect": {
+              "type": "string"
+            },
+            "cover_image_url": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "slug",
+            "name"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "update_building",
+        "title": "Actualizează clădire",
+        "description": "Modifică una sau mai multe proprietăți ale unei clădiri existente. Necesită rol admin.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "ID-ul clădirii de modificat."
+            },
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "address": {
+              "type": "string"
+            },
+            "short_description": {
+              "type": "string"
+            },
+            "history": {
+              "type": "string"
+            },
+            "year_built": {
+              "type": "string"
+            },
+            "architect": {
+              "type": "string"
+            },
+            "cover_image_url": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "delete_building",
+        "title": "Șterge clădire",
+        "description": "Șterge definitiv o clădire și galeria ei. Necesită rol admin.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "ID-ul clădirii de șters."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "add_building_image",
+        "title": "Adaugă imagine în galerie",
+        "description": "Adaugă o imagine (URL) în galeria unei clădiri. Necesită rol admin.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "building_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "caption": {
+              "type": "string"
+            },
+            "position": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "building_id",
+            "url"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
