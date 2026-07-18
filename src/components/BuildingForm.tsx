@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ImageUploader } from "@/components/ImageUploader";
 
 export type BuildingFormValues = {
   slug: string;
