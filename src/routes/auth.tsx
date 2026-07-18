@@ -5,11 +5,22 @@ import { Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Autentificare administrator — Poveștile Caselor" }] }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+  }),
   component: AuthPage,
 });
 
+function safeNext(next: string | undefined): string {
+  if (!next) return "/admin";
+  if (!next.startsWith("/") || next.startsWith("//")) return "/admin";
+  return next;
+}
+
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const target = safeNext(next);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -18,9 +29,9 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) window.location.href = target;
     });
-  }, [navigate]);
+  }, [target]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,14 +42,14 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin + "/admin" },
+          options: { emailRedirectTo: window.location.origin + target },
         });
         if (error) throw error;
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      navigate({ to: "/admin" });
+      window.location.href = target;
     } catch (err: any) {
       setError(err.message ?? "Ceva nu a mers bine");
     } finally {
