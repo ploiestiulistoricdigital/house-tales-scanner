@@ -6,7 +6,7 @@ import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm
 import { createBuilding } from "@/lib/buildings.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/buildings/new")({
-  head: () => ({ meta: [{ title: "New building — Admin" }] }),
+  head: () => ({ meta: [{ title: "Clădire nouă — Administrare" }] }),
   component: NewBuilding,
 });
 
@@ -34,7 +34,7 @@ function NewBuilding() {
       });
       navigate({ to: "/admin/buildings/$id/edit", params: { id: row.id } });
     } catch (e: any) {
-      setError(e.message ?? "Failed to create");
+      setError(e.message ?? "Crearea a eșuat");
     } finally {
       setSubmitting(false);
     }
@@ -47,9 +47,9 @@ function NewBuilding() {
           to="/admin"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4"
         >
-          <ArrowLeft className="h-4 w-4" /> Back
+          <ArrowLeft className="h-4 w-4" /> Înapoi
         </Link>
-        <h1 className="text-2xl font-semibold mb-6">New building</h1>
+        <h1 className="text-2xl font-semibold mb-6">Clădire nouă</h1>
         <BuildingForm
           initial={{
             slug: "",
@@ -61,7 +61,7 @@ function NewBuilding() {
             history: "",
             cover_image_url: "",
           }}
-          submitLabel="Create"
+          submitLabel="Creează"
           onSubmit={onSubmit}
           submitting={submitting}
           error={error}

@@ -12,7 +12,7 @@ import {
 } from "@/lib/buildings.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/buildings/$id/edit")({
-  head: () => ({ meta: [{ title: "Edit building — Admin" }] }),
+  head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
   component: EditBuilding,
 });
 
@@ -72,7 +72,7 @@ function EditBuilding() {
       qc.invalidateQueries({ queryKey: ["buildings"] });
       navigate({ to: "/admin" });
     } catch (e: any) {
-      setError(e.message ?? "Failed to save");
+      setError(e.message ?? "Salvarea a eșuat");
     } finally {
       setSubmitting(false);
     }
@@ -99,13 +99,13 @@ function EditBuilding() {
   }
 
   async function onDeleteImage(imgId: string) {
-    if (!confirm("Delete this image?")) return;
+    if (!confirm("Ștergi această imagine?")) return;
     await delImg({ data: { id: imgId } });
     qc.invalidateQueries({ queryKey: ["building-images", id] });
   }
 
   if (isLoading || !building) {
-    return <div className="p-8 text-muted-foreground">Loading…</div>;
+    return <div className="p-8 text-muted-foreground">Se încarcă…</div>;
   }
 
   return (
@@ -115,9 +115,9 @@ function EditBuilding() {
           to="/admin"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4"
         >
-          <ArrowLeft className="h-4 w-4" /> Back
+          <ArrowLeft className="h-4 w-4" /> Înapoi
         </Link>
-        <h1 className="text-2xl font-semibold mb-6">Edit building</h1>
+        <h1 className="text-2xl font-semibold mb-6">Editează clădirea</h1>
         <BuildingForm
           initial={{
             slug: building.slug,
@@ -129,14 +129,14 @@ function EditBuilding() {
             history: building.history ?? "",
             cover_image_url: building.cover_image_url ?? "",
           }}
-          submitLabel="Save changes"
+          submitLabel="Salvează modificările"
           onSubmit={onSubmit}
           submitting={submitting}
           error={error}
         />
 
         <section className="mt-12 border-t pt-8">
-          <h2 className="text-lg font-semibold mb-4">Gallery</h2>
+          <h2 className="text-lg font-semibold mb-4">Galerie</h2>
           <div className="space-y-2 mb-4">
             {images?.map((img) => (
               <div key={img.id} className="flex items-center gap-3 rounded-md border p-2">
@@ -154,20 +154,20 @@ function EditBuilding() {
               </div>
             ))}
             {images?.length === 0 && (
-              <p className="text-sm text-muted-foreground">No gallery images yet.</p>
+              <p className="text-sm text-muted-foreground">Nicio imagine în galerie încă.</p>
             )}
           </div>
           <form onSubmit={onAddImage} className="space-y-2 rounded-md border p-3 bg-muted/30">
             <input
               type="url"
               required
-              placeholder="Image URL (https://…)"
+              placeholder="URL imagine (https://…)"
               className="w-full rounded-md border px-3 py-2 text-sm bg-background"
               value={newImgUrl}
               onChange={(e) => setNewImgUrl(e.target.value)}
             />
             <input
-              placeholder="Caption (optional)"
+              placeholder="Descriere (opțional)"
               className="w-full rounded-md border px-3 py-2 text-sm bg-background"
               value={newImgCaption}
               onChange={(e) => setNewImgCaption(e.target.value)}
@@ -176,7 +176,7 @@ function EditBuilding() {
               type="submit"
               className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90"
             >
-              <Plus className="h-4 w-4" /> Add image
+              <Plus className="h-4 w-4" /> Adaugă imagine
             </button>
           </form>
         </section>

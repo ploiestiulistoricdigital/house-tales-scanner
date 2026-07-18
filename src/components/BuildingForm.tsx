@@ -49,7 +49,7 @@ export function BuildingForm({
         onSubmit(v);
       }}
     >
-      <Field label="Name *">
+      <Field label="Nume *">
         <input
           required
           className={inputCls}
@@ -61,7 +61,7 @@ export function BuildingForm({
           }}
         />
       </Field>
-      <Field label="Slug * (used in URL: /b/<slug>)">
+      <Field label="Identificator URL * (folosit în adresa: /b/<slug>)">
         <input
           required
           pattern="[a-z0-9\-]+"
@@ -74,10 +74,10 @@ export function BuildingForm({
         />
       </Field>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Address">
+        <Field label="Adresă">
           <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
         </Field>
-        <Field label="Year built">
+        <Field label="Anul construcției">
           <input
             className={inputCls}
             value={v.year_built}
@@ -85,10 +85,10 @@ export function BuildingForm({
           />
         </Field>
       </div>
-      <Field label="Architect">
+      <Field label="Arhitect">
         <input className={inputCls} value={v.architect} onChange={(e) => set("architect", e.target.value)} />
       </Field>
-      <Field label="Cover image URL">
+      <Field label="URL imagine principală">
         <input
           type="url"
           placeholder="https://…"
@@ -105,7 +105,7 @@ export function BuildingForm({
           />
         )}
       </Field>
-      <Field label="Short description (1–2 sentences)">
+      <Field label="Descriere scurtă (1–2 propoziții)">
         <textarea
           rows={2}
           className={inputCls}
@@ -113,7 +113,7 @@ export function BuildingForm({
           onChange={(e) => set("short_description", e.target.value)}
         />
       </Field>
-      <Field label="History (full text)">
+      <Field label="Istoric (text complet)">
         <textarea
           rows={12}
           className={inputCls}
@@ -127,7 +127,7 @@ export function BuildingForm({
         disabled={submitting}
         className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
       >
-        {submitting ? "Saving…" : submitLabel}
+        {submitting ? "Se salvează…" : submitLabel}
       </button>
     </form>
   );
