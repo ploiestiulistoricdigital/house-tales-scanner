@@ -16,7 +16,9 @@ function AdminPage() {
   const qc = useQueryClient();
   const checkAdmin = useServerFn(checkIsAdmin);
   const deleteFn = useServerFn(deleteBuilding);
+  const claimAdmin = useServerFn(claimFirstAdmin);
   const [copied, setCopied] = useState<string | null>(null);
+  const [claiming, setClaiming] = useState(false);
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
