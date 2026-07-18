@@ -110,19 +110,19 @@ function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <h1 className="text-lg font-semibold">Administrare clădiri</h1>
-          <div className="flex gap-2">
+      <header className="border-b border-border/70 bg-background/80 backdrop-blur-md">
+        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
+          <h1 className="text-lg sm:text-xl font-semibold">Administrare clădiri</h1>
+          <div className="flex items-center gap-2">
             <Link
               to="/"
-              className="text-sm text-muted-foreground hover:text-foreground px-3 py-1.5"
+              className="text-sm sm:text-base text-muted-foreground hover:text-foreground px-3 py-2 min-h-11 inline-flex items-center"
             >
               Vezi site-ul
             </Link>
             <button
               onClick={signOut}
-              className="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
+              className="inline-flex items-center gap-1 min-h-11 rounded-md border px-3 py-2 text-sm sm:text-base hover:bg-accent"
             >
               <LogOut className="h-4 w-4" /> Deconectare
             </button>
@@ -131,23 +131,23 @@ function AdminPage() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Toate clădirile</h2>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h2 className="text-xl sm:text-2xl font-semibold">Toate clădirile</h2>
           <Link
             to="/admin/buildings/new"
-            className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-2 text-sm font-medium hover:bg-primary/90"
+            className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" /> Clădire nouă
           </Link>
         </div>
 
         {!buildings || buildings.length === 0 ? (
-          <div className="rounded-lg border border-dashed p-12 text-center text-muted-foreground">
+          <div className="rounded-lg border border-dashed p-12 text-center text-base text-muted-foreground leading-relaxed">
             Nicio clădire încă. Creează prima.
           </div>
         ) : (
-          <div className="rounded-lg border overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="rounded-lg border border-border/70 overflow-x-auto">
+            <table className="w-full min-w-[640px] text-base">
               <thead className="bg-muted/50 text-left">
                 <tr>
                   <th className="px-4 py-2 font-medium">Nume</th>
