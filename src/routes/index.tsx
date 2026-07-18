@@ -12,8 +12,8 @@ export const Route = createFileRoute("/")({
         content:
           "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses.",
       },
-      { property: "og:title", content: "Building Stories" },
-      { property: "og:description", content: "Discover the history of buildings through QR codes." },
+      { property: "og:title", content: "Building Stories — Discover the history of buildings" },
+      { property: "og:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
       { property: "og:type", content: "website" },
     ],
   }),

@@ -77,10 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Building Stories" },
-      { name: "description", content: "Discover the history of buildings through QR codes." },
+      { title: "Building Stories — Discover the history of buildings" },
+      { name: "description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Building Stories — Discover the history of buildings" },
+      { name: "twitter:title", content: "Building Stories — Discover the history of buildings" },
+      { property: "og:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
+      { name: "twitter:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
     ],
     links: [
       {
