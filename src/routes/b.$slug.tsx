@@ -157,7 +157,7 @@ function BuildingPage() {
           <section className="mt-12">
             <h2 className="text-xl font-semibold mb-4">Gallery</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {images.map((img) => (
+              {images.map((img: Img) => (
                 <button
                   key={img.id}
                   onClick={() => setLightbox(img.image_url)}
