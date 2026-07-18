@@ -145,8 +145,8 @@ function Home() {
         )}
       </section>
 
-      <footer className="border-t border-border/60 bg-secondary/40 py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-xs uppercase tracking-[0.25em] text-muted-foreground">
+      <footer className="border-t border-border/70 bg-secondary/50 py-8">
+        <div className="mx-auto max-w-6xl px-4 text-center text-sm uppercase tracking-[0.2em] text-muted-foreground">
           Poveștile Caselor · Memoria orașului
         </div>
       </footer>
