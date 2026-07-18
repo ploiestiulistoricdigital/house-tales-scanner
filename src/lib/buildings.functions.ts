@@ -107,3 +107,22 @@ export const checkIsAdmin = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return { isAdmin: Boolean(data) };
   });
+
+// Bootstrap: the very first authenticated user to call this becomes admin.
+// After the first admin exists, this function refuses further self-grants.
+export const claimFirstAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { count, error: countErr } = await supabaseAdmin
+      .from("user_roles")
+      .select("id", { count: "exact", head: true })
+      .eq("role", "admin");
+    if (countErr) throw new Error(countErr.message);
+    if ((count ?? 0) > 0) return { granted: false as const };
+    const { error } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: context.userId, role: "admin" });
+    if (error) throw new Error(error.message);
+    return { granted: true as const };
+  });
