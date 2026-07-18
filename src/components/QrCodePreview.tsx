@@ -1,9 +1,13 @@
 import { Download, FileImage, FileText } from "lucide-react";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { saveQrExport } from "@/lib/qr-exports.functions";
+import { QrExportHistory } from "@/components/QrExportHistory";
 
 const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 
-export function QrCodePreview({ slug }: { slug: string }) {
+export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?: string }) {
   const cleaned = slug.trim();
   const url = cleaned ? `${PUBLIC_BASE}/b/${cleaned}` : "";
   const qrSrc = url
@@ -13,6 +17,19 @@ export function QrCodePreview({ slug }: { slug: string }) {
     ? `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&format=png&data=${encodeURIComponent(url)}`
     : "";
   const [busy, setBusy] = useState<null | "png" | "pdf">(null);
+  const save = useServerFn(saveQrExport);
+  const qc = useQueryClient();
+
+  async function persist(format: "png" | "pdf", blob: Blob) {
+    if (!buildingId) return;
+    try {
+      const base64 = await blobToBase64(blob);
+      await save({ data: { building_id: buildingId, format, base64 } });
+      qc.invalidateQueries({ queryKey: ["qr-exports", buildingId] });
+    } catch (e) {
+      console.error("Failed to save QR export", e);
+    }
+  }
 
   async function downloadPng() {
     if (!hiResSrc) return;
@@ -21,6 +38,7 @@ export function QrCodePreview({ slug }: { slug: string }) {
       const res = await fetch(hiResSrc);
       const blob = await res.blob();
       triggerDownload(blob, `qr-${cleaned}.png`);
+      await persist("png", blob);
     } finally {
       setBusy(null);
     }
@@ -46,6 +64,8 @@ export function QrCodePreview({ slug }: { slug: string }) {
       pdf.setFontSize(11);
       pdf.text(url, pageW / 2, 45 + size + 12, { align: "center" });
       pdf.save(`qr-${cleaned}.pdf`);
+      const blob = pdf.output("blob");
+      await persist("pdf", blob);
     } finally {
       setBusy(null);
     }
@@ -101,6 +121,15 @@ export function QrCodePreview({ slug }: { slug: string }) {
                 <Download className="h-4 w-4" /> Deschide
               </a>
             </div>
+            {buildingId ? (
+              <p className="text-xs text-muted-foreground">
+                Fiecare descărcare este salvată automat în istoricul clădirii.
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Istoricul descărcărilor este disponibil după ce salvezi clădirea.
+              </p>
+            )}
           </div>
         </div>
       ) : (
@@ -108,6 +137,7 @@ export function QrCodePreview({ slug }: { slug: string }) {
           Completează identificatorul URL pentru a genera codul QR.
         </p>
       )}
+      {buildingId && <QrExportHistory buildingId={buildingId} />}
     </div>
   );
 }
@@ -132,4 +162,14 @@ async function fetchAsDataUrl(src: string): Promise<string> {
     reader.onerror = reject;
     reader.readAsDataURL(blob);
   });
+}
+
+async function blobToBase64(blob: Blob): Promise<string> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result as string);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+  return dataUrl.split(",")[1] ?? "";
 }
