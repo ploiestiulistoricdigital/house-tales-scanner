@@ -121,11 +121,11 @@ export function BuildingForm({
           onChange={(e) => set("history", e.target.value)}
         />
       </Field>
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-base text-destructive">{error}</p>}
       <button
         type="submit"
         disabled={submitting}
-        className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+        className="rounded-md bg-primary text-primary-foreground px-5 py-3 text-base font-medium min-h-11 hover:bg-primary/90 disabled:opacity-50"
       >
         {submitting ? "Se salvează…" : submitLabel}
       </button>
