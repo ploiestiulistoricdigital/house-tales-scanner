@@ -77,29 +77,29 @@ function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-24">
-        <div className="flex items-baseline justify-between border-b border-border/60 pb-3 mb-8">
-          <h2 className="font-display text-3xl font-semibold">Arhiva clădirilor</h2>
+        <div className="flex items-baseline justify-between border-b border-border/70 pb-3 mb-8">
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold">Arhiva clădirilor</h2>
           {buildings && (
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="text-sm uppercase tracking-widest text-muted-foreground">
               {buildings.length} {buildings.length === 1 ? "înregistrare" : "înregistrări"}
             </span>
           )}
         </div>
 
         {isLoading ? (
-          <p className="text-muted-foreground italic">Se răsfoiesc filele arhivei…</p>
+          <p className="text-muted-foreground italic text-lg">Se răsfoiesc filele arhivei…</p>
         ) : !buildings || buildings.length === 0 ? (
-          <div className="rounded-md border-2 border-dashed border-border p-16 text-center text-muted-foreground italic bg-card/40">
+          <div className="rounded-md border-2 border-dashed border-border p-16 text-center text-muted-foreground italic bg-card/40 text-lg leading-relaxed">
             Arhiva este încă goală. Autentifică-te ca administrator pentru a adăuga prima cronică.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {buildings.map((b) => (
               <Link
                 key={b.id}
                 to="/b/$slug"
                 params={{ slug: b.slug }}
-                className="group rounded-md overflow-hidden bg-card border border-border/70 hover:border-primary/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_oklch(0.35_0.12_42/0.4)]"
+                className="group rounded-md overflow-hidden bg-card border border-border/80 hover:border-primary/70 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_oklch(0.35_0.12_42/0.45)]"
               >
                 <div className="aspect-[4/3] bg-muted overflow-hidden relative">
                   {b.cover_image_url ? (
@@ -107,10 +107,10 @@ function Home() {
                       <img
                         src={b.cover_image_url}
                         alt={b.name}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.15] group-hover:sepia-0"
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.1] group-hover:sepia-0"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/35 via-transparent to-transparent" />
                     </>
                   ) : (
                     <div className="h-full w-full flex items-center justify-center text-muted-foreground bg-secondary">
@@ -118,23 +118,23 @@ function Home() {
                     </div>
                   )}
                   {b.year_built && (
-                    <span className="absolute top-3 right-3 rounded-sm bg-background/85 backdrop-blur px-2.5 py-1 text-[10px] font-medium tracking-widest uppercase text-foreground border border-border/60">
+                    <span className="absolute top-3 right-3 rounded-sm bg-background/90 backdrop-blur px-2.5 py-1.5 text-xs font-semibold tracking-widest uppercase text-foreground border border-border/60">
                       {b.year_built}
                     </span>
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="font-display text-xl font-semibold group-hover:text-primary transition-colors">
+                  <h3 className="font-display text-xl sm:text-2xl font-semibold group-hover:text-primary transition-colors leading-tight">
                     {b.name}
                   </h3>
                   {b.address && (
-                    <p className="mt-1.5 text-sm text-muted-foreground flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-accent" />
+                    <p className="mt-2 text-sm sm:text-base text-muted-foreground flex items-center gap-1.5">
+                      <MapPin className="h-4 w-4 shrink-0 text-accent" />
                       {b.address}
                     </p>
                   )}
                   {b.short_description && (
-                    <p className="mt-3 text-sm text-muted-foreground line-clamp-2 font-serif italic leading-relaxed">
+                    <p className="mt-3 text-sm sm:text-base text-muted-foreground line-clamp-2 font-serif italic leading-relaxed">
                       {b.short_description}
                     </p>
                   )}
