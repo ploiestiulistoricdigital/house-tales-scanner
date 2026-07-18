@@ -17,16 +17,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Pagina nu a fost găsită</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          Pagina pe care o cauți nu există sau a fost mutată.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Înapoi la pagina principală
           </Link>
         </div>
       </div>
@@ -45,10 +45,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Această pagină nu s-a încărcat
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Ceva nu a mers bine. Poți încerca să reîncarci sau să te întorci la pagina principală.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -58,13 +58,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Încearcă din nou
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Înapoi acasă
           </a>
         </div>
       </div>
@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Building Stories — Discover the history of buildings" },
-      { name: "description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
+      { title: "Poveștile Caselor — Descoperă istoria clădirilor" },
+      { name: "description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Building Stories — Discover the history of buildings" },
-      { name: "twitter:title", content: "Building Stories — Discover the history of buildings" },
-      { property: "og:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
-      { name: "twitter:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
+      { property: "og:title", content: "Poveștile Caselor — Descoperă istoria clădirilor" },
+      { name: "twitter:title", content: "Poveștile Caselor — Descoperă istoria clădirilor" },
+      { property: "og:description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
+      { name: "twitter:description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
     ],
@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ro">
       <head>
         <HeadContent />
       </head>

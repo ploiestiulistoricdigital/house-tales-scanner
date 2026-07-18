@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Admin sign in — Building Stories" }] }),
+  head: () => ({ meta: [{ title: "Autentificare administrator — Poveștile Caselor" }] }),
   component: AuthPage,
 });
 
@@ -40,7 +40,7 @@ function AuthPage() {
       }
       navigate({ to: "/admin" });
     } catch (err: any) {
-      setError(err.message ?? "Something went wrong");
+      setError(err.message ?? "Ceva nu a mers bine");
     } finally {
       setLoading(false);
     }
@@ -51,13 +51,13 @@ function AuthPage() {
       <div className="w-full max-w-sm rounded-lg border bg-card p-6">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="h-6 w-6 text-primary" />
-          <span className="font-semibold">Admin</span>
+          <span className="font-semibold">Administrare</span>
         </div>
         <h1 className="text-xl font-semibold mb-1">
-          {mode === "signin" ? "Sign in" : "Create an account"}
+          {mode === "signin" ? "Autentificare" : "Creează un cont"}
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
-          Admin access is granted separately. Contact the site owner if you need it.
+          Accesul de administrator se acordă separat. Contactează proprietarul site-ului dacă ai nevoie.
         </p>
         <form onSubmit={onSubmit} className="space-y-3">
           <input
@@ -73,7 +73,7 @@ function AuthPage() {
             type="password"
             required
             minLength={6}
-            placeholder="Password"
+            placeholder="Parolă"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -83,14 +83,14 @@ function AuthPage() {
             disabled={loading}
             className="w-full rounded-md bg-primary text-primary-foreground py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
           >
-            {loading ? "…" : mode === "signin" ? "Sign in" : "Sign up"}
+            {loading ? "…" : mode === "signin" ? "Autentificare" : "Înregistrare"}
           </button>
         </form>
         <button
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
           className="mt-4 w-full text-xs text-muted-foreground hover:text-foreground"
         >
-          {mode === "signin" ? "Need an account? Sign up" : "Have an account? Sign in"}
+          {mode === "signin" ? "Nu ai cont? Înregistrează-te" : "Ai deja cont? Autentifică-te"}
         </button>
       </div>
     </div>

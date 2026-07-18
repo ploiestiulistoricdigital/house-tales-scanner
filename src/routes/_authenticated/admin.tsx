@@ -7,7 +7,7 @@ import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin — Building Stories" }] }),
+  head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
   component: AdminPage,
 });
 
@@ -46,7 +46,7 @@ function AdminPage() {
   }
 
   async function onDelete(id: string, name: string) {
-    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    if (!confirm(`Ștergi „${name}”? Această acțiune este ireversibilă.`)) return;
     await deleteFn({ data: { id } });
     qc.invalidateQueries({ queryKey: ["admin-buildings"] });
     qc.invalidateQueries({ queryKey: ["buildings"] });
@@ -60,7 +60,7 @@ function AdminPage() {
   }
 
   if (checkingAdmin) {
-    return <div className="p-8 text-muted-foreground">Loading…</div>;
+    return <div className="p-8 text-muted-foreground">Se încarcă…</div>;
   }
 
   if (!adminCheck?.isAdmin) {
@@ -71,10 +71,10 @@ function AdminPage() {
         if (res.granted) {
           qc.invalidateQueries({ queryKey: ["is-admin"] });
         } else {
-          alert("An admin already exists. Contact the site owner.");
+          alert("Există deja un administrator. Contactează proprietarul site-ului.");
         }
       } catch (e: any) {
-        alert(e.message ?? "Failed");
+        alert(e.message ?? "A eșuat");
       } finally {
         setClaiming(false);
       }
@@ -82,10 +82,10 @@ function AdminPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <h1 className="text-2xl font-semibold">Not authorized</h1>
+          <h1 className="text-2xl font-semibold">Neautorizat</h1>
           <p className="mt-2 text-muted-foreground">
-            Your account is signed in but doesn't have admin access. If this is a fresh install,
-            claim the first admin seat below.
+            Contul tău este autentificat, dar nu are drepturi de administrator. Dacă aceasta este o instalare nouă,
+            revendică mai jos primul loc de administrator.
           </p>
           <div className="mt-4 flex justify-center gap-2">
             <button
@@ -93,13 +93,13 @@ function AdminPage() {
               disabled={claiming}
               className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90 disabled:opacity-50"
             >
-              {claiming ? "…" : "Claim first admin"}
+              {claiming ? "…" : "Revendică primul administrator"}
             </button>
             <button
               onClick={signOut}
               className="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
             >
-              <LogOut className="h-4 w-4" /> Sign out
+              <LogOut className="h-4 w-4" /> Deconectare
             </button>
           </div>
         </div>
@@ -112,19 +112,19 @@ function AdminPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <h1 className="text-lg font-semibold">Buildings admin</h1>
+          <h1 className="text-lg font-semibold">Administrare clădiri</h1>
           <div className="flex gap-2">
             <Link
               to="/"
               className="text-sm text-muted-foreground hover:text-foreground px-3 py-1.5"
             >
-              View site
+              Vezi site-ul
             </Link>
             <button
               onClick={signOut}
               className="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
             >
-              <LogOut className="h-4 w-4" /> Sign out
+              <LogOut className="h-4 w-4" /> Deconectare
             </button>
           </div>
         </div>
@@ -132,28 +132,28 @@ function AdminPage() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">All buildings</h2>
+          <h2 className="text-xl font-semibold">Toate clădirile</h2>
           <Link
             to="/admin/buildings/new"
             className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-2 text-sm font-medium hover:bg-primary/90"
           >
-            <Plus className="h-4 w-4" /> New building
+            <Plus className="h-4 w-4" /> Clădire nouă
           </Link>
         </div>
 
         {!buildings || buildings.length === 0 ? (
           <div className="rounded-lg border border-dashed p-12 text-center text-muted-foreground">
-            No buildings yet. Create the first one.
+            Nicio clădire încă. Creează prima.
           </div>
         ) : (
           <div className="rounded-lg border overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-muted/50 text-left">
                 <tr>
-                  <th className="px-4 py-2 font-medium">Name</th>
-                  <th className="px-4 py-2 font-medium">Address</th>
-                  <th className="px-4 py-2 font-medium">Public URL</th>
-                  <th className="px-4 py-2 font-medium w-32">Actions</th>
+                  <th className="px-4 py-2 font-medium">Nume</th>
+                  <th className="px-4 py-2 font-medium">Adresă</th>
+                  <th className="px-4 py-2 font-medium">URL public</th>
+                  <th className="px-4 py-2 font-medium w-32">Acțiuni</th>
                 </tr>
               </thead>
               <tbody>
@@ -167,12 +167,12 @@ function AdminPage() {
                         <button
                           onClick={() => copyUrl(b.slug)}
                           className="p-1 hover:bg-accent rounded"
-                          title="Copy URL"
+                          title="Copiază URL"
                         >
                           <Copy className="h-3.5 w-3.5" />
                         </button>
                         {copied === b.slug && (
-                          <span className="text-xs text-green-600">Copied!</span>
+                          <span className="text-xs text-green-600">Copiat!</span>
                         )}
                       </div>
                     </td>
@@ -182,7 +182,7 @@ function AdminPage() {
                           to="/b/$slug"
                           params={{ slug: b.slug }}
                           className="p-1.5 hover:bg-accent rounded"
-                          title="View"
+                          title="Vezi"
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Link>
@@ -190,14 +190,14 @@ function AdminPage() {
                           to="/admin/buildings/$id/edit"
                           params={{ id: b.id }}
                           className="p-1.5 hover:bg-accent rounded"
-                          title="Edit"
+                          title="Editează"
                         >
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => onDelete(b.id, b.name)}
                           className="p-1.5 hover:bg-destructive/10 hover:text-destructive rounded"
-                          title="Delete"
+                          title="Șterge"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -211,8 +211,8 @@ function AdminPage() {
         )}
 
         <p className="mt-8 text-xs text-muted-foreground">
-          Tip: copy each building's public URL and paste it into any QR code generator (e.g.
-          qrcode-monkey.com) to produce a QR sticker for the wall.
+          Sfat: copiază URL-ul public al fiecărei clădiri și inserează-l în orice generator de coduri QR
+          (de exemplu qrcode-monkey.com) pentru a produce un abțibild QR de pus pe perete.
         </p>
       </div>
     </div>

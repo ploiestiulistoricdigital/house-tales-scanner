@@ -37,13 +37,13 @@ export const Route = createFileRoute("/b/$slug")({
   loader: ({ params }) => loadBuilding(params.slug),
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Building not found" }, { name: "robots", content: "noindex" }] };
+      return { meta: [{ title: "Clădirea nu a fost găsită" }, { name: "robots", content: "noindex" }] };
     }
     const { building } = loaderData;
-    const desc = building.short_description ?? `Discover the history of ${building.name}.`;
+    const desc = building.short_description ?? `Descoperă istoria clădirii ${building.name}.`;
     return {
       meta: [
-        { title: `${building.name} — Building Stories` },
+        { title: `${building.name} — Poveștile Caselor` },
         { name: "description", content: desc },
         { property: "og:title", content: building.name },
         { property: "og:description", content: desc },
@@ -61,10 +61,10 @@ export const Route = createFileRoute("/b/$slug")({
   notFoundComponent: () => (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Building not found</h1>
-        <p className="mt-2 text-muted-foreground">This QR code may be outdated.</p>
+        <h1 className="text-2xl font-semibold">Clădirea nu a fost găsită</h1>
+        <p className="mt-2 text-muted-foreground">Acest cod QR ar putea fi învechit.</p>
         <Link to="/" className="mt-4 inline-block text-primary underline">
-          Back to home
+          Înapoi acasă
         </Link>
       </div>
     </div>
@@ -72,7 +72,7 @@ export const Route = createFileRoute("/b/$slug")({
   errorComponent: ({ error }) => (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Couldn't load this page</h1>
+        <h1 className="text-2xl font-semibold">Pagina nu a putut fi încărcată</h1>
         <p className="mt-2 text-muted-foreground">{error.message}</p>
       </div>
     </div>
@@ -97,7 +97,7 @@ function BuildingPage() {
             to="/"
             className="absolute top-4 left-4 inline-flex items-center gap-1 rounded-md bg-black/40 backdrop-blur px-3 py-1.5 text-sm text-white hover:bg-black/60"
           >
-            <ArrowLeft className="h-4 w-4" /> Home
+            <ArrowLeft className="h-4 w-4" /> Acasă
           </Link>
           <div className="absolute bottom-6 left-4 right-4 text-white">
             <h1 className="text-3xl sm:text-4xl font-bold">{building.name}</h1>
@@ -115,7 +115,7 @@ function BuildingPage() {
               to="/"
               className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
             >
-              <ArrowLeft className="h-4 w-4" /> Home
+              <ArrowLeft className="h-4 w-4" /> Acasă
             </Link>
             <h1 className="mt-3 text-3xl font-bold">{building.name}</h1>
             {building.address && (
@@ -131,7 +131,7 @@ function BuildingPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {building.year_built && (
             <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs">
-              <Calendar className="h-3 w-3" /> Built {building.year_built}
+              <Calendar className="h-3 w-3" /> Construit în {building.year_built}
             </span>
           )}
           {building.architect && (
@@ -155,7 +155,7 @@ function BuildingPage() {
 
         {images.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold mb-4">Gallery</h2>
+            <h2 className="text-xl font-semibold mb-4">Galerie</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {images.map((img: Img) => (
                 <button

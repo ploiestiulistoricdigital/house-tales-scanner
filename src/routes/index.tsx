@@ -6,14 +6,14 @@ import { MapPin, Building2 } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Building Stories — Discover the history of buildings" },
+      { title: "Poveștile Caselor — Descoperă istoria clădirilor" },
       {
         name: "description",
         content:
-          "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses.",
+          "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice.",
       },
-      { property: "og:title", content: "Building Stories — Discover the history of buildings" },
-      { property: "og:description", content: "Scan a QR code on a wall or browse our catalog to discover the history and stories of buildings and historic houses." },
+      { property: "og:title", content: "Poveștile Caselor — Descoperă istoria clădirilor" },
+      { property: "og:description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
       { property: "og:type", content: "website" },
     ],
   }),
@@ -39,30 +39,30 @@ function Home() {
         <div className="mx-auto max-w-6xl px-4 py-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="text-lg font-semibold">Building Stories</span>
+            <span className="text-lg font-semibold">Poveștile Caselor</span>
           </div>
           <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground">
-            Admin
+            Administrare
           </Link>
         </div>
       </header>
 
       <section className="mx-auto max-w-6xl px-4 py-14 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-          Discover the story behind every wall
+          Descoperă povestea din spatele fiecărui zid
         </h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Scan a QR code on a building to learn its history, or browse the catalog below.
+          Scanează un cod QR de pe o clădire pentru a-i afla istoria sau răsfoiește catalogul de mai jos.
         </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-20">
-        <h2 className="text-xl font-semibold mb-6">All buildings</h2>
+        <h2 className="text-xl font-semibold mb-6">Toate clădirile</h2>
         {isLoading ? (
-          <p className="text-muted-foreground">Loading…</p>
+          <p className="text-muted-foreground">Se încarcă…</p>
         ) : !buildings || buildings.length === 0 ? (
           <div className="rounded-lg border border-dashed p-12 text-center text-muted-foreground">
-            No buildings yet. Sign in as an admin to add the first one.
+            Nicio clădire încă. Autentifică-te ca administrator pentru a adăuga prima.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
