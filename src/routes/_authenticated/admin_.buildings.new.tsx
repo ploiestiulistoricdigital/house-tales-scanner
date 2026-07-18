@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
 import { createBuilding } from "@/lib/buildings.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/buildings/new")({
+export const Route = createFileRoute("/_authenticated/admin_/buildings/new")({
   head: () => ({ meta: [{ title: "Clădire nouă — Administrare" }] }),
   component: NewBuilding,
 });
