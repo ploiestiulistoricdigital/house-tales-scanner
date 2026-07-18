@@ -150,29 +150,30 @@ function AdminPage() {
             <table className="w-full min-w-[640px] text-base">
               <thead className="bg-muted/50 text-left">
                 <tr>
-                  <th className="px-4 py-2 font-medium">Nume</th>
-                  <th className="px-4 py-2 font-medium">Adresă</th>
-                  <th className="px-4 py-2 font-medium">URL public</th>
-                  <th className="px-4 py-2 font-medium w-32">Acțiuni</th>
+                  <th className="px-4 py-3 font-medium">Nume</th>
+                  <th className="px-4 py-3 font-medium">Adresă</th>
+                  <th className="px-4 py-3 font-medium">URL public</th>
+                  <th className="px-4 py-3 font-medium w-32">Acțiuni</th>
                 </tr>
               </thead>
               <tbody>
                 {buildings.map((b) => (
-                  <tr key={b.id} className="border-t">
+                  <tr key={b.id} className="border-t border-border/70">
                     <td className="px-4 py-3 font-medium">{b.name}</td>
                     <td className="px-4 py-3 text-muted-foreground">{b.address ?? "—"}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <code className="text-xs bg-muted px-2 py-1 rounded">/b/{b.slug}</code>
+                        <code className="text-sm bg-muted px-2 py-1 rounded">/b/{b.slug}</code>
                         <button
                           onClick={() => copyUrl(b.slug)}
-                          className="p-1 hover:bg-accent rounded"
+                          className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
+                          aria-label="Copiază URL"
                           title="Copiază URL"
                         >
-                          <Copy className="h-3.5 w-3.5" />
+                          <Copy className="h-4 w-4" />
                         </button>
                         {copied === b.slug && (
-                          <span className="text-xs text-green-600">Copiat!</span>
+                          <span className="text-sm text-green-600">Copiat!</span>
                         )}
                       </div>
                     </td>
@@ -181,7 +182,8 @@ function AdminPage() {
                         <Link
                           to="/b/$slug"
                           params={{ slug: b.slug }}
-                          className="p-1.5 hover:bg-accent rounded"
+                          className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
+                          aria-label="Vezi pagina publică"
                           title="Vezi"
                         >
                           <ExternalLink className="h-4 w-4" />
@@ -189,14 +191,16 @@ function AdminPage() {
                         <Link
                           to="/admin/buildings/$id/edit"
                           params={{ id: b.id }}
-                          className="p-1.5 hover:bg-accent rounded"
+                          className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
+                          aria-label="Editează clădirea"
                           title="Editează"
                         >
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => onDelete(b.id, b.name)}
-                          className="p-1.5 hover:bg-destructive/10 hover:text-destructive rounded"
+                          className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
+                          aria-label="Șterge clădirea"
                           title="Șterge"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -210,7 +214,7 @@ function AdminPage() {
           </div>
         )}
 
-        <p className="mt-8 text-xs text-muted-foreground">
+        <p className="mt-8 text-sm text-muted-foreground leading-relaxed">
           Sfat: copiază URL-ul public al fiecărei clădiri și inserează-l în orice generator de coduri QR
           (de exemplu qrcode-monkey.com) pentru a produce un abțibild QR de pus pe perete.
         </p>
