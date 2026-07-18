@@ -94,6 +94,44 @@ export type Database = {
         }
         Relationships: []
       }
+      qr_code_exports: {
+        Row: {
+          building_id: string
+          created_at: string
+          file_path: string
+          file_size: number | null
+          file_url: string
+          format: string
+          id: string
+        }
+        Insert: {
+          building_id: string
+          created_at?: string
+          file_path: string
+          file_size?: number | null
+          file_url: string
+          format: string
+          id?: string
+        }
+        Update: {
+          building_id?: string
+          created_at?: string
+          file_path?: string
+          file_size?: number | null
+          file_url?: string
+          format?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_code_exports_building_id_fkey"
+            columns: ["building_id"]
+            isOneToOne: false
+            referencedRelation: "buildings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
