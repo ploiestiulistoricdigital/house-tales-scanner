@@ -133,12 +133,12 @@ export function BuildingForm({
   );
 }
 
-const inputCls = "w-full rounded-md border px-3 py-2 text-sm bg-background";
+const inputCls = "w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium mb-1 block">{label}</span>
+      <span className="text-base font-medium mb-1.5 block">{label}</span>
       {children}
     </label>
   );
