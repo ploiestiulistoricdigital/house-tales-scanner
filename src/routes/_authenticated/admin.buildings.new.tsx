@@ -45,11 +45,11 @@ function NewBuilding() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <Link
           to="/admin"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4"
+          className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft className="h-4 w-4" /> Înapoi
         </Link>
-        <h1 className="text-2xl font-semibold mb-6">Clădire nouă</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">Clădire nouă</h1>
         <BuildingForm
           initial={{
             slug: "",
