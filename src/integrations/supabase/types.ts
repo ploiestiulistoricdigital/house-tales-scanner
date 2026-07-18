@@ -58,6 +58,7 @@ export type Database = {
           history: string | null
           id: string
           name: string
+          qr_code_url: string | null
           short_description: string | null
           slug: string
           updated_at: string
@@ -71,6 +72,7 @@ export type Database = {
           history?: string | null
           id?: string
           name: string
+          qr_code_url?: string | null
           short_description?: string | null
           slug: string
           updated_at?: string
@@ -84,6 +86,7 @@ export type Database = {
           history?: string | null
           id?: string
           name?: string
+          qr_code_url?: string | null
           short_description?: string | null
           slug?: string
           updated_at?: string

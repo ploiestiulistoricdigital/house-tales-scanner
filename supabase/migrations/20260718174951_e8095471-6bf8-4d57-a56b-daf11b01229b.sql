@@ -1,0 +1,1 @@
+ALTER TABLE public.buildings ADD COLUMN IF NOT EXISTS qr_code_url text;
