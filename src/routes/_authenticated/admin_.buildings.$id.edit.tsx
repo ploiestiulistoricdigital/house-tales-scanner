@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ArrowLeft, Trash2, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
+import { ImageUploader } from "@/components/ImageUploader";
 import {
   updateBuilding,
   addBuildingImage,
@@ -161,11 +162,14 @@ function EditBuilding() {
           <form onSubmit={onAddImage} className="space-y-3 rounded-md border border-border/70 p-3 bg-muted/30">
             <input
               type="url"
-              required
-              placeholder="URL imagine (https://…)"
+              placeholder="URL imagine (https://…) sau folosește butonul de încărcare"
               className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
               value={newImgUrl}
               onChange={(e) => setNewImgUrl(e.target.value)}
+            />
+            <ImageUploader
+              label="Încarcă din galerie"
+              onUploaded={(url) => setNewImgUrl(url)}
             />
             <input
               placeholder="Descriere (opțional)"
