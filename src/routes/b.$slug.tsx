@@ -86,46 +86,46 @@ function BuildingPage() {
   return (
     <div className="min-h-screen">
       {building.cover_image_url ? (
-        <div className="relative h-80 sm:h-[28rem] w-full overflow-hidden bg-muted">
+        <div className="relative h-72 sm:h-80 md:h-[28rem] w-full overflow-hidden bg-muted">
           <img
             src={building.cover_image_url}
             alt={building.name}
-            className="h-full w-full object-cover sepia-[0.2]"
+            className="h-full w-full object-cover sepia-[0.1]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-foreground/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
           <Link
             to="/"
-            className="absolute top-5 left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/80 backdrop-blur px-3 py-1.5 text-xs uppercase tracking-widest text-foreground hover:bg-background border border-border/60"
+            className="absolute top-4 sm:top-5 left-4 sm:left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 min-h-11"
           >
-            <ArrowLeft className="h-3.5 w-3.5" /> Arhivă
+            <ArrowLeft className="h-4 w-4" /> Arhivă
           </Link>
-          <div className="absolute bottom-8 left-0 right-0 px-6 text-background">
+          <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 px-5 sm:px-6 text-background">
             <div className="mx-auto max-w-3xl">
-              <span className="text-[10px] uppercase tracking-[0.3em] opacity-80">Cronica clădirii</span>
-              <h1 className="font-display mt-2 text-4xl sm:text-6xl font-semibold leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+              <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">Cronica clădirii</span>
+              <h1 className="font-display mt-2 text-3xl sm:text-5xl md:text-6xl font-semibold leading-tight text-background text-readable-strong">
                 {building.name}
               </h1>
               {building.address && (
-                <p className="mt-3 flex items-center gap-1.5 text-sm opacity-95 font-serif italic">
-                  <MapPin className="h-4 w-4" /> {building.address}
+                <p className="mt-3 flex items-center gap-1.5 text-sm sm:text-base opacity-95 font-serif italic text-readable">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {building.address}
                 </p>
               )}
             </div>
           </div>
         </div>
       ) : (
-        <div className="border-b border-border/60 px-4 py-12 bg-secondary/30">
+        <div className="border-b border-border/70 px-4 py-10 sm:py-12 bg-secondary/40">
           <div className="mx-auto max-w-3xl">
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-muted-foreground hover:text-primary"
+              className="inline-flex items-center gap-1.5 text-sm uppercase tracking-widest text-muted-foreground hover:text-primary min-h-11 py-2"
             >
-              <ArrowLeft className="h-3.5 w-3.5" /> Arhivă
+              <ArrowLeft className="h-4 w-4" /> Arhivă
             </Link>
-            <h1 className="font-display mt-4 text-4xl sm:text-5xl font-semibold">{building.name}</h1>
+            <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{building.name}</h1>
             {building.address && (
-              <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground font-serif italic">
-                <MapPin className="h-4 w-4" /> {building.address}
+              <p className="mt-2 flex items-center gap-1.5 text-sm sm:text-base text-muted-foreground font-serif italic">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {building.address}
               </p>
             )}
           </div>
