@@ -56,22 +56,22 @@ function Home() {
       </header>
 
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.13_72/0.15),transparent_60%)]" />
-        <div className="mx-auto max-w-4xl px-4 py-20 sm:py-28 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-accent-foreground/80 mb-8">
-            <ScrollText className="h-3.5 w-3.5" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.13_72/0.18),transparent_60%)]" />
+        <div className="mx-auto max-w-4xl px-4 py-16 sm:py-28 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/15 px-4 py-2 text-sm uppercase tracking-[0.15em] text-accent-foreground mb-8">
+            <ScrollText className="h-4 w-4" />
             Cronica clădirilor
           </div>
-          <h1 className="font-display text-5xl sm:text-7xl font-semibold leading-[1.05] tracking-tight">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-semibold leading-[1.08] tracking-tight text-readable">
             Descoperă povestea din spatele{" "}
             <span className="text-gradient-warm italic">fiecărui zid</span>
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto font-serif leading-relaxed">
+          <p className="mt-6 text-lg sm:text-xl text-foreground/80 max-w-2xl mx-auto font-serif leading-relaxed">
             Fiecare piatră a orașului poartă o memorie. Scanează un cod QR de pe fațadă sau
             răsfoiește arhiva pentru a intra în cronica urbană a clădirilor istorice.
           </p>
           <div className="mt-10 ornament-divider max-w-md mx-auto">
-            <QrCode className="h-4 w-4" />
+            <QrCode className="h-5 w-5" />
           </div>
         </div>
       </section>
