@@ -77,7 +77,7 @@ export function BuildingForm({
           }}
         />
       </Field>
-      <QrCodePreview slug={v.slug} />
+      <QrCodePreview slug={v.slug} buildingId={buildingId} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field label="Adresă">
           <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
