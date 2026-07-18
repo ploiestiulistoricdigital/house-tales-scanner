@@ -132,43 +132,43 @@ function BuildingPage() {
         </div>
       )}
 
-      <article className="mx-auto max-w-3xl px-4 py-12">
+      <article className="mx-auto max-w-3xl px-4 py-10 sm:py-12">
         {(building.year_built || building.architect) && (
           <div className="flex flex-wrap gap-2 mb-8">
             {building.year_built && (
-              <span className="inline-flex items-center gap-1.5 rounded-sm border border-accent/40 bg-accent/10 px-3 py-1.5 text-xs uppercase tracking-widest text-foreground">
-                <Calendar className="h-3 w-3 text-accent" /> {building.year_built}
+              <span className="inline-flex items-center gap-1.5 rounded-sm border border-accent/50 bg-accent/15 px-3 py-2 text-sm uppercase tracking-widest text-foreground">
+                <Calendar className="h-4 w-4 text-accent" /> {building.year_built}
               </span>
             )}
             {building.architect && (
-              <span className="inline-flex items-center gap-1.5 rounded-sm border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs uppercase tracking-widest text-foreground">
-                <User className="h-3 w-3 text-primary" /> {building.architect}
+              <span className="inline-flex items-center gap-1.5 rounded-sm border border-primary/40 bg-primary/8 px-3 py-2 text-sm uppercase tracking-widest text-foreground">
+                <User className="h-4 w-4 text-primary" /> {building.architect}
               </span>
             )}
           </div>
         )}
 
         {building.short_description && (
-          <p className="font-display text-2xl sm:text-3xl text-foreground/85 leading-snug italic mb-10 border-l-2 border-accent pl-6">
+          <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6">
             {building.short_description}
           </p>
         )}
 
         <div className="ornament-divider mb-10">
-          <span className="font-display text-accent text-lg">✦</span>
+          <span className="font-display text-accent text-xl">✦</span>
         </div>
 
         {building.history && (
-          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-relaxed font-serif text-foreground/90 first-letter:font-display first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
+          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
             {building.history}
           </div>
         )}
 
         {images.length > 0 && (
           <section className="mt-16">
-            <div className="flex items-baseline justify-between border-b border-border/60 pb-3 mb-6">
-              <h2 className="font-display text-3xl font-semibold">Galerie</h2>
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            <div className="flex items-baseline justify-between border-b border-border/70 pb-3 mb-6">
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold">Galerie</h2>
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">
                 {images.length} {images.length === 1 ? "imagine" : "imagini"}
               </span>
             </div>
@@ -177,12 +177,12 @@ function BuildingPage() {
                 <button
                   key={img.id}
                   onClick={() => setLightbox(img.image_url)}
-                  className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/60 hover:border-primary transition-all group"
+                  className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/70 hover:border-primary transition-all group"
                 >
                   <img
                     src={img.image_url}
                     alt={img.caption ?? ""}
-                    className="h-full w-full object-cover sepia-[0.15] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
+                    className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
                     loading="lazy"
                   />
                 </button>
