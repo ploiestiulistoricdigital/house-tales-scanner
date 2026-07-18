@@ -158,24 +158,24 @@ function EditBuilding() {
               <p className="text-base text-muted-foreground">Nicio imagine în galerie încă.</p>
             )}
           </div>
-          <form onSubmit={onAddImage} className="space-y-2 rounded-md border p-3 bg-muted/30">
+          <form onSubmit={onAddImage} className="space-y-3 rounded-md border border-border/70 p-3 bg-muted/30">
             <input
               type="url"
               required
               placeholder="URL imagine (https://…)"
-              className="w-full rounded-md border px-3 py-2 text-sm bg-background"
+              className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
               value={newImgUrl}
               onChange={(e) => setNewImgUrl(e.target.value)}
             />
             <input
               placeholder="Descriere (opțional)"
-              className="w-full rounded-md border px-3 py-2 text-sm bg-background"
+              className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
               value={newImgCaption}
               onChange={(e) => setNewImgCaption(e.target.value)}
             />
             <button
               type="submit"
-              className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90"
+              className="inline-flex items-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
             >
               <Plus className="h-4 w-4" /> Adaugă imagine
             </button>
