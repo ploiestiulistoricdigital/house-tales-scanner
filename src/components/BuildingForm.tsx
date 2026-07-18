@@ -97,6 +97,7 @@ export function BuildingForm({
           value={v.cover_image_url}
           onChange={(e) => set("cover_image_url", e.target.value)}
         />
+        <ImageUploader label="Încarcă imagine principală" onUploaded={(url) => set("cover_image_url", url)} />
         {v.cover_image_url && (
           <img
             src={v.cover_image_url}
