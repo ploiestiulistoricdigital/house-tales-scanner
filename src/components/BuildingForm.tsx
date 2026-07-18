@@ -1,0 +1,145 @@
+import { useState } from "react";
+
+export type BuildingFormValues = {
+  slug: string;
+  name: string;
+  address: string;
+  year_built: string;
+  architect: string;
+  short_description: string;
+  history: string;
+  cover_image_url: string;
+};
+
+export function slugify(input: string) {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 100);
+}
+
+export function BuildingForm({
+  initial,
+  submitLabel,
+  onSubmit,
+  submitting,
+  error,
+}: {
+  initial: BuildingFormValues;
+  submitLabel: string;
+  onSubmit: (v: BuildingFormValues) => void;
+  submitting: boolean;
+  error: string | null;
+}) {
+  const [v, setV] = useState<BuildingFormValues>(initial);
+  const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
+
+  function set<K extends keyof BuildingFormValues>(k: K, val: BuildingFormValues[K]) {
+    setV((p) => ({ ...p, [k]: val }));
+  }
+
+  return (
+    <form
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(v);
+      }}
+    >
+      <Field label="Name *">
+        <input
+          required
+          className={inputCls}
+          value={v.name}
+          onChange={(e) => {
+            const n = e.target.value;
+            set("name", n);
+            if (!slugTouched) set("slug", slugify(n));
+          }}
+        />
+      </Field>
+      <Field label="Slug * (used in URL: /b/<slug>)">
+        <input
+          required
+          pattern="[a-z0-9\-]+"
+          className={inputCls}
+          value={v.slug}
+          onChange={(e) => {
+            setSlugTouched(true);
+            set("slug", e.target.value);
+          }}
+        />
+      </Field>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field label="Address">
+          <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
+        </Field>
+        <Field label="Year built">
+          <input
+            className={inputCls}
+            value={v.year_built}
+            onChange={(e) => set("year_built", e.target.value)}
+          />
+        </Field>
+      </div>
+      <Field label="Architect">
+        <input className={inputCls} value={v.architect} onChange={(e) => set("architect", e.target.value)} />
+      </Field>
+      <Field label="Cover image URL">
+        <input
+          type="url"
+          placeholder="https://…"
+          className={inputCls}
+          value={v.cover_image_url}
+          onChange={(e) => set("cover_image_url", e.target.value)}
+        />
+        {v.cover_image_url && (
+          <img
+            src={v.cover_image_url}
+            alt=""
+            className="mt-2 h-32 rounded border object-cover"
+            onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+          />
+        )}
+      </Field>
+      <Field label="Short description (1–2 sentences)">
+        <textarea
+          rows={2}
+          className={inputCls}
+          value={v.short_description}
+          onChange={(e) => set("short_description", e.target.value)}
+        />
+      </Field>
+      <Field label="History (full text)">
+        <textarea
+          rows={12}
+          className={inputCls}
+          value={v.history}
+          onChange={(e) => set("history", e.target.value)}
+        />
+      </Field>
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      <button
+        type="submit"
+        disabled={submitting}
+        className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+      >
+        {submitting ? "Saving…" : submitLabel}
+      </button>
+    </form>
+  );
+}
+
+const inputCls = "w-full rounded-md border px-3 py-2 text-sm bg-background";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="text-sm font-medium mb-1 block">{label}</span>
+      {children}
+    </label>
+  );
+}
