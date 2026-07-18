@@ -113,11 +113,11 @@ function EditBuilding() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <Link
           to="/admin"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4"
+          className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft className="h-4 w-4" /> Înapoi
         </Link>
-        <h1 className="text-2xl font-semibold mb-6">Editează clădirea</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">Editează clădirea</h1>
         <BuildingForm
           initial={{
             slug: building.slug,
@@ -135,26 +135,27 @@ function EditBuilding() {
           error={error}
         />
 
-        <section className="mt-12 border-t pt-8">
-          <h2 className="text-lg font-semibold mb-4">Galerie</h2>
+        <section className="mt-12 border-t border-border/70 pt-8">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Galerie</h2>
           <div className="space-y-2 mb-4">
             {images?.map((img) => (
-              <div key={img.id} className="flex items-center gap-3 rounded-md border p-2">
-                <img src={img.image_url} alt="" className="h-14 w-14 rounded object-cover bg-muted" />
-                <div className="flex-1 text-sm">
-                  <div className="truncate text-xs text-muted-foreground">{img.image_url}</div>
-                  {img.caption && <div>{img.caption}</div>}
+              <div key={img.id} className="flex items-center gap-3 rounded-md border border-border/70 p-2">
+                <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
+                <div className="flex-1 min-w-0 text-base">
+                  <div className="truncate text-sm text-muted-foreground">{img.image_url}</div>
+                  {img.caption && <div className="mt-1">{img.caption}</div>}
                 </div>
                 <button
                   onClick={() => onDeleteImage(img.id)}
-                  className="p-1.5 hover:bg-destructive/10 hover:text-destructive rounded"
+                  className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
+                  aria-label="Șterge imaginea"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             ))}
             {images?.length === 0 && (
-              <p className="text-sm text-muted-foreground">Nicio imagine în galerie încă.</p>
+              <p className="text-base text-muted-foreground">Nicio imagine în galerie încă.</p>
             )}
           </div>
           <form onSubmit={onAddImage} className="space-y-2 rounded-md border p-3 bg-muted/30">
