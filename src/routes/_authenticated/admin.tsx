@@ -80,24 +80,24 @@ function AdminPage() {
       }
     }
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4 py-8">
         <div className="text-center max-w-md">
-          <h1 className="text-2xl font-semibold">Neautorizat</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-semibold">Neautorizat</h1>
+          <p className="mt-3 text-base text-muted-foreground leading-relaxed">
             Contul tău este autentificat, dar nu are drepturi de administrator. Dacă aceasta este o instalare nouă,
             revendică mai jos primul loc de administrator.
           </p>
-          <div className="mt-4 flex justify-center gap-2">
+          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
             <button
               onClick={tryClaim}
               disabled={claiming}
-              className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
             >
               {claiming ? "…" : "Revendică primul administrator"}
             </button>
             <button
               onClick={signOut}
-              className="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md border px-4 py-2 text-base hover:bg-accent"
             >
               <LogOut className="h-4 w-4" /> Deconectare
             </button>
