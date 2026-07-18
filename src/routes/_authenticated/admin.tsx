@@ -64,24 +64,49 @@ function AdminPage() {
   }
 
   if (!adminCheck?.isAdmin) {
+    async function tryClaim() {
+      setClaiming(true);
+      try {
+        const res = await claimAdmin();
+        if (res.granted) {
+          qc.invalidateQueries({ queryKey: ["is-admin"] });
+        } else {
+          alert("An admin already exists. Contact the site owner.");
+        }
+      } catch (e: any) {
+        alert(e.message ?? "Failed");
+      } finally {
+        setClaiming(false);
+      }
+    }
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <h1 className="text-2xl font-semibold">Not authorized</h1>
           <p className="mt-2 text-muted-foreground">
-            Your account is signed in but doesn't have admin access. Ask the site owner to grant
-            you the admin role.
+            Your account is signed in but doesn't have admin access. If this is a fresh install,
+            claim the first admin seat below.
           </p>
-          <button
-            onClick={signOut}
-            className="mt-4 inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
-          >
-            <LogOut className="h-4 w-4" /> Sign out
-          </button>
+          <div className="mt-4 flex justify-center gap-2">
+            <button
+              onClick={tryClaim}
+              disabled={claiming}
+              className="inline-flex items-center gap-1 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90 disabled:opacity-50"
+            >
+              {claiming ? "…" : "Claim first admin"}
+            </button>
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
+            >
+              <LogOut className="h-4 w-4" /> Sign out
+            </button>
+          </div>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-background">
