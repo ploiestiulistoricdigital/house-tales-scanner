@@ -47,21 +47,21 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm rounded-lg border bg-card p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
+      <div className="w-full max-w-sm rounded-lg border bg-card p-6 sm:p-8">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="h-6 w-6 text-primary" />
-          <span className="font-semibold">Administrare</span>
+          <span className="font-semibold text-lg">Administrare</span>
         </div>
-        <h1 className="text-xl font-semibold mb-1">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-2">
           {mode === "signin" ? "Autentificare" : "Creează un cont"}
         </h1>
-        <p className="text-sm text-muted-foreground mb-6">
+        <p className="text-base text-muted-foreground mb-6 leading-relaxed">
           Accesul de administrator se acordă separat. Contactează proprietarul site-ului dacă ai nevoie.
         </p>
-        <form onSubmit={onSubmit} className="space-y-3">
+        <form onSubmit={onSubmit} className="space-y-4">
           <input
-            className="w-full rounded-md border px-3 py-2 text-sm bg-background"
+            className="w-full rounded-md border px-3 py-3 text-base bg-background"
             type="email"
             required
             placeholder="Email"
@@ -69,7 +69,7 @@ function AuthPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full rounded-md border px-3 py-2 text-sm bg-background"
+            className="w-full rounded-md border px-3 py-3 text-base bg-background"
             type="password"
             required
             minLength={6}
@@ -77,18 +77,18 @@ function AuthPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-base text-destructive">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-primary text-primary-foreground py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+            className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
           >
             {loading ? "…" : mode === "signin" ? "Autentificare" : "Înregistrare"}
           </button>
         </form>
         <button
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-4 w-full text-xs text-muted-foreground hover:text-foreground"
+          className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
         >
           {mode === "signin" ? "Nu ai cont? Înregistrează-te" : "Ai deja cont? Autentifică-te"}
         </button>
