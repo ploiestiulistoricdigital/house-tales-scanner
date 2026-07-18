@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin, deleteBuilding } from "@/lib/buildings.functions";
+import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
 
