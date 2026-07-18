@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ImageUploader } from "@/components/ImageUploader";
+import { QrCodePreview } from "@/components/QrCodePreview";
 
 export type BuildingFormValues = {
   slug: string;
