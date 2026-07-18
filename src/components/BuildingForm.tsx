@@ -29,12 +29,14 @@ export function BuildingForm({
   onSubmit,
   submitting,
   error,
+  buildingId,
 }: {
   initial: BuildingFormValues;
   submitLabel: string;
   onSubmit: (v: BuildingFormValues) => void;
   submitting: boolean;
   error: string | null;
+  buildingId?: string;
 }) {
   const [v, setV] = useState<BuildingFormValues>(initial);
   const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
