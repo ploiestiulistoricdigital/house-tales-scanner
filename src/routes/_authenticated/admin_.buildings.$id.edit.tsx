@@ -134,6 +134,7 @@ function EditBuilding() {
           onSubmit={onSubmit}
           submitting={submitting}
           error={error}
+          buildingId={id}
         />
 
         <section className="mt-12 border-t border-border/70 pt-8">
