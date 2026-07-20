@@ -11,6 +11,7 @@ import {
   addBuildingImage,
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
@@ -21,6 +22,7 @@ function EditBuilding() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { t } = useI18n();
   const update = useServerFn(updateBuilding);
   const addImg = useServerFn(addBuildingImage);
   const delImg = useServerFn(deleteBuildingImage);
@@ -73,7 +75,7 @@ function EditBuilding() {
       qc.invalidateQueries({ queryKey: ["buildings"] });
       navigate({ to: "/admin" });
     } catch (e: any) {
-      setError(e.message ?? "Salvarea a eșuat");
+      setError(e.message ?? t("form.saveFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -100,13 +102,13 @@ function EditBuilding() {
   }
 
   async function onDeleteImage(imgId: string) {
-    if (!confirm("Ștergi această imagine?")) return;
+    if (!confirm(t("gallery.confirmDelete"))) return;
     await delImg({ data: { id: imgId } });
     qc.invalidateQueries({ queryKey: ["building-images", id] });
   }
 
   if (isLoading || !building) {
-    return <div className="p-8 text-muted-foreground">Se încarcă…</div>;
+    return <div className="p-8 text-muted-foreground">{t("admin.loading")}</div>;
   }
 
   return (
@@ -116,9 +118,9 @@ function EditBuilding() {
           to="/admin"
           className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground mb-4"
         >
-          <ArrowLeft className="h-4 w-4" /> Înapoi
+          <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">Editează clădirea</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("admin.editBuilding")}</h1>
         <BuildingForm
           initial={{
             slug: building.slug,
@@ -130,7 +132,7 @@ function EditBuilding() {
             history: building.history ?? "",
             cover_image_url: building.cover_image_url ?? "",
           }}
-          submitLabel="Salvează modificările"
+          submitLabel={t("form.save")}
           onSubmit={onSubmit}
           submitting={submitting}
           error={error}
@@ -138,7 +140,7 @@ function EditBuilding() {
         />
 
         <section className="mt-12 border-t border-border/70 pt-8">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Galerie</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">{t("gallery.title")}</h2>
           <div className="space-y-2 mb-4">
             {images?.map((img) => (
               <div key={img.id} className="flex items-center gap-3 rounded-md border border-border/70 p-2">
@@ -150,30 +152,30 @@ function EditBuilding() {
                 <button
                   onClick={() => onDeleteImage(img.id)}
                   className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
-                  aria-label="Șterge imaginea"
+                  aria-label={t("gallery.deleteImage")}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             ))}
             {images?.length === 0 && (
-              <p className="text-base text-muted-foreground">Nicio imagine în galerie încă.</p>
+              <p className="text-base text-muted-foreground">{t("gallery.empty")}</p>
             )}
           </div>
           <form onSubmit={onAddImage} className="space-y-3 rounded-md border border-border/70 p-3 bg-muted/30">
             <input
               type="url"
-              placeholder="URL imagine (https://…) sau folosește butonul de încărcare"
+              placeholder={t("gallery.urlPlaceholder")}
               className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
               value={newImgUrl}
               onChange={(e) => setNewImgUrl(e.target.value)}
             />
             <ImageUploader
-              label="Încarcă din galerie"
+              label={t("gallery.uploadLabel")}
               onUploaded={(url) => setNewImgUrl(url)}
             />
             <input
-              placeholder="Descriere (opțional)"
+              placeholder={t("gallery.captionPlaceholder")}
               className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
               value={newImgCaption}
               onChange={(e) => setNewImgCaption(e.target.value)}
@@ -182,7 +184,7 @@ function EditBuilding() {
               type="submit"
               className="inline-flex items-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
             >
-              <Plus className="h-4 w-4" /> Adaugă imagine
+              <Plus className="h-4 w-4" /> {t("gallery.add")}
             </button>
           </form>
         </section>

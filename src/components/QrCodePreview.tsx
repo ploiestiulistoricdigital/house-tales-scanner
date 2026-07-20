@@ -4,10 +4,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { saveQrExport } from "@/lib/qr-exports.functions";
 import { QrExportHistory } from "@/components/QrExportHistory";
+import { useI18n } from "@/lib/i18n";
 
 const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 
 export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?: string }) {
+  const { t } = useI18n();
   const cleaned = slug.trim();
   const url = cleaned ? `${PUBLIC_BASE}/b/${cleaned}` : "";
   const qrSrc = url
@@ -58,7 +60,7 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
       const x = (pageW - size) / 2;
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(20);
-      pdf.text("Scanează pentru poveste", pageW / 2, 30, { align: "center" });
+      pdf.text(t("qr.pdfTitle"), pageW / 2, 30, { align: "center" });
       pdf.addImage(dataUrl, "PNG", x, 45, size, size);
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(11);
@@ -73,18 +75,16 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
 
   return (
     <div className="rounded-lg border border-border/70 bg-card p-4">
-      <h2 className="text-lg font-semibold mb-2">Cod QR</h2>
+      <h2 className="text-lg font-semibold mb-2">{t("qr.title")}</h2>
       {cleaned ? (
         <div className="flex flex-col sm:flex-row gap-4 items-start">
           <img
             src={qrSrc}
-            alt={`Cod QR pentru ${url}`}
+            alt={t("qr.altFor", { url })}
             className="h-40 w-40 rounded border bg-white"
           />
           <div className="flex-1 min-w-0 space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Se generează pe baza identificatorului URL. Scanează pentru a testa:
-            </p>
+            <p className="text-sm text-muted-foreground">{t("qr.hint")}</p>
             <a
               href={url}
               target="_blank"
@@ -101,7 +101,7 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
                 className="inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium min-h-11 hover:bg-primary/90 disabled:opacity-50"
               >
                 <FileImage className="h-4 w-4" />
-                {busy === "png" ? "Se descarcă…" : "Descarcă PNG"}
+                {busy === "png" ? t("qr.downloading") : t("qr.downloadPng")}
               </button>
               <button
                 type="button"
@@ -110,7 +110,7 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
                 className="inline-flex items-center gap-2 rounded-md border border-primary text-primary px-4 py-2 text-base font-medium min-h-11 hover:bg-primary/10 disabled:opacity-50"
               >
                 <FileText className="h-4 w-4" />
-                {busy === "pdf" ? "Se generează…" : "Descarcă PDF"}
+                {busy === "pdf" ? t("qr.generating") : t("qr.downloadPdf")}
               </button>
               <a
                 href={hiResSrc}
@@ -118,24 +118,16 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-base font-medium min-h-11 hover:bg-muted"
               >
-                <Download className="h-4 w-4" /> Deschide
+                <Download className="h-4 w-4" /> {t("qr.open")}
               </a>
             </div>
-            {buildingId ? (
-              <p className="text-xs text-muted-foreground">
-                Fiecare descărcare este salvată automat în istoricul clădirii.
-              </p>
-            ) : (
-              <p className="text-xs text-muted-foreground">
-                Istoricul descărcărilor este disponibil după ce salvezi clădirea.
-              </p>
-            )}
+            <p className="text-xs text-muted-foreground">
+              {buildingId ? t("qr.autoSave") : t("qr.afterSave")}
+            </p>
           </div>
         </div>
       ) : (
-        <p className="text-base text-muted-foreground">
-          Completează identificatorul URL pentru a genera codul QR.
-        </p>
+        <p className="text-base text-muted-foreground">{t("qr.needSlug")}</p>
       )}
       {buildingId && <QrExportHistory buildingId={buildingId} />}
     </div>

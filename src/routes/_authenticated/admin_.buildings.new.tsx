@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
 import { createBuilding } from "@/lib/buildings.functions";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/new")({
   head: () => ({ meta: [{ title: "Clădire nouă — Administrare" }] }),
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/_authenticated/admin_/buildings/new")({
 function NewBuilding() {
   const navigate = useNavigate();
   const create = useServerFn(createBuilding);
+  const { t } = useI18n();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +36,7 @@ function NewBuilding() {
       });
       navigate({ to: "/admin/buildings/$id/edit", params: { id: row.id } });
     } catch (e: any) {
-      setError(e.message ?? "Crearea a eșuat");
+      setError(e.message ?? t("form.createFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -47,9 +49,9 @@ function NewBuilding() {
           to="/admin"
           className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground mb-4"
         >
-          <ArrowLeft className="h-4 w-4" /> Înapoi
+          <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">Clădire nouă</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("form.newBuilding")}</h1>
         <BuildingForm
           initial={{
             slug: "",
@@ -61,7 +63,7 @@ function NewBuilding() {
             history: "",
             cover_image_url: "",
           }}
-          submitLabel="Creează"
+          submitLabel={t("form.create")}
           onSubmit={onSubmit}
           submitting={submitting}
           error={error}

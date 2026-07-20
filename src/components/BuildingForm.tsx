@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { QrCodePreview } from "@/components/QrCodePreview";
+import { useI18n } from "@/lib/i18n";
 
 export type BuildingFormValues = {
   slug: string;
@@ -28,38 +29,35 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 type FieldErrors = Partial<Record<keyof BuildingFormValues, string>>;
 
-function validate(v: BuildingFormValues): FieldErrors {
+function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, string | number>) => string): FieldErrors {
   const errs: FieldErrors = {};
   const name = v.name.trim();
-  if (!name) errs.name = "Numele este obligatoriu.";
-  else if (name.length < 2) errs.name = "Numele trebuie să aibă cel puțin 2 caractere.";
-  else if (name.length > 150) errs.name = "Numele este prea lung (max. 150 caractere).";
+  if (!name) errs.name = t("err.name.required");
+  else if (name.length < 2) errs.name = t("err.name.min");
+  else if (name.length > 150) errs.name = t("err.name.max");
 
   const slug = v.slug.trim();
-  if (!slug) errs.slug = "Identificatorul URL este obligatoriu.";
-  else if (slug.length < 2) errs.slug = "Identificatorul URL trebuie să aibă cel puțin 2 caractere.";
-  else if (slug.length > 100) errs.slug = "Identificatorul URL este prea lung (max. 100 caractere).";
-  else if (!SLUG_RE.test(slug))
-    errs.slug =
-      "Folosește doar litere mici, cifre și cratime (fără spații sau diacritice). Ex: casa-batllo";
+  if (!slug) errs.slug = t("err.slug.required");
+  else if (slug.length < 2) errs.slug = t("err.slug.min");
+  else if (slug.length > 100) errs.slug = t("err.slug.max");
+  else if (!SLUG_RE.test(slug)) errs.slug = t("err.slug.format");
 
   const year = v.year_built.trim();
   if (year) {
     if (!/^-?\d{1,4}$/.test(year)) {
-      errs.year_built = "Anul trebuie să fie un număr întreg (ex: 1904).";
+      errs.year_built = t("err.year.int");
     } else {
       const n = parseInt(year, 10);
       if (n < -3000 || n > CURRENT_YEAR) {
-        errs.year_built = `Anul trebuie să fie între -3000 și ${CURRENT_YEAR}.`;
+        errs.year_built = t("err.year.range", { min: -3000, max: CURRENT_YEAR });
       }
     }
   }
 
-  if (v.short_description.length > 500)
-    errs.short_description = "Descrierea scurtă este prea lungă (max. 500 caractere).";
+  if (v.short_description.length > 500) errs.short_description = t("err.short.max");
 
   if (v.cover_image_url && !/^https?:\/\/\S+$/i.test(v.cover_image_url.trim()))
-    errs.cover_image_url = "URL invalid. Trebuie să înceapă cu http:// sau https://.";
+    errs.cover_image_url = t("err.cover.url");
 
   return errs;
 }
@@ -79,6 +77,7 @@ export function BuildingForm({
   error: string | null;
   buildingId?: string;
 }) {
+  const { t } = useI18n();
   const [v, setV] = useState<BuildingFormValues>(initial);
   const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -87,7 +86,7 @@ export function BuildingForm({
   function set<K extends keyof BuildingFormValues>(k: K, val: BuildingFormValues[K]) {
     setV((p) => {
       const next = { ...p, [k]: val };
-      if (attempted) setFieldErrors(validate(next));
+      if (attempted) setFieldErrors(validate(next, t));
       return next;
     });
   }
@@ -95,7 +94,7 @@ export function BuildingForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttempted(true);
-    const errs = validate(v);
+    const errs = validate(v, t);
     setFieldErrors(errs);
     if (Object.keys(errs).length > 0) {
       const first = document.querySelector<HTMLElement>("[data-field-error='true']");
@@ -109,7 +108,7 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <Field label="Nume *" error={fieldErrors.name}>
+      <Field label={t("field.name")} error={fieldErrors.name}>
         <input
           className={inputCls}
           value={v.name}
@@ -122,9 +121,9 @@ export function BuildingForm({
         />
       </Field>
       <Field
-        label="Identificator URL * (folosit în adresa: /b/<slug>)"
+        label={t("field.slug")}
         error={fieldErrors.slug}
-        hint="Doar litere mici, cifre și cratime. Ex: casa-batllo"
+        hint={t("field.slug.hint")}
       >
         <input
           className={inputCls}
@@ -138,10 +137,10 @@ export function BuildingForm({
       </Field>
       <QrCodePreview slug={v.slug} buildingId={buildingId} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Adresă">
+        <Field label={t("field.address")}>
           <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
         </Field>
-        <Field label="Anul construcției" error={fieldErrors.year_built} hint="Ex: 1904">
+        <Field label={t("field.year")} error={fieldErrors.year_built} hint={t("field.year.hint")}>
           <input
             inputMode="numeric"
             className={inputCls}
@@ -151,10 +150,10 @@ export function BuildingForm({
           />
         </Field>
       </div>
-      <Field label="Arhitect">
+      <Field label={t("field.architect")}>
         <input className={inputCls} value={v.architect} onChange={(e) => set("architect", e.target.value)} />
       </Field>
-      <Field label="URL imagine principală" error={fieldErrors.cover_image_url}>
+      <Field label={t("field.cover")} error={fieldErrors.cover_image_url}>
         <input
           type="url"
           placeholder="https://…"
@@ -163,7 +162,7 @@ export function BuildingForm({
           aria-invalid={!!fieldErrors.cover_image_url}
           onChange={(e) => set("cover_image_url", e.target.value)}
         />
-        <ImageUploader label="Încarcă imagine principală" onUploaded={(url) => set("cover_image_url", url)} />
+        <ImageUploader label={t("field.uploadCover")} onUploaded={(url) => set("cover_image_url", url)} />
         {v.cover_image_url && (
           <img
             src={v.cover_image_url}
@@ -173,7 +172,7 @@ export function BuildingForm({
           />
         )}
       </Field>
-      <Field label="Descriere scurtă (1–2 propoziții)" error={fieldErrors.short_description}>
+      <Field label={t("field.short")} error={fieldErrors.short_description}>
         <textarea
           rows={2}
           className={inputCls}
@@ -182,7 +181,7 @@ export function BuildingForm({
           onChange={(e) => set("short_description", e.target.value)}
         />
       </Field>
-      <Field label="Istoric (text complet)">
+      <Field label={t("field.history")}>
         <textarea
           rows={12}
           className={inputCls}
@@ -195,7 +194,7 @@ export function BuildingForm({
           role="alert"
           className="rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-base text-destructive"
         >
-          Verifică {errorCount === 1 ? "câmpul marcat" : `cele ${errorCount} câmpuri marcate`} înainte de salvare.
+          {errorCount === 1 ? t("form.checkOne") : t("form.checkMany", { n: errorCount })}
         </div>
       )}
       {error && (
@@ -211,7 +210,7 @@ export function BuildingForm({
         disabled={submitting}
         className="rounded-md bg-primary text-primary-foreground px-5 py-3 text-base font-medium min-h-11 hover:bg-primary/90 disabled:opacity-50"
       >
-        {submitting ? "Se salvează…" : submitLabel}
+        {submitting ? t("form.saving") : submitLabel}
       </button>
     </form>
   );

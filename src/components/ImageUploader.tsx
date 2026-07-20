@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { Upload, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"] as const;
 const ALLOWED_EXTS = ["png", "jpg", "jpeg", "webp", "gif"] as const;
-const ALLOWED_LABEL = "PNG, JPG, WEBP sau GIF";
 const MAX_MB = 10;
 const MAX_BYTES = MAX_MB * 1024 * 1024;
 
@@ -16,25 +16,27 @@ function formatBytes(n: number) {
 
 export function ImageUploader({
   onUploaded,
-  label = "Încarcă imagine",
+  label,
 }: {
   onUploaded: (url: string) => void;
   label?: string;
 }) {
+  const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const buttonLabel = label ?? t("upload.default");
 
   function validate(file: File): string | null {
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
     const typeOk = (ALLOWED_TYPES as readonly string[]).includes(file.type);
     const extOk = (ALLOWED_EXTS as readonly string[]).includes(ext);
     if (!typeOk || !extOk) {
-      return `Format neacceptat${file.type ? ` (${file.type})` : ""}. Sunt permise doar ${ALLOWED_LABEL}.`;
+      return t("upload.err.type", { parens: file.type ? ` (${file.type})` : "" });
     }
-    if (file.size === 0) return "Fișierul este gol.";
+    if (file.size === 0) return t("upload.err.empty");
     if (file.size > MAX_BYTES) {
-      return `Imaginea este prea mare (${formatBytes(file.size)}). Dimensiunea maximă este ${MAX_MB} MB.`;
+      return t("upload.err.size", { size: formatBytes(file.size), mb: MAX_MB });
     }
     return null;
   }
@@ -58,7 +60,7 @@ export function ImageUploader({
       const { data } = supabase.storage.from("building-images").getPublicUrl(path);
       onUploaded(data.publicUrl);
     } catch (e: any) {
-      setError(e?.message ?? "Încărcarea a eșuat. Încearcă din nou.");
+      setError(e?.message ?? t("upload.err.generic"));
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -85,11 +87,9 @@ export function ImageUploader({
           className="inline-flex items-center gap-2 min-h-11 rounded-md border border-border/70 bg-background px-3 py-2 text-base hover:bg-accent disabled:opacity-50"
         >
           <Upload className="h-4 w-4" />
-          {uploading ? "Se încarcă…" : label}
+          {uploading ? t("upload.uploading") : buttonLabel}
         </button>
-        <span className="text-sm text-muted-foreground">
-          {ALLOWED_LABEL} · max. {MAX_MB} MB
-        </span>
+        <span className="text-sm text-muted-foreground">{t("upload.formatHelp", { mb: MAX_MB })}</span>
       </div>
       {error && (
         <div
