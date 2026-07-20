@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
+import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { t } = useI18n();
   const checkAdmin = useServerFn(checkIsAdmin);
   const deleteFn = useServerFn(deleteBuilding);
   const claimAdmin = useServerFn(claimFirstAdmin);
@@ -46,7 +48,7 @@ function AdminPage() {
   }
 
   async function onDelete(id: string, name: string) {
-    if (!confirm(`Ștergi „${name}”? Această acțiune este ireversibilă.`)) return;
+    if (!confirm(t("admin.confirmDelete", { name }))) return;
     await deleteFn({ data: { id } });
     qc.invalidateQueries({ queryKey: ["admin-buildings"] });
     qc.invalidateQueries({ queryKey: ["buildings"] });
@@ -60,7 +62,7 @@ function AdminPage() {
   }
 
   if (checkingAdmin) {
-    return <div className="p-8 text-muted-foreground">Se încarcă…</div>;
+    return <div className="p-8 text-muted-foreground">{t("admin.loading")}</div>;
   }
 
   if (!adminCheck?.isAdmin) {
@@ -71,21 +73,23 @@ function AdminPage() {
         if (res.granted) {
           qc.invalidateQueries({ queryKey: ["is-admin"] });
         } else {
-          alert("Există deja un administrator. Contactează proprietarul site-ului.");
+          alert(t("admin.claim.exists"));
         }
       } catch (e: any) {
-        alert(e.message ?? "A eșuat");
+        alert(e.message ?? t("admin.claim.failed"));
       } finally {
         setClaiming(false);
       }
     }
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8">
+        <div className="fixed top-4 right-4">
+          <LanguageSwitcher />
+        </div>
         <div className="text-center max-w-md">
-          <h1 className="text-2xl sm:text-3xl font-semibold">Neautorizat</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold">{t("admin.unauthorized.title")}</h1>
           <p className="mt-3 text-base text-muted-foreground leading-relaxed">
-            Contul tău este autentificat, dar nu are drepturi de administrator. Dacă aceasta este o instalare nouă,
-            revendică mai jos primul loc de administrator.
+            {t("admin.unauthorized.desc")}
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
             <button
@@ -93,13 +97,13 @@ function AdminPage() {
               disabled={claiming}
               className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
             >
-              {claiming ? "…" : "Revendică primul administrator"}
+              {claiming ? "…" : t("admin.claim")}
             </button>
             <button
               onClick={signOut}
               className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md border px-4 py-2 text-base hover:bg-accent"
             >
-              <LogOut className="h-4 w-4" /> Deconectare
+              <LogOut className="h-4 w-4" /> {t("nav.signOut")}
             </button>
           </div>
         </div>
@@ -112,19 +116,20 @@ function AdminPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/70 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
-          <h1 className="text-lg sm:text-xl font-semibold">Administrare clădiri</h1>
+          <h1 className="text-lg sm:text-xl font-semibold">{t("admin.title")}</h1>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Link
               to="/"
               className="text-sm sm:text-base text-muted-foreground hover:text-foreground px-3 py-2 min-h-11 inline-flex items-center"
             >
-              Vezi site-ul
+              {t("nav.viewSite")}
             </Link>
             <button
               onClick={signOut}
               className="inline-flex items-center gap-1 min-h-11 rounded-md border px-3 py-2 text-sm sm:text-base hover:bg-accent"
             >
-              <LogOut className="h-4 w-4" /> Deconectare
+              <LogOut className="h-4 w-4" /> {t("nav.signOut")}
             </button>
           </div>
         </div>
@@ -132,30 +137,22 @@ function AdminPage() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 className="text-xl sm:text-2xl font-semibold">Toate clădirile</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold">{t("admin.all")}</h2>
           <Link
             to="/admin/buildings/new"
             className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
           >
-            <Plus className="h-4 w-4" /> Clădire nouă
+            <Plus className="h-4 w-4" /> {t("admin.new")}
           </Link>
         </div>
 
         {!buildings || buildings.length === 0 ? (
           <div className="rounded-lg border border-dashed p-12 text-center text-base text-muted-foreground leading-relaxed">
-            Nicio clădire încă. Creează prima.
+            {t("admin.empty")}
           </div>
         ) : (
           <div className="rounded-lg border border-border/70 overflow-x-auto">
             <table className="w-full min-w-[640px] text-base">
-              <thead className="bg-muted/50 text-left">
-                <tr>
-                  <th className="px-4 py-3 font-medium">Nume</th>
-                  <th className="px-4 py-3 font-medium">Adresă</th>
-                  <th className="px-4 py-3 font-medium">URL public</th>
-                  <th className="px-4 py-3 font-medium w-32">Acțiuni</th>
-                </tr>
-              </thead>
               <tbody>
                 {buildings.map((b) => (
                   <tr key={b.id} className="border-t border-border/70">
@@ -167,13 +164,13 @@ function AdminPage() {
                         <button
                           onClick={() => copyUrl(b.slug)}
                           className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
-                          aria-label="Copiază URL"
-                          title="Copiază URL"
+                          aria-label={t("admin.copyUrl")}
+                          title={t("admin.copyUrl")}
                         >
                           <Copy className="h-4 w-4" />
                         </button>
                         {copied === b.slug && (
-                          <span className="text-sm text-green-600">Copiat!</span>
+                          <span className="text-sm text-green-600">{t("admin.copied")}</span>
                         )}
                       </div>
                     </td>
@@ -183,8 +180,8 @@ function AdminPage() {
                           to="/b/$slug"
                           params={{ slug: b.slug }}
                           className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
-                          aria-label="Vezi pagina publică"
-                          title="Vezi"
+                          aria-label={t("admin.viewPublic")}
+                          title={t("admin.view")}
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Link>
@@ -192,16 +189,16 @@ function AdminPage() {
                           to="/admin/buildings/$id/edit"
                           params={{ id: b.id }}
                           className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
-                          aria-label="Editează clădirea"
-                          title="Editează"
+                          aria-label={t("admin.editBuilding")}
+                          title={t("admin.edit")}
                         >
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => onDelete(b.id, b.name)}
                           className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
-                          aria-label="Șterge clădirea"
-                          title="Șterge"
+                          aria-label={t("admin.deleteBuilding")}
+                          title={t("admin.delete")}
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -214,10 +211,7 @@ function AdminPage() {
           </div>
         )}
 
-        <p className="mt-8 text-sm text-muted-foreground leading-relaxed">
-          Sfat: copiază URL-ul public al fiecărei clădiri și inserează-l în orice generator de coduri QR
-          (de exemplu qrcode-monkey.com) pentru a produce un abțibild QR de pus pe perete.
-        </p>
+        <p className="mt-8 text-sm text-muted-foreground leading-relaxed">{t("admin.hint")}</p>
       </div>
     </div>
   );

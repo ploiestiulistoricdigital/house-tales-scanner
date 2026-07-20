@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MapPin, Calendar, User } from "lucide-react";
 import { useState } from "react";
+import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 type Building = {
   id: string;
@@ -58,33 +59,47 @@ export const Route = createFileRoute("/b/$slug")({
     };
   },
   component: BuildingPage,
-  notFoundComponent: () => (
+  notFoundComponent: NotFoundView,
+  errorComponent: ErrorView,
+});
+
+function NotFoundView() {
+  const { t } = useI18n();
+  return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Clădirea nu a fost găsită</h1>
-        <p className="mt-2 text-muted-foreground">Acest cod QR ar putea fi învechit.</p>
+        <h1 className="text-2xl font-semibold">{t("building.notFound.title")}</h1>
+        <p className="mt-2 text-muted-foreground">{t("building.notFound.desc")}</p>
         <Link to="/" className="mt-4 inline-block text-primary underline">
-          Înapoi acasă
+          {t("nav.backHome")}
         </Link>
       </div>
     </div>
-  ),
-  errorComponent: ({ error }) => (
+  );
+}
+
+function ErrorView({ error }: { error: Error }) {
+  const { t } = useI18n();
+  return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Pagina nu a putut fi încărcată</h1>
+        <h1 className="text-2xl font-semibold">{t("building.error.title")}</h1>
         <p className="mt-2 text-muted-foreground">{error.message}</p>
       </div>
     </div>
-  ),
-});
+  );
+}
 
 function BuildingPage() {
   const { building, images } = Route.useLoaderData();
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const { t } = useI18n();
 
   return (
     <div className="min-h-screen">
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
       {building.cover_image_url ? (
         <div className="relative h-72 sm:h-80 md:h-[28rem] w-full overflow-hidden bg-muted">
           <img
@@ -97,11 +112,11 @@ function BuildingPage() {
             to="/"
             className="absolute top-4 sm:top-5 left-4 sm:left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 min-h-11"
           >
-            <ArrowLeft className="h-4 w-4" /> Arhivă
+            <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
           </Link>
           <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 px-5 sm:px-6 text-background">
             <div className="mx-auto max-w-3xl">
-              <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">Cronica clădirii</span>
+              <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">{t("building.chronicle")}</span>
               <h1 className="font-display mt-2 text-3xl sm:text-5xl md:text-6xl font-semibold leading-tight text-background text-readable-strong">
                 {building.name}
               </h1>
@@ -120,7 +135,7 @@ function BuildingPage() {
               to="/"
               className="inline-flex items-center gap-1.5 text-sm uppercase tracking-widest text-muted-foreground hover:text-primary min-h-11 py-2"
             >
-              <ArrowLeft className="h-4 w-4" /> Arhivă
+              <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
             </Link>
             <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{building.name}</h1>
             {building.address && (
@@ -167,9 +182,9 @@ function BuildingPage() {
         {images.length > 0 && (
           <section className="mt-16">
             <div className="flex items-baseline justify-between border-b border-border/70 pb-3 mb-6">
-              <h2 className="font-display text-2xl sm:text-3xl font-semibold">Galerie</h2>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold">{t("building.gallery")}</h2>
               <span className="text-sm uppercase tracking-widest text-muted-foreground">
-                {images.length} {images.length === 1 ? "imagine" : "imagini"}
+                {images.length} {images.length === 1 ? t("building.image.one") : t("building.image.many")}
               </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

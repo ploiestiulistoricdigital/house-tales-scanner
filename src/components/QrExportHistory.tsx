@@ -3,10 +3,12 @@ import { useServerFn } from "@tanstack/react-start";
 import { Download, Trash2, FileImage, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteQrExport } from "@/lib/qr-exports.functions";
+import { useI18n } from "@/lib/i18n";
 
 export function QrExportHistory({ buildingId }: { buildingId: string }) {
   const qc = useQueryClient();
   const del = useServerFn(deleteQrExport);
+  const { t, locale } = useI18n();
 
   const { data: exports, isLoading } = useQuery({
     queryKey: ["qr-exports", buildingId],
@@ -22,16 +24,16 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
   });
 
   async function onDelete(id: string) {
-    if (!confirm("Ștergi acest export?")) return;
+    if (!confirm(t("qr.history.confirmDelete"))) return;
     await del({ data: { id } });
     qc.invalidateQueries({ queryKey: ["qr-exports", buildingId] });
   }
 
   return (
     <div className="mt-4 rounded-md border border-border/70 bg-muted/30 p-3">
-      <h3 className="text-base font-semibold mb-2">Istoric descărcări</h3>
+      <h3 className="text-base font-semibold mb-2">{t("qr.history")}</h3>
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Se încarcă…</p>
+        <p className="text-sm text-muted-foreground">{t("qr.history.loading")}</p>
       ) : exports && exports.length > 0 ? (
         <ul className="space-y-2">
           {exports.map((e) => (
@@ -47,7 +49,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
               <div className="flex-1 min-w-0 text-sm">
                 <div className="font-medium uppercase">{e.format}</div>
                 <div className="text-muted-foreground">
-                  {new Date(e.created_at).toLocaleString("ro-RO")}
+                  {new Date(e.created_at).toLocaleString(locale)}
                   {e.file_size ? ` · ${Math.round(e.file_size / 1024)} KB` : ""}
                 </div>
               </div>
@@ -57,7 +59,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
                 rel="noreferrer"
                 download
                 className="p-2 rounded hover:bg-muted inline-flex items-center justify-center"
-                aria-label="Descarcă"
+                aria-label={t("qr.history.download")}
               >
                 <Download className="h-4 w-4" />
               </a>
@@ -65,7 +67,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
                 type="button"
                 onClick={() => onDelete(e.id)}
                 className="p-2 rounded hover:bg-destructive/10 hover:text-destructive inline-flex items-center justify-center"
-                aria-label="Șterge"
+                aria-label={t("qr.history.delete")}
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -73,9 +75,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-muted-foreground">
-          Descărcările salvate vor apărea aici.
-        </p>
+        <p className="text-sm text-muted-foreground">{t("qr.history.empty")}</p>
       )}
     </div>
   );

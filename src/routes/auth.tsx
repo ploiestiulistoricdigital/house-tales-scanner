@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Building2 } from "lucide-react";
+import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Autentificare administrator — Poveștile Caselor" }] }),
@@ -21,6 +22,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const { next } = Route.useSearch();
   const target = safeNext(next);
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -51,7 +53,7 @@ function AuthPage() {
       }
       window.location.href = target;
     } catch (err: any) {
-      setError(err.message ?? "Ceva nu a mers bine");
+      setError(err.message ?? t("auth.error.generic"));
     } finally {
       setLoading(false);
     }
@@ -59,23 +61,24 @@ function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
+      <div className="fixed top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-sm rounded-lg border bg-card p-6 sm:p-8">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="h-6 w-6 text-primary" />
-          <span className="font-semibold text-lg">Administrare</span>
+          <span className="font-semibold text-lg">{t("auth.admin")}</span>
         </div>
         <h1 className="text-xl sm:text-2xl font-semibold mb-2">
-          {mode === "signin" ? "Autentificare" : "Creează un cont"}
+          {mode === "signin" ? t("auth.signin") : t("auth.signup")}
         </h1>
-        <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-          Accesul de administrator se acordă separat. Contactează proprietarul site-ului dacă ai nevoie.
-        </p>
+        <p className="text-base text-muted-foreground mb-6 leading-relaxed">{t("auth.help")}</p>
         <form onSubmit={onSubmit} className="space-y-4">
           <input
             className="w-full rounded-md border px-3 py-3 text-base bg-background"
             type="email"
             required
-            placeholder="Email"
+            placeholder={t("auth.email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -84,7 +87,7 @@ function AuthPage() {
             type="password"
             required
             minLength={6}
-            placeholder="Parolă"
+            placeholder={t("auth.password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -94,14 +97,14 @@ function AuthPage() {
             disabled={loading}
             className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
           >
-            {loading ? "…" : mode === "signin" ? "Autentificare" : "Înregistrare"}
+            {loading ? "…" : mode === "signin" ? t("auth.signin") : t("auth.register")}
           </button>
         </form>
         <button
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
           className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
         >
-          {mode === "signin" ? "Nu ai cont? Înregistrează-te" : "Ai deja cont? Autentifică-te"}
+          {mode === "signin" ? t("auth.toSignup") : t("auth.toSignin")}
         </button>
       </div>
     </div>
