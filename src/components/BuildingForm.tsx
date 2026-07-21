@@ -199,9 +199,11 @@ export function BuildingForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field label={t("field.year")} error={fieldErrors.year_built} hint={t("field.year.hint")}>
           <input
-            inputMode="numeric"
+            type="text"
+            inputMode="text"
             className={inputCls}
             value={v.year_built}
+            placeholder={t("field.year.placeholder")}
             aria-invalid={!!fieldErrors.year_built}
             onChange={(e) => set("year_built", e.target.value)}
           />
