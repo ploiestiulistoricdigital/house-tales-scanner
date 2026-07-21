@@ -31,6 +31,7 @@ export function slugify(input: string) {
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const CURRENT_YEAR = new Date().getFullYear();
 
+type TranslatableField = "name" | "address" | "short_description" | "history";
 type FieldErrors = Partial<Record<keyof BuildingFormValues, string>>;
 
 function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, string | number>) => string): FieldErrors {
