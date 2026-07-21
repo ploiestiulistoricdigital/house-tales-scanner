@@ -63,7 +63,14 @@ function Home() {
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.13_72/0.18),transparent_60%)]" />
-        <div className="mx-auto max-w-4xl px-4 py-16 sm:py-28 text-center">
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:py-24 text-center">
+          <div className="flex justify-center mb-6">
+            <img
+              src={atomLogo.url}
+              alt="ATOM Ploiești"
+              className="h-16 sm:h-20 w-auto object-contain drop-shadow-sm"
+            />
+          </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/15 px-4 py-2 text-sm uppercase tracking-[0.15em] text-accent-foreground mb-8">
             <ScrollText className="h-4 w-4" />
             {t("home.badge")}
