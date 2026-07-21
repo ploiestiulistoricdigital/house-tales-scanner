@@ -99,6 +99,8 @@ const RO: Dict = {
   "field.address": "Adresă",
   "field.year": "Anul construcției",
   "field.year.hint": "Orice format, ex: 1904 sau 1931–1934",
+  "err.year.max": "Anul poate avea cel mult 50 de caractere.",
+
 
   "err.short.max": "Descrierea scurtă este prea lungă (max. 500 caractere).",
   
