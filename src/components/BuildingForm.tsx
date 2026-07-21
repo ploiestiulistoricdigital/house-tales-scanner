@@ -269,18 +269,54 @@ function Field({
   children,
   error,
   hint,
+  action,
 }: {
   label: string;
   children: React.ReactNode;
   error?: string;
   hint?: string;
+  action?: React.ReactNode;
 }) {
   return (
     <label className="block" data-field-error={error ? "true" : undefined}>
-      <span className="text-base font-medium mb-1.5 block">{label}</span>
+      <span className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-base font-medium">{label}</span>
+        {action}
+      </span>
       {children}
       {hint && !error && <span className="mt-1 block text-sm text-muted-foreground">{hint}</span>}
       {error && <span className="mt-1 block text-sm font-medium text-destructive">{error}</span>}
     </label>
   );
 }
+
+function TranslateButton({
+  label,
+  loadingLabel,
+  loading,
+  disabled,
+  onClick,
+}: {
+  label: string;
+  loadingLabel: string;
+  loading: boolean;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/60 disabled:opacity-60"
+    >
+      {loading ? (
+        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+      ) : (
+        <Languages className="h-3.5 w-3.5" />
+      )}
+      {loading ? loadingLabel : label}
+    </button>
+  );
+}
+
