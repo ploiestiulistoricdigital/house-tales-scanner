@@ -100,7 +100,7 @@ const RO: Dict = {
   "field.year": "Anul construcției",
   "field.year.hint": "Ex: 1904",
   "field.architect": "Arhitect",
-  "field.cover": "URL imagine principală",
+  "field.cover": "Imagine principală",
   "field.short": "Descriere scurtă (1–2 propoziții)",
   "field.history": "Istoric (text complet)",
   "field.uploadCover": "Încarcă imagine principală",
@@ -114,7 +114,7 @@ const RO: Dict = {
   "err.year.int": "Anul trebuie să fie un număr întreg (ex: 1904).",
   "err.year.range": "Anul trebuie să fie între {min} și {max}.",
   "err.short.max": "Descrierea scurtă este prea lungă (max. 500 caractere).",
-  "err.cover.url": "URL invalid. Trebuie să înceapă cu http:// sau https://.",
+  
   "form.checkOne": "Verifică câmpul marcat înainte de salvare.",
   "form.checkMany": "Verifică cele {n} câmpuri marcate înainte de salvare.",
 
@@ -257,7 +257,7 @@ const EN: Dict = {
   "field.year": "Year built",
   "field.year.hint": "E.g. 1904",
   "field.architect": "Architect",
-  "field.cover": "Cover image URL",
+  "field.cover": "Cover image",
   "field.short": "Short description (1–2 sentences)",
   "field.history": "History (full text)",
   "field.uploadCover": "Upload cover image",
@@ -271,7 +271,7 @@ const EN: Dict = {
   "err.year.int": "Year must be an integer (e.g. 1904).",
   "err.year.range": "Year must be between {min} and {max}.",
   "err.short.max": "Short description is too long (max 500 characters).",
-  "err.cover.url": "Invalid URL. Must start with http:// or https://.",
+  
   "form.checkOne": "Fix the highlighted field before saving.",
   "form.checkMany": "Fix the {n} highlighted fields before saving.",
 
