@@ -5,11 +5,15 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 const buildingInput = z.object({
   slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
   name: z.string().min(1).max(200),
+  name_en: z.string().max(200).optional().nullable(),
   address: z.string().max(300).optional().nullable(),
+  address_en: z.string().max(300).optional().nullable(),
   year_built: z.string().max(50).optional().nullable(),
   architect: z.string().max(200).optional().nullable(),
   short_description: z.string().max(500).optional().nullable(),
+  short_description_en: z.string().max(500).optional().nullable(),
   history: z.string().max(50000).optional().nullable(),
+  history_en: z.string().max(50000).optional().nullable(),
   cover_image_url: z.string().url().max(2000).optional().nullable().or(z.literal("")),
 });
 
