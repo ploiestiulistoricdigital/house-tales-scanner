@@ -98,7 +98,8 @@ const RO: Dict = {
   "field.slug.hint": "Doar litere mici, cifre și cratime. Ex: casa-batllo",
   "field.address": "Adresă",
   "field.year": "Anul construcției",
-  "field.year.hint": "Orice format, ex: 1904 sau 1931–1934",
+  "field.year.hint": "Acceptă orice format: an exact, interval sau aproximativ.",
+  "field.year.placeholder": "ex: 1904, 1940-1942 sau c. 1900",
   "err.year.max": "Anul poate avea cel mult 50 de caractere.",
 
 
@@ -244,7 +245,8 @@ const EN: Dict = {
   "field.slug.hint": "Lowercase letters, digits and dashes only. E.g. casa-batllo",
   "field.address": "Address",
   "field.year": "Year built",
-  "field.year.hint": "Any format, e.g. 1904 or 1931–1934",
+  "field.year.hint": "Accepts any format: exact year, range or approximate.",
+  "field.year.placeholder": "e.g. 1904, 1940-1942 or c. 1900",
   "err.year.max": "Year can be at most 50 characters.",
 
 
