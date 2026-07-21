@@ -6,6 +6,7 @@ import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.f
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
@@ -21,6 +22,7 @@ function AdminPage() {
   const claimAdmin = useServerFn(claimFirstAdmin);
   const [copied, setCopied] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
@@ -47,12 +49,14 @@ function AdminPage() {
     navigate({ to: "/auth", replace: true });
   }
 
-  async function onDelete(id: string, name: string) {
-    if (!confirm(t("admin.confirmDelete", { name }))) return;
-    await deleteFn({ data: { id } });
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+    await deleteFn({ data: { id: pendingDelete.id } });
+    setPendingDelete(null);
     qc.invalidateQueries({ queryKey: ["admin-buildings"] });
     qc.invalidateQueries({ queryKey: ["buildings"] });
   }
+
 
   function copyUrl(slug: string) {
     const url = `${window.location.origin}/b/${slug}`;
