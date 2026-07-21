@@ -188,7 +188,7 @@ function BuildingPage() {
         </div>
 
         {history && (
-          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
+          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground text-justify first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
             {history}
           </div>
         )}
