@@ -14,13 +14,16 @@ const buildingInput = z.object({
 });
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase.rpc("has_role", {
-    _user_id: ctx.userId,
-    _role: "admin",
-  });
+  const { data, error } = await ctx.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", ctx.userId)
+    .eq("role", "admin")
+    .maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) throw new Error("Forbidden: admin role required");
 }
+
 
 const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 function qrUrlFor(slug: string) {
