@@ -245,6 +245,8 @@ const EN: Dict = {
   "field.address": "Address",
   "field.year": "Year built",
   "field.year.hint": "Any format, e.g. 1904 or 1931–1934",
+  "err.year.max": "Year can be at most 50 characters.",
+
 
   "err.short.max": "Short description is too long (max 500 characters).",
   
