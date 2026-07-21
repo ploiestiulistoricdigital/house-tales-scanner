@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { Languages, Loader2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
 import { QrCodePreview } from "@/components/QrCodePreview";
 import { useI18n } from "@/lib/i18n";
+import { translateText } from "@/lib/translate.functions";
 
 export type BuildingFormValues = {
   slug: string;
