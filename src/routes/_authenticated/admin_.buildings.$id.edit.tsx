@@ -137,11 +137,15 @@ function EditBuilding() {
           initial={{
             slug: building.slug,
             name: building.name,
+            name_en: (building as any).name_en ?? "",
             address: building.address ?? "",
+            address_en: (building as any).address_en ?? "",
             year_built: building.year_built ?? "",
             architect: building.architect ?? "",
             short_description: building.short_description ?? "",
+            short_description_en: (building as any).short_description_en ?? "",
             history: building.history ?? "",
+            history_en: (building as any).history_en ?? "",
             cover_image_url: building.cover_image_url ?? "",
           }}
           submitLabel={t("form.save")}
