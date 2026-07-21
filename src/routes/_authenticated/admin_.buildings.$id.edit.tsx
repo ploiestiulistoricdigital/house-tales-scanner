@@ -161,10 +161,11 @@ function EditBuilding() {
             {images?.map((img) => (
               <div key={img.id} className="flex items-center gap-3 rounded-md border border-border/70 p-2">
                 <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
-                <div className="flex-1 min-w-0 text-base">
-                  <div className="truncate text-sm text-muted-foreground">{img.image_url}</div>
-                  {img.caption && <div className="mt-1">{img.caption}</div>}
-                </div>
+                {img.caption && (
+                  <div className="flex-1 min-w-0 text-base">
+                    <div className="mt-1">{img.caption}</div>
+                  </div>
+                )}
                 <button
                   onClick={() => setPendingDeleteImg(img.id)}
                   className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
