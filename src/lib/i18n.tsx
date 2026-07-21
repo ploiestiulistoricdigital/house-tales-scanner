@@ -102,6 +102,10 @@ const RO: Dict = {
   "field.year.placeholder": "ex: 1904, 1940-1942 sau c. 1900",
   "field.architect": "Arhitect",
   "err.year.max": "Anul poate avea cel mult 50 de caractere.",
+  "field.cover": "Imagine principală",
+  "field.uploadCover": "Încarcă imagine",
+  "field.short": "Descriere scurtă",
+  "field.history": "Istoric",
 
 
   "err.short.max": "Descrierea scurtă este prea lungă (max. 500 caractere).",
