@@ -7,6 +7,7 @@ import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
@@ -77,10 +78,10 @@ function AdminPage() {
         if (res.granted) {
           qc.invalidateQueries({ queryKey: ["is-admin"] });
         } else {
-          alert(t("admin.claim.exists"));
+          toast.error(t("admin.claim.exists"));
         }
       } catch (e: any) {
-        alert(e.message ?? t("admin.claim.failed"));
+        toast.error(e.message ?? t("admin.claim.failed"));
       } finally {
         setClaiming(false);
       }
