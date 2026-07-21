@@ -178,7 +178,7 @@ function BuildingPage() {
         )}
 
         {shortDesc && (
-          <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6">
+          <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6 text-justify">
             {shortDesc}
           </p>
         )}
@@ -188,7 +188,7 @@ function BuildingPage() {
         </div>
 
         {history && (
-          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
+          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground text-justify first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
             {history}
           </div>
         )}
