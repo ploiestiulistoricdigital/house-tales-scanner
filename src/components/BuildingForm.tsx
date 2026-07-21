@@ -206,15 +206,7 @@ export function BuildingForm({
       <Field
         label={t("field.short")}
         error={fieldErrors.short_description}
-        action={
-          <TranslateButton
-            label={t("translate.toEn")}
-            loadingLabel={t("translate.loading")}
-            loading={translating === "short_description"}
-            disabled={translating !== null}
-            onClick={() => handleTranslate("short_description")}
-          />
-        }
+        action={<TranslateActions field="short_description" translating={translating} onTranslate={handleTranslate} t={t} />}
       >
         <textarea
           rows={2}
@@ -226,15 +218,7 @@ export function BuildingForm({
       </Field>
       <Field
         label={t("field.history")}
-        action={
-          <TranslateButton
-            label={t("translate.toEn")}
-            loadingLabel={t("translate.loading")}
-            loading={translating === "history"}
-            disabled={translating !== null}
-            onClick={() => handleTranslate("history")}
-          />
-        }
+        action={<TranslateActions field="history" translating={translating} onTranslate={handleTranslate} t={t} />}
       >
         <textarea
           rows={12}
