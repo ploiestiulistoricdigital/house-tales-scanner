@@ -220,15 +220,7 @@ export function BuildingForm({
         </Field>
       </div>
 
-      <Field label={t("field.cover")} error={fieldErrors.cover_image_url}>
-        <input
-          type="url"
-          placeholder="https://…"
-          className={inputCls}
-          value={v.cover_image_url}
-          aria-invalid={!!fieldErrors.cover_image_url}
-          onChange={(e) => set("cover_image_url", e.target.value)}
-        />
+      <Field label={t("field.cover")}>
         <ImageUploader label={t("field.uploadCover")} onUploaded={(url) => set("cover_image_url", url)} />
         {v.cover_image_url && (
           <img
