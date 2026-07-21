@@ -11,12 +11,12 @@ import {
   addBuildingImage,
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
-import { useI18n } from "@/lib/i18n";
+import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
-  head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
+  head: () => ({ meta: [{ title: "Edit building — Admin" }] }),
   component: EditBuilding,
 });
 
@@ -119,12 +119,15 @@ function EditBuilding() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <Link
-          to="/admin"
-          className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground mb-4"
-        >
-          <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
-        </Link>
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
+          </Link>
+          <LanguageSwitcher />
+        </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("admin.editBuilding")}</h1>
         <BuildingForm
           initial={{
