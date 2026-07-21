@@ -161,6 +161,8 @@ const RO: Dict = {
 
   // Language switcher
   "lang.label": "Limbă",
+  "lang.ro": "Română",
+  "lang.en": "Engleză",
 
   // Translate (AI)
   "translate.toEn": "Traduceți în engleză",
