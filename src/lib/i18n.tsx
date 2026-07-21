@@ -315,6 +315,7 @@ const EN: Dict = {
   "lang.label": "Language",
 
   "translate.toEn": "Translate to English",
+  "translate.toRo": "Translate to Romanian",
   "translate.loading": "Translating…",
   "translate.error": "Translation failed",
   "translate.empty": "No text to translate",
