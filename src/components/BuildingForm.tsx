@@ -33,7 +33,7 @@ export function slugify(input: string) {
 }
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const CURRENT_YEAR = new Date().getFullYear();
+
 
 type TranslatableField = "name" | "address" | "short_description" | "history";
 const EN_FIELD: Record<TranslatableField, keyof BuildingFormValues> = {
