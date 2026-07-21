@@ -100,6 +100,7 @@ const RO: Dict = {
   "field.year": "Anul construcției",
   "field.year.hint": "Acceptă orice format: an exact, interval sau aproximativ.",
   "field.year.placeholder": "ex: 1904, 1940-1942 sau c. 1900",
+  "field.architect": "Arhitect",
   "err.year.max": "Anul poate avea cel mult 50 de caractere.",
 
 
@@ -247,6 +248,7 @@ const EN: Dict = {
   "field.year": "Year built",
   "field.year.hint": "Accepts any format: exact year, range or approximate.",
   "field.year.placeholder": "e.g. 1904, 1940-1942 or c. 1900",
+  "field.architect": "Architect",
   "err.year.max": "Year can be at most 50 characters.",
 
 
