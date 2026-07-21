@@ -4,10 +4,10 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
 import { createBuilding } from "@/lib/buildings.functions";
-import { useI18n } from "@/lib/i18n";
+import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/new")({
-  head: () => ({ meta: [{ title: "Clădire nouă — Administrare" }] }),
+  head: () => ({ meta: [{ title: "New building — Admin" }] }),
   component: NewBuilding,
 });
 
