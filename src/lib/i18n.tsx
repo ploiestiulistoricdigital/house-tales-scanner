@@ -245,7 +245,8 @@ const EN: Dict = {
   "field.slug.hint": "Lowercase letters, digits and dashes only. E.g. casa-batllo",
   "field.address": "Address",
   "field.year": "Year built",
-  "field.year.hint": "Any format, e.g. 1904 or 1931–1934",
+  "field.year.hint": "Accepts any format: exact year, range or approximate.",
+  "field.year.placeholder": "e.g. 1904, 1940-1942 or c. 1900",
   "err.year.max": "Year can be at most 50 characters.",
 
 
