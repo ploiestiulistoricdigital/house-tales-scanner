@@ -70,7 +70,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
               </a>
               <button
                 type="button"
-                onClick={() => onDelete(e.id)}
+                onClick={() => setPendingDelete(e.id)}
                 className="p-2 rounded hover:bg-destructive/10 hover:text-destructive inline-flex items-center justify-center"
                 aria-label={t("qr.history.delete")}
               >
@@ -82,6 +82,14 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
       ) : (
         <p className="text-sm text-muted-foreground">{t("qr.history.empty")}</p>
       )}
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => !o && setPendingDelete(null)}
+        title={t("qr.history.confirmDelete.title")}
+        description={t("qr.history.confirmDelete")}
+        confirmLabel={t("common.delete")}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
