@@ -195,7 +195,19 @@ export function BuildingForm({
           />
         )}
       </Field>
-      <Field label={t("field.short")} error={fieldErrors.short_description}>
+      <Field
+        label={t("field.short")}
+        error={fieldErrors.short_description}
+        action={
+          <TranslateButton
+            label={t("translate.toEn")}
+            loadingLabel={t("translate.loading")}
+            loading={translating === "short_description"}
+            disabled={translating !== null}
+            onClick={() => handleTranslate("short_description")}
+          />
+        }
+      >
         <textarea
           rows={2}
           className={inputCls}
@@ -204,7 +216,18 @@ export function BuildingForm({
           onChange={(e) => set("short_description", e.target.value)}
         />
       </Field>
-      <Field label={t("field.history")}>
+      <Field
+        label={t("field.history")}
+        action={
+          <TranslateButton
+            label={t("translate.toEn")}
+            loadingLabel={t("translate.loading")}
+            loading={translating === "history"}
+            disabled={translating !== null}
+            onClick={() => handleTranslate("history")}
+          />
+        }
+      >
         <textarea
           rows={12}
           className={inputCls}
