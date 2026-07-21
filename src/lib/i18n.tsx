@@ -100,7 +100,7 @@ const RO: Dict = {
   "field.year": "Anul construcției",
   "field.year.hint": "Ex: 1904",
   "field.architect": "Arhitect",
-  "field.cover": "URL imagine principală",
+  "field.cover": "Imagine principală",
   "field.short": "Descriere scurtă (1–2 propoziții)",
   "field.history": "Istoric (text complet)",
   "field.uploadCover": "Încarcă imagine principală",
