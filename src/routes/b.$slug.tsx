@@ -178,7 +178,7 @@ function BuildingPage() {
         )}
 
         {shortDesc && (
-          <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6">
+          <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6 text-justify">
             {shortDesc}
           </p>
         )}
