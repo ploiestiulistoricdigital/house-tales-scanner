@@ -199,7 +199,7 @@ function AdminPage() {
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button
-                          onClick={() => onDelete(b.id, b.name)}
+                          onClick={() => setPendingDelete({ id: b.id, name: b.name })}
                           className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
                           aria-label={t("admin.deleteBuilding")}
                           title={t("admin.delete")}
@@ -217,6 +217,19 @@ function AdminPage() {
 
         <p className="mt-8 text-sm text-muted-foreground leading-relaxed">{t("admin.hint")}</p>
       </div>
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => !o && setPendingDelete(null)}
+        title={t("admin.confirmDelete.title")}
+        description={
+          pendingDelete
+            ? t("admin.confirmDelete", { name: pendingDelete.name })
+            : undefined
+        }
+        confirmLabel={t("common.delete")}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
