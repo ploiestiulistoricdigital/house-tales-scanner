@@ -99,7 +99,7 @@ function EditBuilding() {
       setNewImgCaption("");
       qc.invalidateQueries({ queryKey: ["building-images", id] });
     } catch (e: any) {
-      alert(e.message);
+      toast.error(e.message);
     }
   }
 
