@@ -73,9 +73,6 @@ function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, st
   if (v.short_description.length > 500) errs.short_description = t("err.short.max");
   if (v.short_description_en.length > 500) errs.short_description_en = t("err.short.max");
 
-  if (v.cover_image_url && !/^https?:\/\/\S+$/i.test(v.cover_image_url.trim()))
-    errs.cover_image_url = t("err.cover.url");
-
   return errs;
 }
 
