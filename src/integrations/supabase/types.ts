@@ -52,42 +52,54 @@ export type Database = {
       buildings: {
         Row: {
           address: string | null
+          address_en: string | null
           architect: string | null
           cover_image_url: string | null
           created_at: string
           history: string | null
+          history_en: string | null
           id: string
           name: string
+          name_en: string | null
           qr_code_url: string | null
           short_description: string | null
+          short_description_en: string | null
           slug: string
           updated_at: string
           year_built: string | null
         }
         Insert: {
           address?: string | null
+          address_en?: string | null
           architect?: string | null
           cover_image_url?: string | null
           created_at?: string
           history?: string | null
+          history_en?: string | null
           id?: string
           name: string
+          name_en?: string | null
           qr_code_url?: string | null
           short_description?: string | null
+          short_description_en?: string | null
           slug: string
           updated_at?: string
           year_built?: string | null
         }
         Update: {
           address?: string | null
+          address_en?: string | null
           architect?: string | null
           cover_image_url?: string | null
           created_at?: string
           history?: string | null
+          history_en?: string | null
           id?: string
           name?: string
+          name_en?: string | null
           qr_code_url?: string | null
           short_description?: string | null
+          short_description_en?: string | null
           slug?: string
           updated_at?: string
           year_built?: string | null
