@@ -201,20 +201,26 @@ function BuildingPage() {
                 {images.length} {images.length === 1 ? t("building.image.one") : t("building.image.many")}
               </span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {images.map((img: Img) => (
-                <button
-                  key={img.id}
-                  onClick={() => setLightbox(img.image_url)}
-                  className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/70 hover:border-primary transition-all group"
-                >
-                  <img
-                    src={img.image_url}
-                    alt={img.caption ?? ""}
-                    className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
-                    loading="lazy"
-                  />
-                </button>
+                <div key={img.id} className="flex flex-col">
+                  <button
+                    onClick={() => setLightbox(img.image_url)}
+                    className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/70 hover:border-primary transition-all group"
+                  >
+                    <img
+                      src={img.image_url}
+                      alt={img.caption ?? ""}
+                      className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
+                      loading="lazy"
+                    />
+                  </button>
+                  {img.caption && (
+                    <p className="mt-2 text-sm text-muted-foreground font-serif italic leading-snug text-center">
+                      {img.caption}
+                    </p>
+                  )}
+                </div>
               ))}
             </div>
           </section>
