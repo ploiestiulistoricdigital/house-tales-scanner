@@ -8,13 +8,22 @@ type Building = {
   id: string;
   slug: string;
   name: string;
+  name_en: string | null;
   address: string | null;
+  address_en: string | null;
   year_built: string | null;
   architect: string | null;
   short_description: string | null;
+  short_description_en: string | null;
   history: string | null;
+  history_en: string | null;
   cover_image_url: string | null;
 };
+
+function pick(lang: string, ro: string | null | undefined, en: string | null | undefined): string | null {
+  if (lang === "en") return (en && en.trim()) || (ro && ro.trim()) || null;
+  return (ro && ro.trim()) || (en && en.trim()) || null;
+}
 
 type Img = { id: string; image_url: string; caption: string | null };
 
@@ -93,7 +102,12 @@ function ErrorView({ error }: { error: Error }) {
 function BuildingPage() {
   const { building, images } = Route.useLoaderData();
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+
+  const name = pick(lang, building.name, building.name_en) ?? building.name;
+  const address = pick(lang, building.address, building.address_en);
+  const shortDesc = pick(lang, building.short_description, building.short_description_en);
+  const history = pick(lang, building.history, building.history_en);
 
   return (
     <div className="min-h-screen">
@@ -104,7 +118,7 @@ function BuildingPage() {
         <div className="relative h-72 sm:h-80 md:h-[28rem] w-full overflow-hidden bg-muted">
           <img
             src={building.cover_image_url}
-            alt={building.name}
+            alt={name}
             className="h-full w-full object-cover sepia-[0.1]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
@@ -118,11 +132,11 @@ function BuildingPage() {
             <div className="mx-auto max-w-3xl">
               <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">{t("building.chronicle")}</span>
               <h1 className="font-display mt-2 text-3xl sm:text-5xl md:text-6xl font-semibold leading-tight text-background text-readable-strong">
-                {building.name}
+                {name}
               </h1>
-              {building.address && (
+              {address && (
                 <p className="mt-3 flex items-center gap-1.5 text-sm sm:text-base opacity-95 font-serif italic text-readable">
-                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {building.address}
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {address}
                 </p>
               )}
             </div>
@@ -137,10 +151,10 @@ function BuildingPage() {
             >
               <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
             </Link>
-            <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{building.name}</h1>
-            {building.address && (
+            <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{name}</h1>
+            {address && (
               <p className="mt-2 flex items-center gap-1.5 text-sm sm:text-base text-muted-foreground font-serif italic">
-                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {building.address}
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" /> {address}
               </p>
             )}
           </div>
@@ -163,9 +177,9 @@ function BuildingPage() {
           </div>
         )}
 
-        {building.short_description && (
+        {shortDesc && (
           <p className="font-display text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-snug italic mb-10 border-l-[3px] border-accent pl-5 sm:pl-6">
-            {building.short_description}
+            {shortDesc}
           </p>
         )}
 
@@ -173,9 +187,9 @@ function BuildingPage() {
           <span className="font-display text-accent text-xl">✦</span>
         </div>
 
-        {building.history && (
+        {history && (
           <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
-            {building.history}
+            {history}
           </div>
         )}
 

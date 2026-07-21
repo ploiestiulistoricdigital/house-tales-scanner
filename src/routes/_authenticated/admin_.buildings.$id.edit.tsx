@@ -65,11 +65,15 @@ function EditBuilding() {
           id,
           slug: v.slug,
           name: v.name,
+          name_en: v.name_en || null,
           address: v.address || null,
+          address_en: v.address_en || null,
           year_built: v.year_built || null,
           architect: v.architect || null,
           short_description: v.short_description || null,
+          short_description_en: v.short_description_en || null,
           history: v.history || null,
+          history_en: v.history_en || null,
           cover_image_url: v.cover_image_url || null,
         },
       });
@@ -133,11 +137,15 @@ function EditBuilding() {
           initial={{
             slug: building.slug,
             name: building.name,
+            name_en: (building as any).name_en ?? "",
             address: building.address ?? "",
+            address_en: (building as any).address_en ?? "",
             year_built: building.year_built ?? "",
             architect: building.architect ?? "",
             short_description: building.short_description ?? "",
+            short_description_en: (building as any).short_description_en ?? "",
             history: building.history ?? "",
+            history_en: (building as any).history_en ?? "",
             cover_image_url: building.cover_image_url ?? "",
           }}
           submitLabel={t("form.save")}

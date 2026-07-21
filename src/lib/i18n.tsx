@@ -161,6 +161,8 @@ const RO: Dict = {
 
   // Language switcher
   "lang.label": "Limbă",
+  "lang.ro": "Română",
+  "lang.en": "Engleză",
 
   // Translate (AI)
   "translate.toEn": "Traduceți în engleză",
@@ -313,6 +315,8 @@ const EN: Dict = {
   "qr.history.confirmDelete": "The saved file will be permanently removed from history.",
 
   "lang.label": "Language",
+  "lang.ro": "Romanian",
+  "lang.en": "English",
 
   "translate.toEn": "Translate to English",
   "translate.toRo": "Translate to Romanian",

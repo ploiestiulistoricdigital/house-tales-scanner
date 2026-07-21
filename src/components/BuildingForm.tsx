@@ -10,11 +10,15 @@ import { translateText } from "@/lib/translate.functions";
 export type BuildingFormValues = {
   slug: string;
   name: string;
+  name_en: string;
   address: string;
+  address_en: string;
   year_built: string;
   architect: string;
   short_description: string;
+  short_description_en: string;
   history: string;
+  history_en: string;
   cover_image_url: string;
 };
 
@@ -32,6 +36,13 @@ const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const CURRENT_YEAR = new Date().getFullYear();
 
 type TranslatableField = "name" | "address" | "short_description" | "history";
+const EN_FIELD: Record<TranslatableField, keyof BuildingFormValues> = {
+  name: "name_en",
+  address: "address_en",
+  short_description: "short_description_en",
+  history: "history_en",
+};
+
 type FieldErrors = Partial<Record<keyof BuildingFormValues, string>>;
 
 function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, string | number>) => string): FieldErrors {
@@ -60,6 +71,7 @@ function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, st
   }
 
   if (v.short_description.length > 500) errs.short_description = t("err.short.max");
+  if (v.short_description_en.length > 500) errs.short_description_en = t("err.short.max");
 
   if (v.cover_image_url && !/^https?:\/\/\S+$/i.test(v.cover_image_url.trim()))
     errs.cover_image_url = t("err.cover.url");
@@ -91,7 +103,10 @@ export function BuildingForm({
   const translate = useServerFn(translateText);
 
   async function handleTranslate(field: TranslatableField, target: "en" | "ro") {
-    const text = v[field].trim();
+    // Source column depends on direction: → EN reads RO, → RO reads EN.
+    const sourceKey = target === "en" ? field : EN_FIELD[field];
+    const destKey = target === "en" ? EN_FIELD[field] : field;
+    const text = String(v[sourceKey] ?? "").trim();
     if (!text) {
       toast.error(t("translate.empty"));
       return;
@@ -99,7 +114,7 @@ export function BuildingForm({
     setTranslating({ field, target });
     try {
       const res = await translate({ data: { text, target } });
-      setV((p) => ({ ...p, [field]: res.text }));
+      setV((p) => ({ ...p, [destKey]: res.text }));
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
     } finally {
@@ -125,29 +140,43 @@ export function BuildingForm({
       first?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    onSubmit({ ...v, name: v.name.trim(), slug: v.slug.trim() });
+    onSubmit({
+      ...v,
+      name: v.name.trim(),
+      name_en: v.name_en.trim(),
+      slug: v.slug.trim(),
+      address_en: v.address_en.trim(),
+    });
   }
 
   const errorCount = Object.keys(fieldErrors).length;
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <Field
+      <BilingualField
         label={t("field.name")}
-        error={fieldErrors.name}
-        action={<TranslateActions field="name" translating={translating} onTranslate={handleTranslate} t={t} />}
-      >
-        <input
-          className={inputCls}
-          value={v.name}
-          aria-invalid={!!fieldErrors.name}
-          onChange={(e) => {
-            const n = e.target.value;
-            set("name", n);
-            if (!slugTouched) set("slug", slugify(n));
-          }}
-        />
-      </Field>
+        field="name"
+        roValue={v.name}
+        enValue={v.name_en}
+        roError={fieldErrors.name}
+        enError={fieldErrors.name_en}
+        translating={translating}
+        onTranslate={handleTranslate}
+        t={t}
+        renderInput={(lang, value, onChange, invalid) => (
+          <input
+            className={inputCls}
+            value={value}
+            aria-invalid={invalid}
+            onChange={(e) => {
+              const n = e.target.value;
+              onChange(n);
+              if (lang === "ro" && !slugTouched) set("slug", slugify(n));
+            }}
+          />
+        )}
+        onChange={(lang, val) => set(lang === "ro" ? "name" : "name_en", val)}
+      />
       <Field
         label={t("field.slug")}
         error={fieldErrors.slug}
@@ -164,13 +193,22 @@ export function BuildingForm({
         />
       </Field>
       <QrCodePreview slug={v.slug} buildingId={buildingId} />
+
+      <BilingualField
+        label={t("field.address")}
+        field="address"
+        roValue={v.address}
+        enValue={v.address_en}
+        translating={translating}
+        onTranslate={handleTranslate}
+        t={t}
+        renderInput={(_lang, value, onChange) => (
+          <input className={inputCls} value={value} onChange={(e) => onChange(e.target.value)} />
+        )}
+        onChange={(lang, val) => set(lang === "ro" ? "address" : "address_en", val)}
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field
-          label={t("field.address")}
-          action={<TranslateActions field="address" translating={translating} onTranslate={handleTranslate} t={t} />}
-        >
-          <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
-        </Field>
         <Field label={t("field.year")} error={fieldErrors.year_built} hint={t("field.year.hint")}>
           <input
             inputMode="numeric"
@@ -180,10 +218,11 @@ export function BuildingForm({
             onChange={(e) => set("year_built", e.target.value)}
           />
         </Field>
+        <Field label={t("field.architect")}>
+          <input className={inputCls} value={v.architect} onChange={(e) => set("architect", e.target.value)} />
+        </Field>
       </div>
-      <Field label={t("field.architect")}>
-        <input className={inputCls} value={v.architect} onChange={(e) => set("architect", e.target.value)} />
-      </Field>
+
       <Field label={t("field.cover")} error={fieldErrors.cover_image_url}>
         <input
           type="url"
@@ -203,30 +242,48 @@ export function BuildingForm({
           />
         )}
       </Field>
-      <Field
+
+      <BilingualField
         label={t("field.short")}
-        error={fieldErrors.short_description}
-        action={<TranslateActions field="short_description" translating={translating} onTranslate={handleTranslate} t={t} />}
-      >
-        <textarea
-          rows={2}
-          className={inputCls}
-          value={v.short_description}
-          aria-invalid={!!fieldErrors.short_description}
-          onChange={(e) => set("short_description", e.target.value)}
-        />
-      </Field>
-      <Field
+        field="short_description"
+        roValue={v.short_description}
+        enValue={v.short_description_en}
+        roError={fieldErrors.short_description}
+        enError={fieldErrors.short_description_en}
+        translating={translating}
+        onTranslate={handleTranslate}
+        t={t}
+        renderInput={(_lang, value, onChange, invalid) => (
+          <textarea
+            rows={2}
+            className={inputCls}
+            value={value}
+            aria-invalid={invalid}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        )}
+        onChange={(lang, val) => set(lang === "ro" ? "short_description" : "short_description_en", val)}
+      />
+
+      <BilingualField
         label={t("field.history")}
-        action={<TranslateActions field="history" translating={translating} onTranslate={handleTranslate} t={t} />}
-      >
-        <textarea
-          rows={12}
-          className={inputCls}
-          value={v.history}
-          onChange={(e) => set("history", e.target.value)}
-        />
-      </Field>
+        field="history"
+        roValue={v.history}
+        enValue={v.history_en}
+        translating={translating}
+        onTranslate={handleTranslate}
+        t={t}
+        renderInput={(_lang, value, onChange) => (
+          <textarea
+            rows={12}
+            className={inputCls}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        )}
+        onChange={(lang, val) => set(lang === "ro" ? "history" : "history_en", val)}
+      />
+
       {attempted && errorCount > 0 && (
         <div
           role="alert"
@@ -282,6 +339,72 @@ function Field({
   );
 }
 
+function BilingualField({
+  label,
+  field,
+  roValue,
+  enValue,
+  roError,
+  enError,
+  translating,
+  onTranslate,
+  onChange,
+  renderInput,
+  t,
+}: {
+  label: string;
+  field: TranslatableField;
+  roValue: string;
+  enValue: string;
+  roError?: string;
+  enError?: string;
+  translating: null | { field: TranslatableField; target: "en" | "ro" };
+  onTranslate: (field: TranslatableField, target: "en" | "ro") => void;
+  onChange: (lang: "ro" | "en", value: string) => void;
+  renderInput: (lang: "ro" | "en", value: string, onChange: (v: string) => void, invalid: boolean) => React.ReactNode;
+  t: (k: string) => string;
+}) {
+  const busy = translating !== null;
+  return (
+    <fieldset
+      className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4"
+      data-field-error={roError || enError ? "true" : undefined}
+    >
+      <legend className="px-1 text-base font-medium">{label}</legend>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">{t("lang.ro")}</span>
+            <TranslateButton
+              label={t("translate.toEn")}
+              loadingLabel={t("translate.loading")}
+              loading={translating?.field === field && translating.target === "en"}
+              disabled={busy}
+              onClick={() => onTranslate(field, "en")}
+            />
+          </div>
+          {renderInput("ro", roValue, (val) => onChange("ro", val), !!roError)}
+          {roError && <span className="block text-sm font-medium text-destructive">{roError}</span>}
+        </div>
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">{t("lang.en")}</span>
+            <TranslateButton
+              label={t("translate.toRo")}
+              loadingLabel={t("translate.loading")}
+              loading={translating?.field === field && translating.target === "ro"}
+              disabled={busy}
+              onClick={() => onTranslate(field, "ro")}
+            />
+          </div>
+          {renderInput("en", enValue, (val) => onChange("en", val), !!enError)}
+          {enError && <span className="block text-sm font-medium text-destructive">{enError}</span>}
+        </div>
+      </div>
+    </fieldset>
+  );
+}
+
 function TranslateButton({
   label,
   loadingLabel,
@@ -311,37 +434,3 @@ function TranslateButton({
     </button>
   );
 }
-
-function TranslateActions({
-  field,
-  translating,
-  onTranslate,
-  t,
-}: {
-  field: TranslatableField;
-  translating: null | { field: TranslatableField; target: "en" | "ro" };
-  onTranslate: (field: TranslatableField, target: "en" | "ro") => void;
-  t: (k: string) => string;
-}) {
-  const busy = translating !== null;
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <TranslateButton
-        label={t("translate.toEn")}
-        loadingLabel={t("translate.loading")}
-        loading={translating?.field === field && translating.target === "en"}
-        disabled={busy}
-        onClick={() => onTranslate(field, "en")}
-      />
-      <TranslateButton
-        label={t("translate.toRo")}
-        loadingLabel={t("translate.loading")}
-        loading={translating?.field === field && translating.target === "ro"}
-        disabled={busy}
-        onClick={() => onTranslate(field, "ro")}
-      />
-    </span>
-  );
-}
-
-
