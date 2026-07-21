@@ -86,6 +86,25 @@ export function BuildingForm({
   const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [attempted, setAttempted] = useState(false);
+  const [translating, setTranslating] = useState<null | "short_description" | "history">(null);
+  const translate = useServerFn(translateText);
+
+  async function handleTranslate(field: "short_description" | "history") {
+    const text = v[field].trim();
+    if (!text) {
+      toast.error(t("translate.empty"));
+      return;
+    }
+    setTranslating(field);
+    try {
+      const res = await translate({ data: { text, target: "en" } });
+      setV((p) => ({ ...p, [field]: res.text }));
+    } catch (e: any) {
+      toast.error(e?.message ?? t("translate.error"));
+    } finally {
+      setTranslating(null);
+    }
+  }
 
   function set<K extends keyof BuildingFormValues>(k: K, val: BuildingFormValues[K]) {
     setV((p) => {
