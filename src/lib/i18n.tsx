@@ -257,7 +257,7 @@ const EN: Dict = {
   "field.year": "Year built",
   "field.year.hint": "E.g. 1904",
   "field.architect": "Architect",
-  "field.cover": "Cover image URL",
+  "field.cover": "Cover image",
   "field.short": "Short description (1–2 sentences)",
   "field.history": "History (full text)",
   "field.uploadCover": "Upload cover image",
