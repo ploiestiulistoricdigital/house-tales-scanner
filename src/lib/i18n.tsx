@@ -223,6 +223,7 @@ const EN: Dict = {
   "admin.editBuilding": "Edit building",
   "admin.delete": "Delete",
   "admin.deleteBuilding": "Delete building",
+  "admin.confirmDelete.title": "Delete building?",
   "admin.confirmDelete": "Delete \"{name}\"? This action cannot be undone.",
   "admin.hint": "Tip: copy the public URL of each building and paste it into any QR code generator (e.g. qrcode-monkey.com) to print a QR sticker for the wall.",
   "admin.unauthorized.title": "Not authorized",
@@ -230,6 +231,9 @@ const EN: Dict = {
   "admin.claim": "Claim first admin",
   "admin.claim.exists": "An admin already exists. Contact the site owner.",
   "admin.claim.failed": "Failed",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+  "common.delete": "Delete",
 
   "form.newBuilding": "New building",
   "form.create": "Create",
@@ -270,7 +274,8 @@ const EN: Dict = {
   "gallery.captionPlaceholder": "Caption (optional)",
   "gallery.add": "Add image",
   "gallery.deleteImage": "Delete image",
-  "gallery.confirmDelete": "Delete this image?",
+  "gallery.confirmDelete.title": "Delete image?",
+  "gallery.confirmDelete": "This image will be permanently removed from the gallery.",
 
   "upload.default": "Upload image",
   "upload.uploading": "Uploading…",
