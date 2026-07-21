@@ -13,6 +13,7 @@ import {
 } from "@/lib/buildings.functions";
 import { useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
