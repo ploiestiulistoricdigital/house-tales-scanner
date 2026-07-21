@@ -161,6 +161,12 @@ const RO: Dict = {
 
   // Language switcher
   "lang.label": "Limbă",
+
+  // Translate (AI)
+  "translate.toEn": "Traduceți în engleză",
+  "translate.loading": "Se traduce…",
+  "translate.error": "Traducerea a eșuat",
+  "translate.empty": "Nu există text de tradus",
 };
 
 const EN: Dict = {
