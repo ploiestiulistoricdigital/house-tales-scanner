@@ -126,7 +126,8 @@ const RO: Dict = {
   "gallery.captionPlaceholder": "Descriere (opțional)",
   "gallery.add": "Adaugă imagine",
   "gallery.deleteImage": "Șterge imaginea",
-  "gallery.confirmDelete": "Ștergi această imagine?",
+  "gallery.confirmDelete.title": "Ștergi imaginea?",
+  "gallery.confirmDelete": "Această imagine va fi eliminată din galerie definitiv.",
 
   // Image uploader
   "upload.default": "Încarcă imagine",
@@ -155,7 +156,8 @@ const RO: Dict = {
   "qr.history.empty": "Descărcările salvate vor apărea aici.",
   "qr.history.download": "Descarcă",
   "qr.history.delete": "Șterge",
-  "qr.history.confirmDelete": "Ștergi acest export?",
+  "qr.history.confirmDelete.title": "Ștergi exportul?",
+  "qr.history.confirmDelete": "Fișierul salvat va fi eliminat definitiv din istoric.",
 
   // Language switcher
   "lang.label": "Limbă",
