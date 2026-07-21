@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import atomLogo from "@/assets/atom-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
