@@ -312,6 +312,11 @@ const EN: Dict = {
   "qr.history.confirmDelete": "The saved file will be permanently removed from history.",
 
   "lang.label": "Language",
+
+  "translate.toEn": "Translate to English",
+  "translate.loading": "Translating…",
+  "translate.error": "Translation failed",
+  "translate.empty": "No text to translate",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN };
