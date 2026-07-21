@@ -72,6 +72,7 @@ const RO: Dict = {
   "admin.editBuilding": "Editează clădirea",
   "admin.delete": "Șterge",
   "admin.deleteBuilding": "Șterge clădirea",
+  "admin.confirmDelete.title": "Ștergi clădirea?",
   "admin.confirmDelete": "Ștergi „{name}”? Această acțiune este ireversibilă.",
   "admin.hint": "Sfat: copiază URL-ul public al fiecărei clădiri și inserează-l în orice generator de coduri QR (de exemplu qrcode-monkey.com) pentru a produce un abțibild QR de pus pe perete.",
   "admin.unauthorized.title": "Neautorizat",
@@ -79,6 +80,9 @@ const RO: Dict = {
   "admin.claim": "Revendică primul administrator",
   "admin.claim.exists": "Există deja un administrator. Contactează proprietarul site-ului.",
   "admin.claim.failed": "A eșuat",
+  "common.cancel": "Anulează",
+  "common.confirm": "Confirmă",
+  "common.delete": "Șterge",
 
   // New / Edit
   "form.newBuilding": "Clădire nouă",
@@ -122,7 +126,8 @@ const RO: Dict = {
   "gallery.captionPlaceholder": "Descriere (opțional)",
   "gallery.add": "Adaugă imagine",
   "gallery.deleteImage": "Șterge imaginea",
-  "gallery.confirmDelete": "Ștergi această imagine?",
+  "gallery.confirmDelete.title": "Ștergi imaginea?",
+  "gallery.confirmDelete": "Această imagine va fi eliminată din galerie definitiv.",
 
   // Image uploader
   "upload.default": "Încarcă imagine",
@@ -151,7 +156,8 @@ const RO: Dict = {
   "qr.history.empty": "Descărcările salvate vor apărea aici.",
   "qr.history.download": "Descarcă",
   "qr.history.delete": "Șterge",
-  "qr.history.confirmDelete": "Ștergi acest export?",
+  "qr.history.confirmDelete.title": "Ștergi exportul?",
+  "qr.history.confirmDelete": "Fișierul salvat va fi eliminat definitiv din istoric.",
 
   // Language switcher
   "lang.label": "Limbă",
@@ -217,6 +223,7 @@ const EN: Dict = {
   "admin.editBuilding": "Edit building",
   "admin.delete": "Delete",
   "admin.deleteBuilding": "Delete building",
+  "admin.confirmDelete.title": "Delete building?",
   "admin.confirmDelete": "Delete \"{name}\"? This action cannot be undone.",
   "admin.hint": "Tip: copy the public URL of each building and paste it into any QR code generator (e.g. qrcode-monkey.com) to print a QR sticker for the wall.",
   "admin.unauthorized.title": "Not authorized",
@@ -224,6 +231,9 @@ const EN: Dict = {
   "admin.claim": "Claim first admin",
   "admin.claim.exists": "An admin already exists. Contact the site owner.",
   "admin.claim.failed": "Failed",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+  "common.delete": "Delete",
 
   "form.newBuilding": "New building",
   "form.create": "Create",
@@ -264,7 +274,8 @@ const EN: Dict = {
   "gallery.captionPlaceholder": "Caption (optional)",
   "gallery.add": "Add image",
   "gallery.deleteImage": "Delete image",
-  "gallery.confirmDelete": "Delete this image?",
+  "gallery.confirmDelete.title": "Delete image?",
+  "gallery.confirmDelete": "This image will be permanently removed from the gallery.",
 
   "upload.default": "Upload image",
   "upload.uploading": "Uploading…",
@@ -291,7 +302,8 @@ const EN: Dict = {
   "qr.history.empty": "Saved downloads will appear here.",
   "qr.history.download": "Download",
   "qr.history.delete": "Delete",
-  "qr.history.confirmDelete": "Delete this export?",
+  "qr.history.confirmDelete.title": "Delete export?",
+  "qr.history.confirmDelete": "The saved file will be permanently removed from history.",
 
   "lang.label": "Language",
 };

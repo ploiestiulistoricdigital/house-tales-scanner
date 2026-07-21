@@ -6,6 +6,7 @@ import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.f
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
@@ -21,6 +22,7 @@ function AdminPage() {
   const claimAdmin = useServerFn(claimFirstAdmin);
   const [copied, setCopied] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
@@ -47,12 +49,14 @@ function AdminPage() {
     navigate({ to: "/auth", replace: true });
   }
 
-  async function onDelete(id: string, name: string) {
-    if (!confirm(t("admin.confirmDelete", { name }))) return;
-    await deleteFn({ data: { id } });
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+    await deleteFn({ data: { id: pendingDelete.id } });
+    setPendingDelete(null);
     qc.invalidateQueries({ queryKey: ["admin-buildings"] });
     qc.invalidateQueries({ queryKey: ["buildings"] });
   }
+
 
   function copyUrl(slug: string) {
     const url = `${window.location.origin}/b/${slug}`;
@@ -195,7 +199,7 @@ function AdminPage() {
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button
-                          onClick={() => onDelete(b.id, b.name)}
+                          onClick={() => setPendingDelete({ id: b.id, name: b.name })}
                           className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
                           aria-label={t("admin.deleteBuilding")}
                           title={t("admin.delete")}
@@ -213,6 +217,19 @@ function AdminPage() {
 
         <p className="mt-8 text-sm text-muted-foreground leading-relaxed">{t("admin.hint")}</p>
       </div>
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => !o && setPendingDelete(null)}
+        title={t("admin.confirmDelete.title")}
+        description={
+          pendingDelete
+            ? t("admin.confirmDelete", { name: pendingDelete.name })
+            : undefined
+        }
+        confirmLabel={t("common.delete")}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

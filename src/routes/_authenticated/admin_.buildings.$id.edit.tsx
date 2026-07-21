@@ -12,6 +12,7 @@ import {
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
 import { useI18n } from "@/lib/i18n";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
@@ -28,6 +29,7 @@ function EditBuilding() {
   const delImg = useServerFn(deleteBuildingImage);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingDeleteImg, setPendingDeleteImg] = useState<string | null>(null);
   const [newImgUrl, setNewImgUrl] = useState("");
   const [newImgCaption, setNewImgCaption] = useState("");
 
@@ -101,11 +103,13 @@ function EditBuilding() {
     }
   }
 
-  async function onDeleteImage(imgId: string) {
-    if (!confirm(t("gallery.confirmDelete"))) return;
-    await delImg({ data: { id: imgId } });
+  async function confirmDeleteImage() {
+    if (!pendingDeleteImg) return;
+    await delImg({ data: { id: pendingDeleteImg } });
+    setPendingDeleteImg(null);
     qc.invalidateQueries({ queryKey: ["building-images", id] });
   }
+
 
   if (isLoading || !building) {
     return <div className="p-8 text-muted-foreground">{t("admin.loading")}</div>;
@@ -150,7 +154,7 @@ function EditBuilding() {
                   {img.caption && <div className="mt-1">{img.caption}</div>}
                 </div>
                 <button
-                  onClick={() => onDeleteImage(img.id)}
+                  onClick={() => setPendingDeleteImg(img.id)}
                   className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
                   aria-label={t("gallery.deleteImage")}
                 >
@@ -189,6 +193,15 @@ function EditBuilding() {
           </form>
         </section>
       </div>
+
+      <ConfirmDialog
+        open={pendingDeleteImg !== null}
+        onOpenChange={(o) => !o && setPendingDeleteImg(null)}
+        title={t("gallery.confirmDelete.title")}
+        description={t("gallery.confirmDelete")}
+        confirmLabel={t("common.delete")}
+        onConfirm={confirmDeleteImage}
+      />
     </div>
   );
 }
