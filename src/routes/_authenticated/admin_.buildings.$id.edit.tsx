@@ -168,7 +168,7 @@ function EditBuilding() {
                 )}
                 <button
                   onClick={() => setPendingDeleteImg(img.id)}
-                  className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
+                  className="ml-auto p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
                   aria-label={t("gallery.deleteImage")}
                 >
                   <Trash2 className="h-4 w-4" />
