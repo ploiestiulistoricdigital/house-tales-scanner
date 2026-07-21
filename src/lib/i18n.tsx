@@ -114,7 +114,7 @@ const RO: Dict = {
   "err.year.int": "Anul trebuie să fie un număr întreg (ex: 1904).",
   "err.year.range": "Anul trebuie să fie între {min} și {max}.",
   "err.short.max": "Descrierea scurtă este prea lungă (max. 500 caractere).",
-  "err.cover.url": "URL invalid. Trebuie să înceapă cu http:// sau https://.",
+  
   "form.checkOne": "Verifică câmpul marcat înainte de salvare.",
   "form.checkMany": "Verifică cele {n} câmpuri marcate înainte de salvare.",
 
