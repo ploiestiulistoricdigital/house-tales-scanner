@@ -12,6 +12,7 @@ import {
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
 import { useI18n } from "@/lib/i18n";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Editează clădirea — Administrare" }] }),
@@ -28,6 +29,7 @@ function EditBuilding() {
   const delImg = useServerFn(deleteBuildingImage);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingDeleteImg, setPendingDeleteImg] = useState<string | null>(null);
   const [newImgUrl, setNewImgUrl] = useState("");
   const [newImgCaption, setNewImgCaption] = useState("");
 
