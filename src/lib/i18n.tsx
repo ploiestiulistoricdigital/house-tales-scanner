@@ -164,6 +164,7 @@ const RO: Dict = {
 
   // Translate (AI)
   "translate.toEn": "Traduceți în engleză",
+  "translate.toRo": "Traduceți în română",
   "translate.loading": "Se traduce…",
   "translate.error": "Traducerea a eșuat",
   "translate.empty": "Nu există text de tradus",
@@ -314,6 +315,7 @@ const EN: Dict = {
   "lang.label": "Language",
 
   "translate.toEn": "Translate to English",
+  "translate.toRo": "Translate to Romanian",
   "translate.loading": "Translating…",
   "translate.error": "Translation failed",
   "translate.empty": "No text to translate",

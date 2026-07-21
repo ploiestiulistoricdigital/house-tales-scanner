@@ -31,6 +31,7 @@ export function slugify(input: string) {
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const CURRENT_YEAR = new Date().getFullYear();
 
+type TranslatableField = "name" | "address" | "short_description" | "history";
 type FieldErrors = Partial<Record<keyof BuildingFormValues, string>>;
 
 function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, string | number>) => string): FieldErrors {
@@ -86,18 +87,18 @@ export function BuildingForm({
   const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [attempted, setAttempted] = useState(false);
-  const [translating, setTranslating] = useState<null | "short_description" | "history">(null);
+  const [translating, setTranslating] = useState<null | { field: TranslatableField; target: "en" | "ro" }>(null);
   const translate = useServerFn(translateText);
 
-  async function handleTranslate(field: "short_description" | "history") {
+  async function handleTranslate(field: TranslatableField, target: "en" | "ro") {
     const text = v[field].trim();
     if (!text) {
       toast.error(t("translate.empty"));
       return;
     }
-    setTranslating(field);
+    setTranslating({ field, target });
     try {
-      const res = await translate({ data: { text, target: "en" } });
+      const res = await translate({ data: { text, target } });
       setV((p) => ({ ...p, [field]: res.text }));
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
@@ -131,7 +132,11 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <Field label={t("field.name")} error={fieldErrors.name}>
+      <Field
+        label={t("field.name")}
+        error={fieldErrors.name}
+        action={<TranslateActions field="name" translating={translating} onTranslate={handleTranslate} t={t} />}
+      >
         <input
           className={inputCls}
           value={v.name}
@@ -160,7 +165,10 @@ export function BuildingForm({
       </Field>
       <QrCodePreview slug={v.slug} buildingId={buildingId} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label={t("field.address")}>
+        <Field
+          label={t("field.address")}
+          action={<TranslateActions field="address" translating={translating} onTranslate={handleTranslate} t={t} />}
+        >
           <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
         </Field>
         <Field label={t("field.year")} error={fieldErrors.year_built} hint={t("field.year.hint")}>
@@ -198,15 +206,7 @@ export function BuildingForm({
       <Field
         label={t("field.short")}
         error={fieldErrors.short_description}
-        action={
-          <TranslateButton
-            label={t("translate.toEn")}
-            loadingLabel={t("translate.loading")}
-            loading={translating === "short_description"}
-            disabled={translating !== null}
-            onClick={() => handleTranslate("short_description")}
-          />
-        }
+        action={<TranslateActions field="short_description" translating={translating} onTranslate={handleTranslate} t={t} />}
       >
         <textarea
           rows={2}
@@ -218,15 +218,7 @@ export function BuildingForm({
       </Field>
       <Field
         label={t("field.history")}
-        action={
-          <TranslateButton
-            label={t("translate.toEn")}
-            loadingLabel={t("translate.loading")}
-            loading={translating === "history"}
-            disabled={translating !== null}
-            onClick={() => handleTranslate("history")}
-          />
-        }
+        action={<TranslateActions field="history" translating={translating} onTranslate={handleTranslate} t={t} />}
       >
         <textarea
           rows={12}
@@ -319,4 +311,37 @@ function TranslateButton({
     </button>
   );
 }
+
+function TranslateActions({
+  field,
+  translating,
+  onTranslate,
+  t,
+}: {
+  field: TranslatableField;
+  translating: null | { field: TranslatableField; target: "en" | "ro" };
+  onTranslate: (field: TranslatableField, target: "en" | "ro") => void;
+  t: (k: string) => string;
+}) {
+  const busy = translating !== null;
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <TranslateButton
+        label={t("translate.toEn")}
+        loadingLabel={t("translate.loading")}
+        loading={translating?.field === field && translating.target === "en"}
+        disabled={busy}
+        onClick={() => onTranslate(field, "en")}
+      />
+      <TranslateButton
+        label={t("translate.toRo")}
+        loadingLabel={t("translate.loading")}
+        loading={translating?.field === field && translating.target === "ro"}
+        disabled={busy}
+        onClick={() => onTranslate(field, "ro")}
+      />
+    </span>
+  );
+}
+
 
