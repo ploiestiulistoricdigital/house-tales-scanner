@@ -271,7 +271,7 @@ const EN: Dict = {
   "err.year.int": "Year must be an integer (e.g. 1904).",
   "err.year.range": "Year must be between {min} and {max}.",
   "err.short.max": "Short description is too long (max 500 characters).",
-  "err.cover.url": "Invalid URL. Must start with http:// or https://.",
+  
   "form.checkOne": "Fix the highlighted field before saving.",
   "form.checkMany": "Fix the {n} highlighted fields before saving.",
 
