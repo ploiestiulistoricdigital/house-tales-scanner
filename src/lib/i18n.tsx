@@ -302,7 +302,8 @@ const EN: Dict = {
   "qr.history.empty": "Saved downloads will appear here.",
   "qr.history.download": "Download",
   "qr.history.delete": "Delete",
-  "qr.history.confirmDelete": "Delete this export?",
+  "qr.history.confirmDelete.title": "Delete export?",
+  "qr.history.confirmDelete": "The saved file will be permanently removed from history.",
 
   "lang.label": "Language",
 };
