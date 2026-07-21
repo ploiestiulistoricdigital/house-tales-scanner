@@ -29,10 +29,12 @@ export default defineTool({
         auth: { persistSession: false, autoRefreshToken: false },
       },
     );
-    const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", {
-      _user_id: ctx.getUserId(),
-      _role: "admin",
-    });
+    const { data: isAdmin, error: roleError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", ctx.getUserId())
+      .eq("role", "admin")
+      .maybeSingle();
     if (roleError) return { content: [{ type: "text", text: roleError.message }], isError: true };
     if (!isAdmin) return { content: [{ type: "text", text: "Necesită rol de administrator." }], isError: true };
 
