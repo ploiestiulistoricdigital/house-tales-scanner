@@ -26,11 +26,15 @@ function NewBuilding() {
         data: {
           slug: v.slug,
           name: v.name,
+          name_en: v.name_en || null,
           address: v.address || null,
+          address_en: v.address_en || null,
           year_built: v.year_built || null,
           architect: v.architect || null,
           short_description: v.short_description || null,
+          short_description_en: v.short_description_en || null,
           history: v.history || null,
+          history_en: v.history_en || null,
           cover_image_url: v.cover_image_url || null,
         },
       });
@@ -59,11 +63,15 @@ function NewBuilding() {
           initial={{
             slug: "",
             name: "",
+            name_en: "",
             address: "",
+            address_en: "",
             year_built: "",
             architect: "",
             short_description: "",
+            short_description_en: "",
             history: "",
+            history_en: "",
             cover_image_url: "",
           }}
           submitLabel={t("form.create")}
