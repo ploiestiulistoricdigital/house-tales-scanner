@@ -254,7 +254,6 @@ const EN: Dict = {
   "field.year.placeholder": "e.g. 1904, 1940-1942 or c. 1900",
   "field.architect": "Architect",
   "err.year.max": "Year can be at most 50 characters.",
-  "field.architect": "Architect",
   "field.cover": "Cover image",
   "field.uploadCover": "Upload image",
   "field.short": "Short description",
