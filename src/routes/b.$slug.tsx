@@ -8,13 +8,22 @@ type Building = {
   id: string;
   slug: string;
   name: string;
+  name_en: string | null;
   address: string | null;
+  address_en: string | null;
   year_built: string | null;
   architect: string | null;
   short_description: string | null;
+  short_description_en: string | null;
   history: string | null;
+  history_en: string | null;
   cover_image_url: string | null;
 };
+
+function pick(lang: string, ro: string | null | undefined, en: string | null | undefined): string | null {
+  if (lang === "en") return (en && en.trim()) || (ro && ro.trim()) || null;
+  return (ro && ro.trim()) || (en && en.trim()) || null;
+}
 
 type Img = { id: string; image_url: string; caption: string | null };
 
