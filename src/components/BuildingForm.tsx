@@ -312,3 +312,36 @@ function TranslateButton({
   );
 }
 
+function TranslateActions({
+  field,
+  translating,
+  onTranslate,
+  t,
+}: {
+  field: TranslatableField;
+  translating: null | { field: TranslatableField; target: "en" | "ro" };
+  onTranslate: (field: TranslatableField, target: "en" | "ro") => void;
+  t: (k: string) => string;
+}) {
+  const busy = translating !== null;
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <TranslateButton
+        label={t("translate.toEn")}
+        loadingLabel={t("translate.loading")}
+        loading={translating?.field === field && translating.target === "en"}
+        disabled={busy}
+        onClick={() => onTranslate(field, "en")}
+      />
+      <TranslateButton
+        label={t("translate.toRo")}
+        loadingLabel={t("translate.loading")}
+        loading={translating?.field === field && translating.target === "ro"}
+        disabled={busy}
+        onClick={() => onTranslate(field, "ro")}
+      />
+    </span>
+  );
+}
+
+
