@@ -315,6 +315,8 @@ const EN: Dict = {
   "qr.history.confirmDelete": "The saved file will be permanently removed from history.",
 
   "lang.label": "Language",
+  "lang.ro": "Romanian",
+  "lang.en": "English",
 
   "translate.toEn": "Translate to English",
   "translate.toRo": "Translate to Romanian",
