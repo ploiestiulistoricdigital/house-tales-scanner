@@ -58,17 +58,8 @@ function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, st
   else if (slug.length > 100) errs.slug = t("err.slug.max");
   else if (!SLUG_RE.test(slug)) errs.slug = t("err.slug.format");
 
-  const year = v.year_built.trim();
-  if (year) {
-    if (!/^-?\d{1,4}$/.test(year)) {
-      errs.year_built = t("err.year.int");
-    } else {
-      const n = parseInt(year, 10);
-      if (n < -3000 || n > CURRENT_YEAR) {
-        errs.year_built = t("err.year.range", { min: -3000, max: CURRENT_YEAR });
-      }
-    }
-  }
+  if (v.year_built.length > 50) errs.year_built = t("err.year.max");
+
 
   if (v.short_description.length > 500) errs.short_description = t("err.short.max");
   if (v.short_description_en.length > 500) errs.short_description_en = t("err.short.max");
