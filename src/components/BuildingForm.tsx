@@ -132,7 +132,11 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <Field label={t("field.name")} error={fieldErrors.name}>
+      <Field
+        label={t("field.name")}
+        error={fieldErrors.name}
+        action={<TranslateActions field="name" translating={translating} onTranslate={handleTranslate} t={t} />}
+      >
         <input
           className={inputCls}
           value={v.name}
@@ -161,7 +165,10 @@ export function BuildingForm({
       </Field>
       <QrCodePreview slug={v.slug} buildingId={buildingId} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label={t("field.address")}>
+        <Field
+          label={t("field.address")}
+          action={<TranslateActions field="address" translating={translating} onTranslate={handleTranslate} t={t} />}
+        >
           <input className={inputCls} value={v.address} onChange={(e) => set("address", e.target.value)} />
         </Field>
         <Field label={t("field.year")} error={fieldErrors.year_built} hint={t("field.year.hint")}>
