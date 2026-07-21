@@ -72,6 +72,7 @@ const RO: Dict = {
   "admin.editBuilding": "Editează clădirea",
   "admin.delete": "Șterge",
   "admin.deleteBuilding": "Șterge clădirea",
+  "admin.confirmDelete.title": "Ștergi clădirea?",
   "admin.confirmDelete": "Ștergi „{name}”? Această acțiune este ireversibilă.",
   "admin.hint": "Sfat: copiază URL-ul public al fiecărei clădiri și inserează-l în orice generator de coduri QR (de exemplu qrcode-monkey.com) pentru a produce un abțibild QR de pus pe perete.",
   "admin.unauthorized.title": "Neautorizat",
@@ -79,6 +80,9 @@ const RO: Dict = {
   "admin.claim": "Revendică primul administrator",
   "admin.claim.exists": "Există deja un administrator. Contactează proprietarul site-ului.",
   "admin.claim.failed": "A eșuat",
+  "common.cancel": "Anulează",
+  "common.confirm": "Confirmă",
+  "common.delete": "Șterge",
 
   // New / Edit
   "form.newBuilding": "Clădire nouă",
