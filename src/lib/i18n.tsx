@@ -165,10 +165,12 @@ const RO: Dict = {
   "lang.label": "Limbă",
   "lang.ro": "Română",
   "lang.en": "Engleză",
+  "lang.fr": "Franceză",
 
   // Translate (AI)
   "translate.toEn": "Traduceți în engleză",
   "translate.toRo": "Traduceți în română",
+  "translate.toFr": "Traduceți în franceză",
   "translate.loading": "Se traduce…",
   "translate.error": "Traducerea a eșuat",
   "translate.empty": "Nu există text de tradus",
