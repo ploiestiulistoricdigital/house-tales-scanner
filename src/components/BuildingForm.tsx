@@ -4,21 +4,25 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
 import { QrCodePreview } from "@/components/QrCodePreview";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type Lang } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 
 export type BuildingFormValues = {
   slug: string;
   name: string;
   name_en: string;
+  name_fr: string;
   address: string;
   address_en: string;
+  address_fr: string;
   year_built: string;
   architect: string;
   short_description: string;
   short_description_en: string;
+  short_description_fr: string;
   history: string;
   history_en: string;
+  history_fr: string;
   cover_image_url: string;
 };
 
@@ -34,14 +38,14 @@ export function slugify(input: string) {
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-
 type TranslatableField = "name" | "address" | "short_description" | "history";
-const EN_FIELD: Record<TranslatableField, keyof BuildingFormValues> = {
-  name: "name_en",
-  address: "address_en",
-  short_description: "short_description_en",
-  history: "history_en",
-};
+type FormLang = "ro" | "en" | "fr";
+const FORM_LANGS: FormLang[] = ["ro", "en", "fr"];
+
+function fieldKey(field: TranslatableField, lang: FormLang): keyof BuildingFormValues {
+  if (lang === "ro") return field as keyof BuildingFormValues;
+  return `${field}_${lang}` as keyof BuildingFormValues;
+}
 
 type FieldErrors = Partial<Record<keyof BuildingFormValues, string>>;
 
@@ -60,9 +64,9 @@ function validate(v: BuildingFormValues, t: (k: string, vars?: Record<string, st
 
   if (v.year_built.length > 50) errs.year_built = t("err.year.max");
 
-
   if (v.short_description.length > 500) errs.short_description = t("err.short.max");
   if (v.short_description_en.length > 500) errs.short_description_en = t("err.short.max");
+  if (v.short_description_fr.length > 500) errs.short_description_fr = t("err.short.max");
 
   return errs;
 }
@@ -87,19 +91,18 @@ export function BuildingForm({
   const [slugTouched, setSlugTouched] = useState(initial.slug !== "");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [attempted, setAttempted] = useState(false);
-  const [translating, setTranslating] = useState<null | { field: TranslatableField; target: "en" | "ro" }>(null);
+  const [translating, setTranslating] = useState<null | { field: TranslatableField; source: FormLang; target: FormLang }>(null);
   const translate = useServerFn(translateText);
 
-  async function handleTranslate(field: TranslatableField, target: "en" | "ro") {
-    // Source column depends on direction: → EN reads RO, → RO reads EN.
-    const sourceKey = target === "en" ? field : EN_FIELD[field];
-    const destKey = target === "en" ? EN_FIELD[field] : field;
+  async function handleTranslate(field: TranslatableField, source: FormLang, target: FormLang) {
+    const sourceKey = fieldKey(field, source);
+    const destKey = fieldKey(field, target);
     const text = String(v[sourceKey] ?? "").trim();
     if (!text) {
       toast.error(t("translate.empty"));
       return;
     }
-    setTranslating({ field, target });
+    setTranslating({ field, source, target });
     try {
       const res = await translate({ data: { text, target } });
       setV((p) => ({ ...p, [destKey]: res.text }));
@@ -132,8 +135,10 @@ export function BuildingForm({
       ...v,
       name: v.name.trim(),
       name_en: v.name_en.trim(),
+      name_fr: v.name_fr.trim(),
       slug: v.slug.trim(),
       address_en: v.address_en.trim(),
+      address_fr: v.address_fr.trim(),
     });
   }
 
@@ -141,13 +146,11 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <BilingualField
+      <MultilingualField
         label={t("field.name")}
         field="name"
-        roValue={v.name}
-        enValue={v.name_en}
-        roError={fieldErrors.name}
-        enError={fieldErrors.name_en}
+        values={v}
+        errors={fieldErrors}
         translating={translating}
         onTranslate={handleTranslate}
         t={t}
@@ -163,7 +166,7 @@ export function BuildingForm({
             }}
           />
         )}
-        onChange={(lang, val) => set(lang === "ro" ? "name" : "name_en", val)}
+        onChange={(lang, val) => set(fieldKey("name", lang), val)}
       />
       <Field
         label={t("field.slug")}
@@ -182,18 +185,18 @@ export function BuildingForm({
       </Field>
       <QrCodePreview slug={v.slug} buildingId={buildingId} />
 
-      <BilingualField
+      <MultilingualField
         label={t("field.address")}
         field="address"
-        roValue={v.address}
-        enValue={v.address_en}
+        values={v}
+        errors={fieldErrors}
         translating={translating}
         onTranslate={handleTranslate}
         t={t}
         renderInput={(_lang, value, onChange) => (
           <input className={inputCls} value={value} onChange={(e) => onChange(e.target.value)} />
         )}
-        onChange={(lang, val) => set(lang === "ro" ? "address" : "address_en", val)}
+        onChange={(lang, val) => set(fieldKey("address", lang), val)}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -225,13 +228,11 @@ export function BuildingForm({
         )}
       </Field>
 
-      <BilingualField
+      <MultilingualField
         label={t("field.short")}
         field="short_description"
-        roValue={v.short_description}
-        enValue={v.short_description_en}
-        roError={fieldErrors.short_description}
-        enError={fieldErrors.short_description_en}
+        values={v}
+        errors={fieldErrors}
         translating={translating}
         onTranslate={handleTranslate}
         t={t}
@@ -244,14 +245,14 @@ export function BuildingForm({
             onChange={(e) => onChange(e.target.value)}
           />
         )}
-        onChange={(lang, val) => set(lang === "ro" ? "short_description" : "short_description_en", val)}
+        onChange={(lang, val) => set(fieldKey("short_description", lang), val)}
       />
 
-      <BilingualField
+      <MultilingualField
         label={t("field.history")}
         field="history"
-        roValue={v.history}
-        enValue={v.history_en}
+        values={v}
+        errors={fieldErrors}
         translating={translating}
         onTranslate={handleTranslate}
         t={t}
@@ -263,7 +264,7 @@ export function BuildingForm({
             onChange={(e) => onChange(e.target.value)}
           />
         )}
-        onChange={(lang, val) => set(lang === "ro" ? "history" : "history_en", val)}
+        onChange={(lang, val) => set(fieldKey("history", lang), val)}
       />
 
       {attempted && errorCount > 0 && (
@@ -321,13 +322,17 @@ function Field({
   );
 }
 
-function BilingualField({
+const TRANSLATE_LABEL_KEY: Record<FormLang, string> = {
+  ro: "translate.toRo",
+  en: "translate.toEn",
+  fr: "translate.toFr",
+};
+
+function MultilingualField({
   label,
   field,
-  roValue,
-  enValue,
-  roError,
-  enError,
+  values,
+  errors,
   translating,
   onTranslate,
   onChange,
@@ -336,52 +341,54 @@ function BilingualField({
 }: {
   label: string;
   field: TranslatableField;
-  roValue: string;
-  enValue: string;
-  roError?: string;
-  enError?: string;
-  translating: null | { field: TranslatableField; target: "en" | "ro" };
-  onTranslate: (field: TranslatableField, target: "en" | "ro") => void;
-  onChange: (lang: "ro" | "en", value: string) => void;
-  renderInput: (lang: "ro" | "en", value: string, onChange: (v: string) => void, invalid: boolean) => React.ReactNode;
+  values: BuildingFormValues;
+  errors: FieldErrors;
+  translating: null | { field: TranslatableField; source: FormLang; target: FormLang };
+  onTranslate: (field: TranslatableField, source: FormLang, target: FormLang) => void;
+  onChange: (lang: FormLang, value: string) => void;
+  renderInput: (lang: FormLang, value: string, onChange: (v: string) => void, invalid: boolean) => React.ReactNode;
   t: (k: string) => string;
 }) {
   const busy = translating !== null;
+  const anyError = FORM_LANGS.some((l) => errors[fieldKey(field, l)]);
   return (
     <fieldset
       className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4"
-      data-field-error={roError || enError ? "true" : undefined}
+      data-field-error={anyError ? "true" : undefined}
     >
       <legend className="px-1 text-base font-medium">{label}</legend>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">{t("lang.ro")}</span>
-            <TranslateButton
-              label={t("translate.toEn")}
-              loadingLabel={t("translate.loading")}
-              loading={translating?.field === field && translating.target === "en"}
-              disabled={busy}
-              onClick={() => onTranslate(field, "en")}
-            />
-          </div>
-          {renderInput("ro", roValue, (val) => onChange("ro", val), !!roError)}
-          {roError && <span className="block text-sm font-medium text-destructive">{roError}</span>}
-        </div>
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">{t("lang.en")}</span>
-            <TranslateButton
-              label={t("translate.toRo")}
-              loadingLabel={t("translate.loading")}
-              loading={translating?.field === field && translating.target === "ro"}
-              disabled={busy}
-              onClick={() => onTranslate(field, "ro")}
-            />
-          </div>
-          {renderInput("en", enValue, (val) => onChange("en", val), !!enError)}
-          {enError && <span className="block text-sm font-medium text-destructive">{enError}</span>}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {FORM_LANGS.map((lang) => {
+          const key = fieldKey(field, lang);
+          const value = String(values[key] ?? "");
+          const err = errors[key];
+          const otherLangs = FORM_LANGS.filter((l) => l !== lang);
+          return (
+            <div key={lang} className="space-y-1.5">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">{t(`lang.${lang}`)}</span>
+                <div className="flex items-center gap-1">
+                  {otherLangs.map((target) => (
+                    <TranslateButton
+                      key={target}
+                      label={t(TRANSLATE_LABEL_KEY[target])}
+                      loadingLabel={t("translate.loading")}
+                      loading={
+                        translating?.field === field &&
+                        translating.source === lang &&
+                        translating.target === target
+                      }
+                      disabled={busy}
+                      onClick={() => onTranslate(field, lang, target)}
+                    />
+                  ))}
+                </div>
+              </div>
+              {renderInput(lang, value, (val) => onChange(lang, val), !!err)}
+              {err && <span className="block text-sm font-medium text-destructive">{err}</span>}
+            </div>
+          );
+        })}
       </div>
     </fieldset>
   );
@@ -405,7 +412,9 @@ function TranslateButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/60 disabled:opacity-60"
+      title={label}
+      aria-label={label}
+      className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background px-2 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/60 disabled:opacity-60"
     >
       {loading ? (
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -416,3 +425,5 @@ function TranslateButton({
     </button>
   );
 }
+// Lang import kept for potential external consumers
+export type { Lang };

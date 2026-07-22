@@ -9,20 +9,34 @@ type Building = {
   slug: string;
   name: string;
   name_en: string | null;
+  name_fr: string | null;
   address: string | null;
   address_en: string | null;
+  address_fr: string | null;
   year_built: string | null;
   architect: string | null;
   short_description: string | null;
   short_description_en: string | null;
+  short_description_fr: string | null;
   history: string | null;
   history_en: string | null;
+  history_fr: string | null;
   cover_image_url: string | null;
 };
 
-function pick(lang: string, ro: string | null | undefined, en: string | null | undefined): string | null {
-  if (lang === "en") return (en && en.trim()) || (ro && ro.trim()) || null;
-  return (ro && ro.trim()) || (en && en.trim()) || null;
+function pick(
+  lang: string,
+  ro: string | null | undefined,
+  en: string | null | undefined,
+  fr: string | null | undefined,
+): string | null {
+  const clean = (s: string | null | undefined) => (s && s.trim() ? s.trim() : null);
+  const r = clean(ro);
+  const e = clean(en);
+  const f = clean(fr);
+  if (lang === "en") return e ?? r ?? f ?? null;
+  if (lang === "fr") return f ?? r ?? e ?? null;
+  return r ?? e ?? f ?? null;
 }
 
 type Img = { id: string; image_url: string; caption: string | null };
@@ -104,10 +118,10 @@ function BuildingPage() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const { t, lang } = useI18n();
 
-  const name = pick(lang, building.name, building.name_en) ?? building.name;
-  const address = pick(lang, building.address, building.address_en);
-  const shortDesc = pick(lang, building.short_description, building.short_description_en);
-  const history = pick(lang, building.history, building.history_en);
+  const name = pick(lang, building.name, building.name_en, building.name_fr) ?? building.name;
+  const address = pick(lang, building.address, building.address_en, building.address_fr);
+  const shortDesc = pick(lang, building.short_description, building.short_description_en, building.short_description_fr);
+  const history = pick(lang, building.history, building.history_en, building.history_fr);
 
   return (
     <div className="min-h-screen">

@@ -53,17 +53,21 @@ export type Database = {
         Row: {
           address: string | null
           address_en: string | null
+          address_fr: string | null
           architect: string | null
           cover_image_url: string | null
           created_at: string
           history: string | null
           history_en: string | null
+          history_fr: string | null
           id: string
           name: string
           name_en: string | null
+          name_fr: string | null
           qr_code_url: string | null
           short_description: string | null
           short_description_en: string | null
+          short_description_fr: string | null
           slug: string
           updated_at: string
           year_built: string | null
@@ -71,17 +75,21 @@ export type Database = {
         Insert: {
           address?: string | null
           address_en?: string | null
+          address_fr?: string | null
           architect?: string | null
           cover_image_url?: string | null
           created_at?: string
           history?: string | null
           history_en?: string | null
+          history_fr?: string | null
           id?: string
           name: string
           name_en?: string | null
+          name_fr?: string | null
           qr_code_url?: string | null
           short_description?: string | null
           short_description_en?: string | null
+          short_description_fr?: string | null
           slug: string
           updated_at?: string
           year_built?: string | null
@@ -89,17 +97,21 @@ export type Database = {
         Update: {
           address?: string | null
           address_en?: string | null
+          address_fr?: string | null
           architect?: string | null
           cover_image_url?: string | null
           created_at?: string
           history?: string | null
           history_en?: string | null
+          history_fr?: string | null
           id?: string
           name?: string
           name_en?: string | null
+          name_fr?: string | null
           qr_code_url?: string | null
           short_description?: string | null
           short_description_en?: string | null
+          short_description_fr?: string | null
           slug?: string
           updated_at?: string
           year_built?: string | null
