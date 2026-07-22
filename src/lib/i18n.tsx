@@ -483,6 +483,8 @@ const FR: Dict = {
   "translate.toEn": "Traduire en anglais",
   "translate.toRo": "Traduire en roumain",
   "translate.toFr": "Traduire en français",
+  "translate.fillFr": "Remplir FR",
+  "translate.fillFr.done": "{n} champs remplis en français",
   "translate.loading": "Traduction…",
   "translate.error": "La traduction a échoué",
   "translate.empty": "Aucun texte à traduire",
