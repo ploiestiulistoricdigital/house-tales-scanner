@@ -197,7 +197,7 @@ function BuildingPage() {
                   key={i}
                   className={
                     i === 0
-                      ? "text-justify indent-8 sm:indent-10 first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1 mb-2"
+                      ? "text-justify indent-10 sm:indent-12 mb-2"
                       : "text-justify my-2"
                   }
                 >
