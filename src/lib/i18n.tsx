@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
-export type Lang = "ro" | "en";
+export type Lang = "ro" | "en" | "fr";
+export const LANGS: Lang[] = ["ro", "en", "fr"];
 const DEFAULT_LANG: Lang = "ro";
 const STORAGE_KEY = "hts.lang";
 
