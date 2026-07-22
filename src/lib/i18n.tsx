@@ -532,7 +532,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  const locale = lang === "ro" ? "ro-RO" : "en-US";
+  const locale = lang === "ro" ? "ro-RO" : lang === "fr" ? "fr-FR" : "en-US";
 
   return <I18nContext.Provider value={{ lang, setLang, t, locale }}>{children}</I18nContext.Provider>;
 }
