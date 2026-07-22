@@ -188,6 +188,7 @@ export function BuildingForm({
           {fillingFr ? t("translate.loading") : t("translate.fillFr")}
         </button>
       </div>
+      <MultilingualField
         label={t("field.name")}
         field="name"
         values={v}
