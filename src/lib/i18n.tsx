@@ -173,6 +173,8 @@ const RO: Dict = {
   "translate.toFr": "Traduceți în franceză",
   "translate.fillFr": "Completează FR",
   "translate.fillFr.done": "{n} câmpuri completate în franceză",
+  "translate.fillEn": "Completează EN",
+  "translate.fillEn.done": "{n} câmpuri completate în engleză",
   "translate.loading": "Se traduce…",
   "translate.error": "Traducerea a eșuat",
   "translate.empty": "Nu există text de tradus",
