@@ -563,7 +563,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
       aria-label={t("lang.label")}
       className={`inline-flex items-center rounded-md border border-border/70 bg-background overflow-hidden text-xs uppercase tracking-widest ${className}`}
     >
-      {(["ro", "en"] as Lang[]).map((l) => {
+      {LANGS.map((l) => {
         const active = l === lang;
         return (
           <button
