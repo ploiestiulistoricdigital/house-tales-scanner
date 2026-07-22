@@ -320,9 +320,11 @@ const EN: Dict = {
   "lang.label": "Language",
   "lang.ro": "Romanian",
   "lang.en": "English",
+  "lang.fr": "French",
 
   "translate.toEn": "Translate to English",
   "translate.toRo": "Translate to Romanian",
+  "translate.toFr": "Translate to French",
   "translate.loading": "Translating…",
   "translate.error": "Translation failed",
   "translate.empty": "No text to translate",
