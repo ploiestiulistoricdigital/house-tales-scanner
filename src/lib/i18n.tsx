@@ -506,7 +506,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved === "ro" || saved === "en") setLangState(saved);
+      if (saved === "ro" || saved === "en" || saved === "fr") setLangState(saved);
     } catch {}
   }, []);
 
