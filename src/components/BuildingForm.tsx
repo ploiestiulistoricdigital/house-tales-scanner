@@ -92,7 +92,38 @@ export function BuildingForm({
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [attempted, setAttempted] = useState(false);
   const [translating, setTranslating] = useState<null | { field: TranslatableField; source: FormLang; target: FormLang }>(null);
+  const [fillingFr, setFillingFr] = useState(false);
   const translate = useServerFn(translateText);
+
+  async function handleFillFr() {
+    const fields: TranslatableField[] = ["name", "address", "short_description", "history"];
+    setFillingFr(true);
+    let filled = 0;
+    let skipped = 0;
+    try {
+      for (const field of fields) {
+        const ro = String(v[fieldKey(field, "ro")] ?? "").trim();
+        const en = String(v[fieldKey(field, "en")] ?? "").trim();
+        const source: FormLang | null = ro ? "ro" : en ? "en" : null;
+        if (!source) {
+          skipped++;
+          continue;
+        }
+        const text = source === "ro" ? ro : en;
+        try {
+          const res = await translate({ data: { text, target: "fr" } });
+          setV((p) => ({ ...p, [fieldKey(field, "fr")]: res.text }));
+          filled++;
+        } catch (e: any) {
+          toast.error(e?.message ?? t("translate.error"));
+        }
+      }
+      if (filled > 0) toast.success(t("translate.fillFr.done", { n: filled }));
+      else if (skipped === fields.length) toast.error(t("translate.empty"));
+    } finally {
+      setFillingFr(false);
+    }
+  }
 
   async function handleTranslate(field: TranslatableField, source: FormLang, target: FormLang) {
     const sourceKey = fieldKey(field, source);
@@ -146,6 +177,17 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={handleFillFr}
+          disabled={fillingFr || translating !== null}
+          className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/60 disabled:opacity-60"
+        >
+          {fillingFr ? <Loader2 className="h-4 w-4 animate-spin" /> : <Languages className="h-4 w-4" />}
+          {fillingFr ? t("translate.loading") : t("translate.fillFr")}
+        </button>
+      </div>
       <MultilingualField
         label={t("field.name")}
         field="name"
