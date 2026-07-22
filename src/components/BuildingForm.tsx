@@ -93,37 +93,44 @@ export function BuildingForm({
   const [attempted, setAttempted] = useState(false);
   const [translating, setTranslating] = useState<null | { field: TranslatableField; source: FormLang; target: FormLang }>(null);
   const [fillingFr, setFillingFr] = useState(false);
+  const [fillingEn, setFillingEn] = useState(false);
   const translate = useServerFn(translateText);
 
-  async function handleFillFr() {
+  async function handleFillLang(target: "fr" | "en") {
     const fields: TranslatableField[] = ["name", "address", "short_description", "history"];
-    setFillingFr(true);
+    const otherLang: FormLang = target === "fr" ? "en" : "fr";
+    const setBusy = target === "fr" ? setFillingFr : setFillingEn;
+    setBusy(true);
     let filled = 0;
     let skipped = 0;
     try {
       for (const field of fields) {
         const ro = String(v[fieldKey(field, "ro")] ?? "").trim();
-        const en = String(v[fieldKey(field, "en")] ?? "").trim();
-        const source: FormLang | null = ro ? "ro" : en ? "en" : null;
+        const other = String(v[fieldKey(field, otherLang)] ?? "").trim();
+        const source: FormLang | null = ro ? "ro" : other ? otherLang : null;
         if (!source) {
           skipped++;
           continue;
         }
-        const text = source === "ro" ? ro : en;
+        const text = source === "ro" ? ro : other;
         try {
-          const res = await translate({ data: { text, target: "fr" } });
-          setV((p) => ({ ...p, [fieldKey(field, "fr")]: res.text }));
+          const res = await translate({ data: { text, target } });
+          setV((p) => ({ ...p, [fieldKey(field, target)]: res.text }));
           filled++;
         } catch (e: any) {
           toast.error(e?.message ?? t("translate.error"));
         }
       }
-      if (filled > 0) toast.success(t("translate.fillFr.done", { n: filled }));
+      const doneKey = target === "fr" ? "translate.fillFr.done" : "translate.fillEn.done";
+      if (filled > 0) toast.success(t(doneKey, { n: filled }));
       else if (skipped === fields.length) toast.error(t("translate.empty"));
     } finally {
-      setFillingFr(false);
+      setBusy(false);
     }
   }
+
+  const handleFillFr = () => handleFillLang("fr");
+  const handleFillEn = () => handleFillLang("en");
 
   async function handleTranslate(field: TranslatableField, source: FormLang, target: FormLang) {
     const sourceKey = fieldKey(field, source);
