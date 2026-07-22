@@ -177,7 +177,17 @@ export function BuildingForm({
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <MultilingualField
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={handleFillFr}
+          disabled={fillingFr || translating !== null}
+          className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/60 disabled:opacity-60"
+        >
+          {fillingFr ? <Loader2 className="h-4 w-4 animate-spin" /> : <Languages className="h-4 w-4" />}
+          {fillingFr ? t("translate.loading") : t("translate.fillFr")}
+        </button>
+      </div>
         label={t("field.name")}
         field="name"
         values={v}
