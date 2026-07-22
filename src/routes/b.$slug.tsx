@@ -118,10 +118,10 @@ function BuildingPage() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const { t, lang } = useI18n();
 
-  const name = pick(lang, building.name, building.name_en) ?? building.name;
-  const address = pick(lang, building.address, building.address_en);
-  const shortDesc = pick(lang, building.short_description, building.short_description_en);
-  const history = pick(lang, building.history, building.history_en);
+  const name = pick(lang, building.name, building.name_en, building.name_fr) ?? building.name;
+  const address = pick(lang, building.address, building.address_en, building.address_fr);
+  const shortDesc = pick(lang, building.short_description, building.short_description_en, building.short_description_fr);
+  const history = pick(lang, building.history, building.history_en, building.history_fr);
 
   return (
     <div className="min-h-screen">
