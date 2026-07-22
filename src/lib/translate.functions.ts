@@ -3,8 +3,14 @@ import { z } from "zod";
 
 const Input = z.object({
   text: z.string().min(1).max(20000),
-  target: z.enum(["en", "ro"]).default("en"),
+  target: z.enum(["en", "ro", "fr"]).default("en"),
 });
+
+const TARGET_NAME: Record<"en" | "ro" | "fr", string> = {
+  en: "English",
+  ro: "Romanian",
+  fr: "French",
+};
 
 export const translateText = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => Input.parse(data))
@@ -12,7 +18,7 @@ export const translateText = createServerFn({ method: "POST" })
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
-    const targetName = data.target === "en" ? "English" : "Romanian";
+    const targetName = TARGET_NAME[data.target];
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
