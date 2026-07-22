@@ -188,8 +188,22 @@ function BuildingPage() {
         </div>
 
         {history && (
-          <div className="prose prose-lg max-w-none whitespace-pre-wrap leading-[1.75] font-serif text-foreground text-justify first-letter:font-display first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-semibold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:mt-1">
-            {history}
+          <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+            {history
+              .split(/\n\s*\n/)
+              .filter(Boolean)
+              .map((paragraph, i) => (
+                <p
+                  key={i}
+                  className={
+                    i === 0
+                      ? "text-justify indent-10 sm:indent-12 mb-2"
+                      : "text-justify my-2"
+                  }
+                >
+                  {paragraph}
+                </p>
+              ))}
           </div>
         )}
 
