@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
-import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
+import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut, FileDown } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
