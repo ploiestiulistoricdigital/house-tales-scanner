@@ -22,14 +22,29 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+function pick(
+  lang: string,
+  ro: string | null | undefined,
+  en: string | null | undefined,
+  fr: string | null | undefined,
+): string | null {
+  const clean = (s: string | null | undefined) => (s && s.trim() ? s.trim() : null);
+  const r = clean(ro);
+  const e = clean(en);
+  const f = clean(fr);
+  if (lang === "en") return e ?? r ?? f ?? null;
+  if (lang === "fr") return f ?? r ?? e ?? null;
+  return r ?? e ?? f ?? null;
+}
+
 function Home() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { data: buildings, isLoading } = useQuery({
     queryKey: ["buildings"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("buildings")
-        .select("id, slug, name, address, short_description, cover_image_url, year_built")
+        .select("id, slug, name, name_en, name_fr, address, address_en, address_fr, short_description, short_description_en, short_description_fr, cover_image_url, year_built")
         .order("name");
       if (error) throw error;
       return data;
@@ -107,7 +122,11 @@ function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {buildings.map((b) => (
+            {buildings.map((b) => {
+              const name = pick(lang, b.name, b.name_en, b.name_fr) ?? b.name;
+              const address = pick(lang, b.address, b.address_en, b.address_fr);
+              const shortDesc = pick(lang, b.short_description, b.short_description_en, b.short_description_fr);
+              return (
               <Link
                 key={b.id}
                 to="/b/$slug"
@@ -119,7 +138,7 @@ function Home() {
                     <>
                       <img
                         src={b.cover_image_url}
-                        alt={b.name}
+                        alt={name}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.1] group-hover:sepia-0"
                         loading="lazy"
                       />
@@ -138,22 +157,23 @@ function Home() {
                 </div>
                 <div className="p-5">
                   <h3 className="font-display text-xl sm:text-2xl font-semibold group-hover:text-primary transition-colors leading-tight">
-                    {b.name}
+                    {name}
                   </h3>
-                  {b.address && (
+                  {address && (
                     <p className="mt-2 text-sm sm:text-base text-muted-foreground flex items-center gap-1.5">
                       <MapPin className="h-4 w-4 shrink-0 text-accent" />
-                      {b.address}
+                      {address}
                     </p>
                   )}
-                  {b.short_description && (
+                  {shortDesc && (
                     <p className="mt-3 text-sm sm:text-base text-muted-foreground line-clamp-2 font-serif italic leading-relaxed">
-                      {b.short_description}
+                      {shortDesc}
                     </p>
                   )}
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
