@@ -1,0 +1,1 @@
+ALTER TABLE public.building_images ADD COLUMN IF NOT EXISTS caption_en TEXT, ADD COLUMN IF NOT EXISTS caption_fr TEXT;
