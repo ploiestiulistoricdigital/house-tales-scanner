@@ -1,0 +1,1 @@
+CREATE POLICY "Public can view qr code files" ON storage.objects FOR SELECT USING (bucket_id = 'qr-codes');
