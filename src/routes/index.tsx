@@ -22,14 +22,29 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+function pick(
+  lang: string,
+  ro: string | null | undefined,
+  en: string | null | undefined,
+  fr: string | null | undefined,
+): string | null {
+  const clean = (s: string | null | undefined) => (s && s.trim() ? s.trim() : null);
+  const r = clean(ro);
+  const e = clean(en);
+  const f = clean(fr);
+  if (lang === "en") return e ?? r ?? f ?? null;
+  if (lang === "fr") return f ?? r ?? e ?? null;
+  return r ?? e ?? f ?? null;
+}
+
 function Home() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { data: buildings, isLoading } = useQuery({
     queryKey: ["buildings"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("buildings")
-        .select("id, slug, name, address, short_description, cover_image_url, year_built")
+        .select("id, slug, name, name_en, name_fr, address, address_en, address_fr, short_description, short_description_en, short_description_fr, cover_image_url, year_built")
         .order("name");
       if (error) throw error;
       return data;
