@@ -221,11 +221,7 @@ function BuildingPage() {
               .map((paragraph, i) => (
                 <p
                   key={i}
-                  className={
-                    i === 0
-                      ? "text-justify indent-10 sm:indent-12 mb-2"
-                      : "text-justify my-2"
-                  }
+                  className="text-justify indent-10 sm:indent-12 mb-2"
                 >
                   {paragraph}
                 </p>
