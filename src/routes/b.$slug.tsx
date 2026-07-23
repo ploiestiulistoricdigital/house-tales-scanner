@@ -40,7 +40,7 @@ function pick(
   return r ?? e ?? f ?? null;
 }
 
-type Img = { id: string; image_url: string; caption: string | null };
+type Img = { id: string; image_url: string; caption: string | null; caption_en: string | null; caption_fr: string | null };
 
 async function loadBuilding(slug: string): Promise<{ building: Building; images: Img[] }> {
   const { data: building, error } = await supabase
@@ -52,7 +52,7 @@ async function loadBuilding(slug: string): Promise<{ building: Building; images:
   if (!building) throw notFound();
   const { data: images } = await supabase
     .from("building_images")
-    .select("id, image_url, caption")
+    .select("id, image_url, caption, caption_en, caption_fr")
     .eq("building_id", building.id)
     .order("sort_order");
   return { building: building as Building, images: (images ?? []) as Img[] };
@@ -238,26 +238,29 @@ function BuildingPage() {
               </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {images.map((img: Img) => (
-                <div key={img.id} className="flex flex-col">
-                  <button
-                    onClick={() => setLightbox(img.image_url)}
-                    className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/70 hover:border-primary transition-all group"
-                  >
-                    <img
-                      src={img.image_url}
-                      alt={img.caption ?? ""}
-                      className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
-                      loading="lazy"
-                    />
-                  </button>
-                  {img.caption && (
-                    <p className="mt-2 text-sm text-muted-foreground font-serif italic leading-snug text-center">
-                      {img.caption}
-                    </p>
-                  )}
-                </div>
-              ))}
+              {images.map((img: Img) => {
+                const cap = pick(lang, img.caption, img.caption_en, img.caption_fr);
+                return (
+                  <div key={img.id} className="flex flex-col">
+                    <button
+                      onClick={() => setLightbox(img.image_url)}
+                      className="aspect-square overflow-hidden rounded-sm bg-muted border border-border/70 hover:border-primary transition-all group"
+                    >
+                      <img
+                        src={img.image_url}
+                        alt={cap ?? ""}
+                        className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
+                        loading="lazy"
+                      />
+                    </button>
+                    {cap && (
+                      <p className="mt-2 text-sm text-muted-foreground font-serif italic leading-snug text-center">
+                        {cap}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}

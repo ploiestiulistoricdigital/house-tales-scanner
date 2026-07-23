@@ -9,11 +9,14 @@ import { ImageUploader } from "@/components/ImageUploader";
 import {
   updateBuilding,
   addBuildingImage,
+  updateBuildingImage,
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
+import { translateText } from "@/lib/translate.functions";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
+import { Languages, Loader2, Pencil, X, Check } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Edit building — Admin" }] }),
@@ -27,12 +30,23 @@ function EditBuilding() {
   const { t } = useI18n();
   const update = useServerFn(updateBuilding);
   const addImg = useServerFn(addBuildingImage);
+  const updImg = useServerFn(updateBuildingImage);
   const delImg = useServerFn(deleteBuildingImage);
+  const translate = useServerFn(translateText);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pendingDeleteImg, setPendingDeleteImg] = useState<string | null>(null);
   const [newImgUrl, setNewImgUrl] = useState("");
   const [newImgCaption, setNewImgCaption] = useState("");
+  const [newImgCaptionEn, setNewImgCaptionEn] = useState("");
+  const [newImgCaptionFr, setNewImgCaptionFr] = useState("");
+  const [translatingNew, setTranslatingNew] = useState<null | "en" | "fr">(null);
+  const [editingImg, setEditingImg] = useState<string | null>(null);
+  const [editRo, setEditRo] = useState("");
+  const [editEn, setEditEn] = useState("");
+  const [editFr, setEditFr] = useState("");
+  const [savingImg, setSavingImg] = useState(false);
+  const [translatingEdit, setTranslatingEdit] = useState<null | "en" | "fr">(null);
 
   const { data: building, isLoading } = useQuery({
     queryKey: ["building", id],
@@ -101,14 +115,82 @@ function EditBuilding() {
           building_id: id,
           image_url: newImgUrl,
           caption: newImgCaption || null,
+          caption_en: newImgCaptionEn || null,
+          caption_fr: newImgCaptionFr || null,
           sort_order: images?.length ?? 0,
         },
       });
       setNewImgUrl("");
       setNewImgCaption("");
+      setNewImgCaptionEn("");
+      setNewImgCaptionFr("");
       qc.invalidateQueries({ queryKey: ["building-images", id] });
     } catch (e: any) {
       toast.error(e.message);
+    }
+  }
+
+  async function translateNewCaption(target: "en" | "fr") {
+    const source = newImgCaption.trim() || (target === "en" ? newImgCaptionFr : newImgCaptionEn).trim();
+    if (!source) {
+      toast.error(t("translate.empty"));
+      return;
+    }
+    setTranslatingNew(target);
+    try {
+      const res = await translate({ data: { text: source, target } });
+      if (target === "en") setNewImgCaptionEn(res.text);
+      else setNewImgCaptionFr(res.text);
+    } catch (e: any) {
+      toast.error(e?.message ?? t("translate.error"));
+    } finally {
+      setTranslatingNew(null);
+    }
+  }
+
+  function startEditImg(img: { id: string; caption: string | null; caption_en: string | null; caption_fr: string | null }) {
+    setEditingImg(img.id);
+    setEditRo(img.caption ?? "");
+    setEditEn(img.caption_en ?? "");
+    setEditFr(img.caption_fr ?? "");
+  }
+
+  async function saveEditImg() {
+    if (!editingImg) return;
+    setSavingImg(true);
+    try {
+      await updImg({
+        data: {
+          id: editingImg,
+          caption: editRo || null,
+          caption_en: editEn || null,
+          caption_fr: editFr || null,
+        },
+      });
+      setEditingImg(null);
+      qc.invalidateQueries({ queryKey: ["building-images", id] });
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setSavingImg(false);
+    }
+  }
+
+  async function translateEditCaption(target: "en" | "fr") {
+    const source = editRo.trim() || (target === "en" ? editFr : editEn).trim();
+    if (!source) {
+      toast.error(t("translate.empty"));
+      return;
+    }
+    setTranslatingEdit(target);
+    try {
+      const res = await translate({ data: { text: source, target } });
+      if (target === "en") setEditEn(res.text);
+      else setEditFr(res.text);
+    } catch (e: any) {
+      toast.error(e?.message ?? t("translate.error"));
+    } finally {
+      setTranslatingEdit(null);
     }
   }
 
@@ -118,6 +200,7 @@ function EditBuilding() {
     setPendingDeleteImg(null);
     qc.invalidateQueries({ queryKey: ["building-images", id] });
   }
+
 
 
   if (isLoading || !building) {
@@ -166,23 +249,86 @@ function EditBuilding() {
         <section className="mt-12 border-t border-border/70 pt-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">{t("gallery.title")}</h2>
           <div className="space-y-2 mb-4">
-            {images?.map((img) => (
-              <div key={img.id} className="flex items-center gap-3 rounded-md border border-border/70 p-2">
-                <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
-                {img.caption && (
-                  <div className="flex-1 min-w-0 text-base">
-                    <div className="mt-1">{img.caption}</div>
+            {images?.map((img: any) => {
+              const isEditing = editingImg === img.id;
+              return (
+                <div key={img.id} className="rounded-md border border-border/70 p-2">
+                  <div className="flex items-start gap-3">
+                    <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
+                    {!isEditing ? (
+                      <div className="flex-1 min-w-0 text-sm space-y-0.5">
+                        {img.caption && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">RO</span>{img.caption}</div>}
+                        {img.caption_en && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">EN</span>{img.caption_en}</div>}
+                        {img.caption_fr && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">FR</span>{img.caption_fr}</div>}
+                        {!img.caption && !img.caption_en && !img.caption_fr && (
+                          <div className="text-muted-foreground italic">—</div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex-1 min-w-0 space-y-2">
+                        <CaptionRow lang="RO" value={editRo} onChange={setEditRo} placeholder={t("gallery.captionPlaceholder")} />
+                        <CaptionRow
+                          lang="EN"
+                          value={editEn}
+                          onChange={setEditEn}
+                          placeholder={t("gallery.captionPlaceholder.en")}
+                          onTranslate={() => translateEditCaption("en")}
+                          translating={translatingEdit === "en"}
+                          disabled={translatingEdit !== null || savingImg}
+                        />
+                        <CaptionRow
+                          lang="FR"
+                          value={editFr}
+                          onChange={setEditFr}
+                          placeholder={t("gallery.captionPlaceholder.fr")}
+                          onTranslate={() => translateEditCaption("fr")}
+                          translating={translatingEdit === "fr"}
+                          disabled={translatingEdit !== null || savingImg}
+                        />
+                      </div>
+                    )}
+                    <div className="ml-auto flex items-center gap-1">
+                      {!isEditing ? (
+                        <>
+                          <button
+                            onClick={() => startEditImg(img)}
+                            className="p-2 hover:bg-muted rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.edit")}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => setPendingDeleteImg(img.id)}
+                            className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.deleteImage")}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={saveEditImg}
+                            disabled={savingImg}
+                            className="p-2 hover:bg-primary/10 hover:text-primary rounded inline-flex items-center justify-center disabled:opacity-50"
+                            aria-label={t("gallery.saveCaptions")}
+                          >
+                            {savingImg ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                          </button>
+                          <button
+                            onClick={() => setEditingImg(null)}
+                            className="p-2 hover:bg-muted rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.cancel")}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
-                )}
-                <button
-                  onClick={() => setPendingDeleteImg(img.id)}
-                  className="ml-auto p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
-                  aria-label={t("gallery.deleteImage")}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
+                </div>
+              );
+            })}
             {images?.length === 0 && (
               <p className="text-base text-muted-foreground">{t("gallery.empty")}</p>
             )}
@@ -199,11 +345,24 @@ function EditBuilding() {
               label={t("gallery.uploadLabel")}
               onUploaded={(url) => setNewImgUrl(url)}
             />
-            <input
-              placeholder={t("gallery.captionPlaceholder")}
-              className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
-              value={newImgCaption}
-              onChange={(e) => setNewImgCaption(e.target.value)}
+            <CaptionRow lang="RO" value={newImgCaption} onChange={setNewImgCaption} placeholder={t("gallery.captionPlaceholder")} />
+            <CaptionRow
+              lang="EN"
+              value={newImgCaptionEn}
+              onChange={setNewImgCaptionEn}
+              placeholder={t("gallery.captionPlaceholder.en")}
+              onTranslate={() => translateNewCaption("en")}
+              translating={translatingNew === "en"}
+              disabled={translatingNew !== null}
+            />
+            <CaptionRow
+              lang="FR"
+              value={newImgCaptionFr}
+              onChange={setNewImgCaptionFr}
+              placeholder={t("gallery.captionPlaceholder.fr")}
+              onTranslate={() => translateNewCaption("fr")}
+              translating={translatingNew === "fr"}
+              disabled={translatingNew !== null}
             />
             <button
               type="submit"
@@ -212,6 +371,7 @@ function EditBuilding() {
               <Plus className="h-4 w-4" /> {t("gallery.add")}
             </button>
           </form>
+
         </section>
       </div>
 
@@ -223,6 +383,47 @@ function EditBuilding() {
         confirmLabel={t("common.delete")}
         onConfirm={confirmDeleteImage}
       />
+    </div>
+  );
+}
+
+function CaptionRow({
+  lang,
+  value,
+  onChange,
+  placeholder,
+  onTranslate,
+  translating,
+  disabled,
+}: {
+  lang: "RO" | "EN" | "FR";
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  onTranslate?: () => void;
+  translating?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs uppercase tracking-widest text-muted-foreground w-6 shrink-0">{lang}</span>
+      <input
+        placeholder={placeholder}
+        className="flex-1 rounded-md border border-border/70 px-3 py-3 text-base bg-background"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {onTranslate && (
+        <button
+          type="button"
+          onClick={onTranslate}
+          disabled={disabled}
+          className="inline-flex items-center gap-1 rounded-md border border-border/70 px-2 py-2 text-sm hover:bg-muted disabled:opacity-50"
+          aria-label="Translate"
+        >
+          {translating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Languages className="h-4 w-4" />}
+        </button>
+      )}
     </div>
   );
 }

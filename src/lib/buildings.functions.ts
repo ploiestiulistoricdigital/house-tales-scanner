@@ -96,6 +96,8 @@ const imageInput = z.object({
   building_id: z.string().uuid(),
   image_url: z.string().url().max(2000),
   caption: z.string().max(300).optional().nullable(),
+  caption_en: z.string().max(300).optional().nullable(),
+  caption_fr: z.string().max(300).optional().nullable(),
   sort_order: z.number().int().min(0).max(9999).default(0),
 });
 
@@ -113,6 +115,29 @@ export const addBuildingImage = createServerFn({ method: "POST" })
     return row;
   });
 
+const imageUpdateInput = z.object({
+  id: z.string().uuid(),
+  caption: z.string().max(300).optional().nullable(),
+  caption_en: z.string().max(300).optional().nullable(),
+  caption_fr: z.string().max(300).optional().nullable(),
+});
+
+export const updateBuildingImage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: z.infer<typeof imageUpdateInput>) => imageUpdateInput.parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { id, ...rest } = data;
+    const { data: row, error } = await context.supabase
+      .from("building_images")
+      .update(rest)
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
 export const deleteBuildingImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
@@ -122,6 +147,7 @@ export const deleteBuildingImage = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
 
 export const checkIsAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
