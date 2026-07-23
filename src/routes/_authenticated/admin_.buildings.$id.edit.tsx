@@ -30,12 +30,23 @@ function EditBuilding() {
   const { t } = useI18n();
   const update = useServerFn(updateBuilding);
   const addImg = useServerFn(addBuildingImage);
+  const updImg = useServerFn(updateBuildingImage);
   const delImg = useServerFn(deleteBuildingImage);
+  const translate = useServerFn(translateText);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pendingDeleteImg, setPendingDeleteImg] = useState<string | null>(null);
   const [newImgUrl, setNewImgUrl] = useState("");
   const [newImgCaption, setNewImgCaption] = useState("");
+  const [newImgCaptionEn, setNewImgCaptionEn] = useState("");
+  const [newImgCaptionFr, setNewImgCaptionFr] = useState("");
+  const [translatingNew, setTranslatingNew] = useState<null | "en" | "fr">(null);
+  const [editingImg, setEditingImg] = useState<string | null>(null);
+  const [editRo, setEditRo] = useState("");
+  const [editEn, setEditEn] = useState("");
+  const [editFr, setEditFr] = useState("");
+  const [savingImg, setSavingImg] = useState(false);
+  const [translatingEdit, setTranslatingEdit] = useState<null | "en" | "fr">(null);
 
   const { data: building, isLoading } = useQuery({
     queryKey: ["building", id],
