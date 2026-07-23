@@ -40,7 +40,7 @@ function pick(
   return r ?? e ?? f ?? null;
 }
 
-type Img = { id: string; image_url: string; caption: string | null };
+type Img = { id: string; image_url: string; caption: string | null; caption_en: string | null; caption_fr: string | null };
 
 async function loadBuilding(slug: string): Promise<{ building: Building; images: Img[] }> {
   const { data: building, error } = await supabase
@@ -52,7 +52,7 @@ async function loadBuilding(slug: string): Promise<{ building: Building; images:
   if (!building) throw notFound();
   const { data: images } = await supabase
     .from("building_images")
-    .select("id, image_url, caption")
+    .select("id, image_url, caption, caption_en, caption_fr")
     .eq("building_id", building.id)
     .order("sort_order");
   return { building: building as Building, images: (images ?? []) as Img[] };
