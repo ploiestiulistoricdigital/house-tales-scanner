@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
-import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut } from "lucide-react";
+import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut, FileDown } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -24,6 +24,7 @@ function AdminPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
@@ -64,6 +65,101 @@ function AdminPage() {
     navigator.clipboard.writeText(url);
     setCopied(slug);
     setTimeout(() => setCopied(null), 1500);
+  }
+
+  async function exportListPdf() {
+    if (!buildings || buildings.length === 0) return;
+    setExporting(true);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
+      const qrDataUrls = await Promise.all(
+        buildings.map(async (b) => {
+          const src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=${encodeURIComponent(
+            `${PUBLIC_BASE}/b/${b.slug}`,
+          )}`;
+          const res = await fetch(src);
+          const blob = await res.blob();
+          return await new Promise<string>((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result as string);
+            r.onerror = reject;
+            r.readAsDataURL(blob);
+          });
+        }),
+      );
+
+      const pdf = new jsPDF({ unit: "mm", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const marginX = 15;
+      const marginTop = 20;
+      const marginBottom = 15;
+      const colName = 60;
+      const colAddr = 75;
+      const colQr = 30;
+      const rowH = 34;
+      const qrSize = 28;
+
+      const drawHeader = () => {
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(16);
+        pdf.text("Poveștile Caselor — Listă clădiri", pageW / 2, 12, { align: "center" });
+        pdf.setFontSize(11);
+        let x = marginX;
+        const y = marginTop - 4;
+        pdf.text("Denumire", x + 1, y);
+        x += colName;
+        pdf.text("Adresă", x + 1, y);
+        x += colAddr;
+        pdf.text("Cod QR", x + colQr / 2, y, { align: "center" });
+        pdf.setLineWidth(0.2);
+        pdf.line(marginX, marginTop - 2, pageW - marginX, marginTop - 2);
+        pdf.setFont("helvetica", "normal");
+      };
+
+      drawHeader();
+      let y = marginTop + 2;
+      pdf.setFontSize(10);
+
+      buildings.forEach((b, i) => {
+        if (y + rowH > pageH - marginBottom) {
+          pdf.addPage();
+          drawHeader();
+          y = marginTop + 2;
+          pdf.setFontSize(10);
+        }
+        const rowTop = y;
+        const centerY = rowTop + rowH / 2;
+
+        const nameLines = pdf.splitTextToSize(b.name ?? "", colName - 4) as string[];
+        const addrLines = pdf.splitTextToSize(b.address ?? "—", colAddr - 4) as string[];
+
+        pdf.setFont("helvetica", "bold");
+        const nameH = nameLines.length * 4.5;
+        pdf.text(nameLines, marginX + 1, centerY - nameH / 2 + 3.5);
+        pdf.setFont("helvetica", "normal");
+        const addrH = addrLines.length * 4.5;
+        pdf.text(addrLines, marginX + colName + 1, centerY - addrH / 2 + 3.5);
+
+        const qrX = marginX + colName + colAddr + (colQr - qrSize) / 2;
+        const qrY = rowTop + (rowH - qrSize) / 2;
+        try {
+          pdf.addImage(qrDataUrls[i], "PNG", qrX, qrY, qrSize, qrSize);
+        } catch {}
+
+        y += rowH;
+        pdf.setDrawColor(200);
+        pdf.line(marginX, y, pageW - marginX, y);
+        pdf.setDrawColor(0);
+      });
+
+      pdf.save(`lista-cladiri-${new Date().toISOString().slice(0, 10)}.pdf`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Export eșuat");
+    } finally {
+      setExporting(false);
+    }
   }
 
   if (checkingAdmin) {
@@ -143,12 +239,23 @@ function AdminPage() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold">{t("admin.all")}</h2>
-          <Link
-            to="/admin/buildings/new"
-            className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
-          >
-            <Plus className="h-4 w-4" /> {t("admin.new")}
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={exportListPdf}
+              disabled={exporting || !buildings || buildings.length === 0}
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md border border-primary text-primary px-4 py-2 text-base font-medium hover:bg-primary/10 disabled:opacity-50"
+            >
+              <FileDown className="h-4 w-4" />
+              {exporting ? "Se generează…" : "Export PDF"}
+            </button>
+            <Link
+              to="/admin/buildings/new"
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
+            >
+              <Plus className="h-4 w-4" /> {t("admin.new")}
+            </Link>
+          </div>
         </div>
 
         {!buildings || buildings.length === 0 ? (
