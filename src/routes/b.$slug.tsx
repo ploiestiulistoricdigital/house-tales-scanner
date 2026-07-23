@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MapPin, Calendar, User } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import atomLogo from "@/assets/atom-logo.png.asset.json";
 
 type Building = {
   id: string;
@@ -254,6 +255,15 @@ function BuildingPage() {
           </section>
         )}
       </article>
+
+      <div className="mx-auto max-w-3xl px-4 pb-10 flex justify-center">
+        <img
+          src={atomLogo.url}
+          alt="ATOM Ploiești"
+          className="h-12 sm:h-14 w-auto object-contain opacity-80"
+        />
+      </div>
+
 
       {lightbox && (
         <div
