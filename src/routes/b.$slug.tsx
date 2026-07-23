@@ -130,20 +130,20 @@ function BuildingPage() {
         <div className="flex items-center gap-2">
           <Link
             to="/"
-            className="inline-flex items-center h-11 rounded-sm bg-background/90 backdrop-blur px-3 border border-border/60 hover:bg-background transition-colors"
+            className="inline-flex h-11 items-center justify-center rounded-sm bg-background/90 backdrop-blur px-3 border border-border/60 hover:bg-background transition-colors shrink-0"
             aria-label="ATOM Ploiești"
           >
             <img
               src={atomLogo.url}
               alt="ATOM Ploiești"
-              className="h-7 sm:h-8 w-auto object-contain"
+              className="h-8 sm:h-9 w-auto object-contain shrink-0"
             />
           </Link>
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 h-11 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60"
+            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 shrink-0"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 shrink-0" />
             <span className="hidden sm:inline">{t("nav.backArchive")}</span>
           </Link>
         </div>
