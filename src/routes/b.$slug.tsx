@@ -256,6 +256,15 @@ function BuildingPage() {
         )}
       </article>
 
+      <div className="mx-auto max-w-3xl px-4 pb-10 flex justify-center">
+        <img
+          src={atomLogo.url}
+          alt="ATOM Ploiești"
+          className="h-12 sm:h-14 w-auto object-contain opacity-80"
+        />
+      </div>
+
+
       {lightbox && (
         <div
           className="fixed inset-0 z-50 bg-foreground/95 flex items-center justify-center p-4 cursor-zoom-out"
