@@ -24,6 +24,7 @@ function AdminPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
