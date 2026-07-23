@@ -239,12 +239,23 @@ function AdminPage() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold">{t("admin.all")}</h2>
-          <Link
-            to="/admin/buildings/new"
-            className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
-          >
-            <Plus className="h-4 w-4" /> {t("admin.new")}
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={exportListPdf}
+              disabled={exporting || !buildings || buildings.length === 0}
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md border border-primary text-primary px-4 py-2 text-base font-medium hover:bg-primary/10 disabled:opacity-50"
+            >
+              <FileDown className="h-4 w-4" />
+              {exporting ? "Se generează…" : "Export PDF"}
+            </button>
+            <Link
+              to="/admin/buildings/new"
+              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
+            >
+              <Plus className="h-4 w-4" /> {t("admin.new")}
+            </Link>
+          </div>
         </div>
 
         {!buildings || buildings.length === 0 ? (
