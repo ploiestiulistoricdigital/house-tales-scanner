@@ -9,11 +9,14 @@ import { ImageUploader } from "@/components/ImageUploader";
 import {
   updateBuilding,
   addBuildingImage,
+  updateBuildingImage,
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
+import { translateText } from "@/lib/translate.functions";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
+import { Languages, Loader2, Pencil, X, Check } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin_/buildings/$id/edit")({
   head: () => ({ meta: [{ title: "Edit building — Admin" }] }),
