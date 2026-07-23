@@ -169,8 +169,9 @@ function EditBuilding() {
       });
       setEditingImg(null);
       qc.invalidateQueries({ queryKey: ["building-images", id] });
+      toast.success(t("gallery.saveCaptions"));
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e?.message ?? t("form.saveFailed"));
     } finally {
       setSavingImg(false);
     }
@@ -308,6 +309,7 @@ function EditBuilding() {
                       ) : (
                         <>
                           <button
+                            type="button"
                             onClick={saveEditImg}
                             disabled={savingImg}
                             className="p-2 hover:bg-primary/10 hover:text-primary rounded inline-flex items-center justify-center disabled:opacity-50"
@@ -316,6 +318,7 @@ function EditBuilding() {
                             {savingImg ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
                           </button>
                           <button
+                            type="button"
                             onClick={() => setEditingImg(null)}
                             className="p-2 hover:bg-muted rounded inline-flex items-center justify-center"
                             aria-label={t("gallery.cancel")}
