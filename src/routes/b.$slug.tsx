@@ -172,14 +172,8 @@ function BuildingPage() {
           </div>
         </div>
       ) : (
-        <div className="border-b border-border/70 px-4 py-10 sm:py-12 bg-secondary/40">
+        <div className="border-b border-border/70 px-4 pt-20 pb-10 sm:pt-24 sm:pb-12 bg-secondary/40">
           <div className="mx-auto max-w-3xl">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-1.5 text-sm uppercase tracking-widest text-muted-foreground hover:text-primary min-h-11 py-2"
-            >
-              <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
-            </Link>
             <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{name}</h1>
             {address && (
               <p className="mt-2 flex items-center gap-1.5 text-sm sm:text-base text-muted-foreground font-serif italic">
