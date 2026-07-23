@@ -249,23 +249,86 @@ function EditBuilding() {
         <section className="mt-12 border-t border-border/70 pt-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">{t("gallery.title")}</h2>
           <div className="space-y-2 mb-4">
-            {images?.map((img) => (
-              <div key={img.id} className="flex items-center gap-3 rounded-md border border-border/70 p-2">
-                <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
-                {img.caption && (
-                  <div className="flex-1 min-w-0 text-base">
-                    <div className="mt-1">{img.caption}</div>
+            {images?.map((img: any) => {
+              const isEditing = editingImg === img.id;
+              return (
+                <div key={img.id} className="rounded-md border border-border/70 p-2">
+                  <div className="flex items-start gap-3">
+                    <img src={img.image_url} alt="" className="h-16 w-16 rounded object-cover bg-muted shrink-0" />
+                    {!isEditing ? (
+                      <div className="flex-1 min-w-0 text-sm space-y-0.5">
+                        {img.caption && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">RO</span>{img.caption}</div>}
+                        {img.caption_en && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">EN</span>{img.caption_en}</div>}
+                        {img.caption_fr && <div><span className="text-xs uppercase tracking-widest text-muted-foreground mr-2">FR</span>{img.caption_fr}</div>}
+                        {!img.caption && !img.caption_en && !img.caption_fr && (
+                          <div className="text-muted-foreground italic">—</div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex-1 min-w-0 space-y-2">
+                        <CaptionRow lang="RO" value={editRo} onChange={setEditRo} placeholder={t("gallery.captionPlaceholder")} />
+                        <CaptionRow
+                          lang="EN"
+                          value={editEn}
+                          onChange={setEditEn}
+                          placeholder={t("gallery.captionPlaceholder.en")}
+                          onTranslate={() => translateEditCaption("en")}
+                          translating={translatingEdit === "en"}
+                          disabled={translatingEdit !== null || savingImg}
+                        />
+                        <CaptionRow
+                          lang="FR"
+                          value={editFr}
+                          onChange={setEditFr}
+                          placeholder={t("gallery.captionPlaceholder.fr")}
+                          onTranslate={() => translateEditCaption("fr")}
+                          translating={translatingEdit === "fr"}
+                          disabled={translatingEdit !== null || savingImg}
+                        />
+                      </div>
+                    )}
+                    <div className="ml-auto flex items-center gap-1">
+                      {!isEditing ? (
+                        <>
+                          <button
+                            onClick={() => startEditImg(img)}
+                            className="p-2 hover:bg-muted rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.edit")}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => setPendingDeleteImg(img.id)}
+                            className="p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.deleteImage")}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={saveEditImg}
+                            disabled={savingImg}
+                            className="p-2 hover:bg-primary/10 hover:text-primary rounded inline-flex items-center justify-center disabled:opacity-50"
+                            aria-label={t("gallery.saveCaptions")}
+                          >
+                            {savingImg ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                          </button>
+                          <button
+                            onClick={() => setEditingImg(null)}
+                            className="p-2 hover:bg-muted rounded inline-flex items-center justify-center"
+                            aria-label={t("gallery.cancel")}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
-                )}
-                <button
-                  onClick={() => setPendingDeleteImg(img.id)}
-                  className="ml-auto p-2 hover:bg-destructive/10 hover:text-destructive rounded inline-flex items-center justify-center"
-                  aria-label={t("gallery.deleteImage")}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
+                </div>
+              );
+            })}
             {images?.length === 0 && (
               <p className="text-base text-muted-foreground">{t("gallery.empty")}</p>
             )}
@@ -282,11 +345,24 @@ function EditBuilding() {
               label={t("gallery.uploadLabel")}
               onUploaded={(url) => setNewImgUrl(url)}
             />
-            <input
-              placeholder={t("gallery.captionPlaceholder")}
-              className="w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background"
-              value={newImgCaption}
-              onChange={(e) => setNewImgCaption(e.target.value)}
+            <CaptionRow lang="RO" value={newImgCaption} onChange={setNewImgCaption} placeholder={t("gallery.captionPlaceholder")} />
+            <CaptionRow
+              lang="EN"
+              value={newImgCaptionEn}
+              onChange={setNewImgCaptionEn}
+              placeholder={t("gallery.captionPlaceholder.en")}
+              onTranslate={() => translateNewCaption("en")}
+              translating={translatingNew === "en"}
+              disabled={translatingNew !== null}
+            />
+            <CaptionRow
+              lang="FR"
+              value={newImgCaptionFr}
+              onChange={setNewImgCaptionFr}
+              placeholder={t("gallery.captionPlaceholder.fr")}
+              onTranslate={() => translateNewCaption("fr")}
+              translating={translatingNew === "fr"}
+              disabled={translatingNew !== null}
             />
             <button
               type="submit"
@@ -295,6 +371,7 @@ function EditBuilding() {
               <Plus className="h-4 w-4" /> {t("gallery.add")}
             </button>
           </form>
+
         </section>
       </div>
 
