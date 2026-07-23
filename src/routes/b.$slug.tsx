@@ -126,18 +126,27 @@ function BuildingPage() {
 
   return (
     <div className="min-h-screen">
-      <Link
-        to="/"
-        className="fixed top-4 left-4 z-50 inline-flex items-center rounded-sm bg-background/90 backdrop-blur px-3 py-2 border border-border/60 hover:bg-background transition-colors min-h-11"
-        aria-label="ATOM Ploiești"
-      >
-        <img
-          src={atomLogo.url}
-          alt="ATOM Ploiești"
-          className="h-9 sm:h-11 w-auto object-contain"
-        />
-      </Link>
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Link
+            to="/"
+            className="inline-flex items-center h-11 rounded-sm bg-background/90 backdrop-blur px-3 border border-border/60 hover:bg-background transition-colors"
+            aria-label="ATOM Ploiești"
+          >
+            <img
+              src={atomLogo.url}
+              alt="ATOM Ploiești"
+              className="h-7 sm:h-8 w-auto object-contain"
+            />
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 h-11 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("nav.backArchive")}</span>
+          </Link>
+        </div>
         <LanguageSwitcher />
       </div>
       {building.cover_image_url ? (
@@ -148,12 +157,6 @@ function BuildingPage() {
             className="h-full w-full object-cover sepia-[0.1]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
-          <Link
-            to="/"
-            className="absolute top-20 sm:top-24 left-4 sm:left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 min-h-11"
-          >
-            <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
-          </Link>
           <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 px-5 sm:px-6 text-background">
             <div className="mx-auto max-w-3xl">
               <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">{t("building.chronicle")}</span>
