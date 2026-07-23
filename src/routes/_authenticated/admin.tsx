@@ -73,39 +73,72 @@ function AdminPage() {
     try {
       const { jsPDF } = await import("jspdf");
       const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
-      const qrDataUrls = await Promise.all(
-        buildings.map(async (b) => {
-          const src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=${encodeURIComponent(
-            `${PUBLIC_BASE}/b/${b.slug}`,
-          )}`;
-          const res = await fetch(src);
-          const blob = await res.blob();
-          return await new Promise<string>((resolve, reject) => {
-            const r = new FileReader();
-            r.onload = () => resolve(r.result as string);
-            r.onerror = reject;
-            r.readAsDataURL(blob);
-          });
-        }),
-      );
+
+      // Load a Unicode font (Noto Sans) so Romanian diacritics render correctly.
+      const fontUrls = {
+        normal:
+          "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/hinted/ttf/NotoSans/NotoSans-Regular.ttf",
+        bold: "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/hinted/ttf/NotoSans/NotoSans-Bold.ttf",
+      };
+      const toBase64 = async (url: string) => {
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        let binary = "";
+        const bytes = new Uint8Array(buf);
+        const chunk = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(
+            null,
+            Array.from(bytes.subarray(i, i + chunk)),
+          );
+        }
+        return btoa(binary);
+      };
+
+      const [fontNormal, fontBold, qrDataUrls] = await Promise.all([
+        toBase64(fontUrls.normal),
+        toBase64(fontUrls.bold),
+        Promise.all(
+          buildings.map(async (b) => {
+            const src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=${encodeURIComponent(
+              `${PUBLIC_BASE}/b/${b.slug}`,
+            )}`;
+            const res = await fetch(src);
+            const blob = await res.blob();
+            return await new Promise<string>((resolve, reject) => {
+              const r = new FileReader();
+              r.onload = () => resolve(r.result as string);
+              r.onerror = reject;
+              r.readAsDataURL(blob);
+            });
+          }),
+        ),
+      ]);
 
       const pdf = new jsPDF({ unit: "mm", format: "a4" });
+      pdf.addFileToVFS("NotoSans-Regular.ttf", fontNormal);
+      pdf.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
+      pdf.addFileToVFS("NotoSans-Bold.ttf", fontBold);
+      pdf.addFont("NotoSans-Bold.ttf", "NotoSans", "bold");
+      pdf.setFont("NotoSans", "normal");
+
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
       const marginX = 15;
-      const marginTop = 20;
+      const marginTop = 22;
       const marginBottom = 15;
-      const colName = 60;
-      const colAddr = 75;
-      const colQr = 30;
-      const rowH = 34;
-      const qrSize = 28;
+      const colName = 65;
+      const colAddr = 80;
+      const colQr = 35;
+      const rowH = 30;
+      const qrSize = 24;
+      const lineH = 4;
 
       const drawHeader = () => {
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(16);
+        pdf.setFont("NotoSans", "bold");
+        pdf.setFontSize(13);
         pdf.text("Poveștile Caselor — Listă clădiri", pageW / 2, 12, { align: "center" });
-        pdf.setFontSize(11);
+        pdf.setFontSize(9);
         let x = marginX;
         const y = marginTop - 4;
         pdf.text("Denumire", x + 1, y);
@@ -115,19 +148,19 @@ function AdminPage() {
         pdf.text("Cod QR", x + colQr / 2, y, { align: "center" });
         pdf.setLineWidth(0.2);
         pdf.line(marginX, marginTop - 2, pageW - marginX, marginTop - 2);
-        pdf.setFont("helvetica", "normal");
+        pdf.setFont("NotoSans", "normal");
       };
 
       drawHeader();
       let y = marginTop + 2;
-      pdf.setFontSize(10);
+      pdf.setFontSize(9);
 
       buildings.forEach((b, i) => {
         if (y + rowH > pageH - marginBottom) {
           pdf.addPage();
           drawHeader();
           y = marginTop + 2;
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
         }
         const rowTop = y;
         const centerY = rowTop + rowH / 2;
@@ -135,12 +168,12 @@ function AdminPage() {
         const nameLines = pdf.splitTextToSize(b.name ?? "", colName - 4) as string[];
         const addrLines = pdf.splitTextToSize(b.address ?? "—", colAddr - 4) as string[];
 
-        pdf.setFont("helvetica", "bold");
-        const nameH = nameLines.length * 4.5;
-        pdf.text(nameLines, marginX + 1, centerY - nameH / 2 + 3.5);
-        pdf.setFont("helvetica", "normal");
-        const addrH = addrLines.length * 4.5;
-        pdf.text(addrLines, marginX + colName + 1, centerY - addrH / 2 + 3.5);
+        pdf.setFont("NotoSans", "bold");
+        const nameH = nameLines.length * lineH;
+        pdf.text(nameLines, marginX + 1, centerY - nameH / 2 + 3);
+        pdf.setFont("NotoSans", "normal");
+        const addrH = addrLines.length * lineH;
+        pdf.text(addrLines, marginX + colName + 1, centerY - addrH / 2 + 3);
 
         const qrX = marginX + colName + colAddr + (colQr - qrSize) / 2;
         const qrY = rowTop + (rowH - qrSize) / 2;
@@ -161,6 +194,7 @@ function AdminPage() {
       setExporting(false);
     }
   }
+
 
   if (checkingAdmin) {
     return <div className="p-8 text-muted-foreground">{t("admin.loading")}</div>;
