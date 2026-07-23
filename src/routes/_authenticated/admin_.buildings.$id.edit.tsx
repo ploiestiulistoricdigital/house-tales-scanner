@@ -115,14 +115,82 @@ function EditBuilding() {
           building_id: id,
           image_url: newImgUrl,
           caption: newImgCaption || null,
+          caption_en: newImgCaptionEn || null,
+          caption_fr: newImgCaptionFr || null,
           sort_order: images?.length ?? 0,
         },
       });
       setNewImgUrl("");
       setNewImgCaption("");
+      setNewImgCaptionEn("");
+      setNewImgCaptionFr("");
       qc.invalidateQueries({ queryKey: ["building-images", id] });
     } catch (e: any) {
       toast.error(e.message);
+    }
+  }
+
+  async function translateNewCaption(target: "en" | "fr") {
+    const source = newImgCaption.trim() || (target === "en" ? newImgCaptionFr : newImgCaptionEn).trim();
+    if (!source) {
+      toast.error(t("translate.empty"));
+      return;
+    }
+    setTranslatingNew(target);
+    try {
+      const res = await translate({ data: { text: source, target } });
+      if (target === "en") setNewImgCaptionEn(res.text);
+      else setNewImgCaptionFr(res.text);
+    } catch (e: any) {
+      toast.error(e?.message ?? t("translate.error"));
+    } finally {
+      setTranslatingNew(null);
+    }
+  }
+
+  function startEditImg(img: { id: string; caption: string | null; caption_en: string | null; caption_fr: string | null }) {
+    setEditingImg(img.id);
+    setEditRo(img.caption ?? "");
+    setEditEn(img.caption_en ?? "");
+    setEditFr(img.caption_fr ?? "");
+  }
+
+  async function saveEditImg() {
+    if (!editingImg) return;
+    setSavingImg(true);
+    try {
+      await updImg({
+        data: {
+          id: editingImg,
+          caption: editRo || null,
+          caption_en: editEn || null,
+          caption_fr: editFr || null,
+        },
+      });
+      setEditingImg(null);
+      qc.invalidateQueries({ queryKey: ["building-images", id] });
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setSavingImg(false);
+    }
+  }
+
+  async function translateEditCaption(target: "en" | "fr") {
+    const source = editRo.trim() || (target === "en" ? editFr : editEn).trim();
+    if (!source) {
+      toast.error(t("translate.empty"));
+      return;
+    }
+    setTranslatingEdit(target);
+    try {
+      const res = await translate({ data: { text: source, target } });
+      if (target === "en") setEditEn(res.text);
+      else setEditFr(res.text);
+    } catch (e: any) {
+      toast.error(e?.message ?? t("translate.error"));
+    } finally {
+      setTranslatingEdit(null);
     }
   }
 
@@ -132,6 +200,7 @@ function EditBuilding() {
     setPendingDeleteImg(null);
     qc.invalidateQueries({ queryKey: ["building-images", id] });
   }
+
 
 
   if (isLoading || !building) {
