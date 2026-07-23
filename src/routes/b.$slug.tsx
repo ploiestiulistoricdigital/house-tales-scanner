@@ -126,11 +126,18 @@ function BuildingPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+      <div className="fixed top-4 left-4 right-4 z-50 flex items-start justify-between gap-3">
+        <div className="flex flex-col items-stretch gap-2">
           <Link
             to="/"
-            className="inline-flex h-11 items-center justify-center rounded-sm bg-background/90 backdrop-blur px-3 border border-border/60 hover:bg-background transition-colors shrink-0"
+            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60"
+          >
+            <ArrowLeft className="h-4 w-4 shrink-0" />
+            <span className="hidden sm:inline">{t("nav.backArchive")}</span>
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex h-11 items-center justify-center rounded-sm bg-background/90 backdrop-blur px-3 border border-border/60 hover:bg-background transition-colors"
             aria-label="ATOM Ploiești"
           >
             <img
@@ -138,13 +145,6 @@ function BuildingPage() {
               alt="ATOM Ploiești"
               className="h-8 sm:h-9 w-auto object-contain shrink-0"
             />
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 shrink-0"
-          >
-            <ArrowLeft className="h-4 w-4 shrink-0" />
-            <span className="hidden sm:inline">{t("nav.backArchive")}</span>
           </Link>
         </div>
         <LanguageSwitcher />
