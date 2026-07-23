@@ -169,8 +169,9 @@ function EditBuilding() {
       });
       setEditingImg(null);
       qc.invalidateQueries({ queryKey: ["building-images", id] });
+      toast.success(t("gallery.saveCaptions"));
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e?.message ?? t("form.saveFailed"));
     } finally {
       setSavingImg(false);
     }
