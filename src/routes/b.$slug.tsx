@@ -150,7 +150,7 @@ function BuildingPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
           <Link
             to="/"
-            className="absolute top-4 sm:top-5 left-4 sm:left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 min-h-11"
+            className="absolute top-20 sm:top-24 left-4 sm:left-5 inline-flex items-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60 min-h-11"
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.backArchive")}
           </Link>
