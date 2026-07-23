@@ -386,3 +386,44 @@ function EditBuilding() {
     </div>
   );
 }
+
+function CaptionRow({
+  lang,
+  value,
+  onChange,
+  placeholder,
+  onTranslate,
+  translating,
+  disabled,
+}: {
+  lang: "RO" | "EN" | "FR";
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  onTranslate?: () => void;
+  translating?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs uppercase tracking-widest text-muted-foreground w-6 shrink-0">{lang}</span>
+      <input
+        placeholder={placeholder}
+        className="flex-1 rounded-md border border-border/70 px-3 py-3 text-base bg-background"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {onTranslate && (
+        <button
+          type="button"
+          onClick={onTranslate}
+          disabled={disabled}
+          className="inline-flex items-center gap-1 rounded-md border border-border/70 px-2 py-2 text-sm hover:bg-muted disabled:opacity-50"
+          aria-label="Translate"
+        >
+          {translating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Languages className="h-4 w-4" />}
+        </button>
+      )}
+    </div>
+  );
+}
