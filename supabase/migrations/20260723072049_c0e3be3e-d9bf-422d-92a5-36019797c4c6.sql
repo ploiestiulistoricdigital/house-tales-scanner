@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public can view qr code files" ON storage.objects;
