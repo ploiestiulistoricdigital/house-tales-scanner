@@ -64,13 +64,21 @@ function Home() {
               </span>
             </div>
           </Link>
-          <div className="flex items-center gap-2 shrink-0">
-            <LanguageSwitcher />
-            <Link
-              to="/auth"
-              search={{ next: undefined }}
-              className="inline-flex items-center justify-center min-h-11 px-3 py-2 text-sm font-medium uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
-            >
+          <div className="flex flex-wrap items-center justify-end gap-x-1 gap-y-1">
+            <Link to="/despre" className={navLinkClass}>
+              {t("nav.about")}
+            </Link>
+            <Link to="/proiecte" className={navLinkClass}>
+              {t("nav.projects")}
+            </Link>
+            <Link to="/noutati" className={navLinkClass}>
+              {t("nav.news")}
+            </Link>
+            <Link to="/contact" className={navLinkClass}>
+              {t("nav.contact")}
+            </Link>
+            <LanguageSwitcher className="ml-1" />
+            <Link to="/auth" search={{ next: undefined }} className={navLinkClass}>
               {t("nav.admin")}
             </Link>
           </div>
