@@ -41,6 +41,9 @@ const RO: Dict = {
   "news.sourceNote": "Articolele se deschid pe atomploiesti.ro.",
 
   "contact.title": "Contact",
+  "contact.infoTitle": "Informații de contact",
+  "contact.org": "Societatea Culturală ATOM Ploiești",
+  "contact.city": "Ploiești, România",
   "contact.lead": "Scrie-ne, urmărește-ne sau susține proiectele noastre.",
   "contact.channels": "Canale de contact",
   "contact.form": "Formular de contact",
@@ -264,6 +267,9 @@ const EN: Dict = {
   "news.sourceNote": "Articles open on atomploiesti.ro.",
 
   "contact.title": "Contact",
+  "contact.infoTitle": "Contact information",
+  "contact.org": "ATOM Ploiești Cultural Society",
+  "contact.city": "Ploiești, Romania",
   "contact.lead": "Write to us, follow us, or support our projects.",
   "contact.channels": "Contact channels",
   "contact.form": "Contact form",
@@ -473,6 +479,9 @@ const FR: Dict = {
   "news.sourceNote": "Les articles s'ouvrent sur atomploiesti.ro.",
 
   "contact.title": "Contact",
+  "contact.infoTitle": "Informations de contact",
+  "contact.org": "Société Culturelle ATOM Ploiești",
+  "contact.city": "Ploiești, Roumanie",
   "contact.lead": "Écrivez-nous, suivez-nous ou soutenez nos projets.",
   "contact.channels": "Canaux de contact",
   "contact.form": "Formulaire de contact",
