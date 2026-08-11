@@ -1,70 +1,37 @@
-# Production Readiness Plan
+# Extindere site cu conținutul ATOM Ploiești
 
-Deliverable: a new `plan.md` at the project root that documents the steps below, plus the code/config changes needed to actually harden the app for production.
+Conținutul de pe atomploiesti.ro poate fi preluat: pagina principală și API-ul de conținut al site-ului răspund, iar textele pentru „Despre noi”, „Proiecte”, articole și contact sunt accesibile.
 
-## 1. Security hardening (code + auth config)
+## Ce se preia
 
-- Remove `claimFirstAdmin` from `src/lib/buildings.functions.ts` and any UI that calls it — bootstrapping is done, keeping it is a privilege-escalation risk.
-- Auth config (`supabase--configure_auth`):
-  - `auto_confirm_email: false` (require real email confirmation).
-  - `password_hibp_enabled: true` (leaked-password check).
-  - `mailer_otp_exp` ≤ 3600, sensible rate limits.
-- Confirm all `public.*` tables have RLS enabled + explicit `GRANT`s, and that the anon role only sees what the public site truly needs (`buildings`, `building_images`).
-- Rotate the test admin password (or delete `admin+test@buildingstories.app`) before go-live.
-- Run `security--run_security_scan` and resolve any critical/high findings.
+- **Despre asociație** — text de prezentare a Societății Culturale „ATOM” Ploiești (înființată 2018, misiune culturală) + secțiunea „Poți ajuta” (redirecționarea a 3,5% din impozit) și îndemnul de înscriere ca membru.
+- **Proiecte** — lista de volume publicate (2017–2026, cu autor și an), plus proiectul curent evidențiat pe site.
+- **Noutăți / articole** — cele mai recente articole (titlu, dată, rezumat scurt, imagine dacă există) cu link către articolul original de pe atomploiesti.ro pentru textul integral.
+- **Contact & social** — date de contact, Facebook, email/newsletter, link către cererea de adeziune.
 
-## 2. Domain, URLs, SEO
+## Pagini noi (rute separate, nu ancore)
 
-- Buy/connect a custom domain in Project Settings → Domains.
-- Replace the hardcoded `PUBLIC_BASE = "https://house-tales-scanner.lovable.app"` in `src/lib/buildings.functions.ts` with an env-driven value (e.g. `process.env.PUBLIC_SITE_URL`) so QR codes point at the production domain.
-- Regenerate `qr_code_url` for existing buildings after the domain switch (one-off migration/update).
-- Add `robots.txt` and a `sitemap.xml` route listing all buildings.
-- Verify `__root.tsx` metadata + per-building `head()` (og:title, og:description, og:image from cover) are correct.
+```text
+/despre     -> Despre asociație + misiune + Poți ajuta
+/proiecte   -> Lista de volume/proiecte
+/noutati    -> Articole recente (card-uri, link către sursă)
+/contact    -> Contact, social, înscriere membru
+```
 
-## 3. Emails (Lovable Email)
+Se adaugă navigație în header-ul paginii principale (Acasă, Despre, Proiecte, Noutăți, Contact, Arhivă case) și în footer, păstrând tema caldă existentă (Cormorant Garamond / Lora, paletă teracotă-sepia) și sigla ATOM.
 
-- Configure a verified sending domain via Lovable Email.
-- Customize auth email templates (confirm signup, reset password, magic link) in RO + EN with the site branding.
+## Conținut trilingv
 
-## 4. Storage & media
+Conținutul este scris direct în cod (pagini statice, fără administrare), în trei variante: RO (textul original), EN și FR (traduceri generate acum, la implementare). Se folosește același selector de limbă existent, deci schimbarea limbii comută instant textele pe toate paginile noi. RO rămâne implicit.
 
-- Confirm `building-images` and `qr-codes` buckets have the intended public/private posture and size limits.
-- Add server-side cleanup: when a building or gallery image is deleted, remove the underlying object from storage (currently only the DB row is removed).
-- Consider an image CDN transform / max-dimension on upload to keep mobile payloads small.
+## Detalii tehnice
 
-## 5. Observability & backups
+- Preluarea se face o singură dată, cu scraping prin gateway (pagini + API-ul WordPress al site-ului) pentru texte, date și URL-uri de imagini; rezultatul e revizuit și scris în module de conținut TypeScript (`src/content/atom/*.ts`) cu câmpuri `ro`/`en`/`fr`.
+- Rute noi în `src/routes/despre.tsx`, `proiecte.tsx`, `noutati.tsx`, `contact.tsx`, fiecare cu `head()` propriu (title, description, og:title, og:description) în limba RO.
+- Cheile de navigație se adaugă în dicționarul din `src/lib/i18n.tsx`; textele lungi de pagină stau în modulele de conținut, nu în dicționar.
+- Imaginile din articole se afișează prin URL-ul original de pe atomploiesti.ro (fără copiere în storage), cu `loading="lazy"` și `alt`.
+- Fără schimbări de bază de date și fără modificări la portalul de administrare a caselor.
 
-- Enable Lovable Cloud daily backups; document restore procedure.
-- Wire an error-reporting sink (Sentry or similar) into `reportLovableError` for both client and server functions.
-- Add basic uptime monitoring on `/` and one `/b/<slug>` route.
+## Notă
 
-## 6. Performance & UX polish
-
-- Verify `Cache-Control` on public building pages (SSR HTML + images).
-- Preload the hero/cover image on `/b/$slug`.
-- Lighthouse pass on mobile: target ≥90 for Performance, Accessibility, SEO.
-- Confirm 404 / error boundaries render correctly for unknown slugs.
-
-## 7. Legal & content
-
-- Add Privacy Policy, Terms, and Cookie notice pages (RO + EN).
-- Add an admin-visible content checklist (cover image, RO + EN text) before a building can be marked "published".
-- Optional: add a `published` boolean on `buildings` so drafts are not publicly reachable.
-
-## 8. Release process
-
-- Enable GitHub sync; protect `main`; require PR review.
-- Hide the "Edit with Lovable" badge (Pro plan) for the production deploy.
-- Publish, smoke-test the QR flow end-to-end on a real phone, then hand over admin access to the client and remove the test admin.
-
-## Technical section (what actually gets edited)
-
-- **New file**: `plan.md` at repo root containing the sections above in a client-readable form.
-- **Edit** `src/lib/buildings.functions.ts`: remove `claimFirstAdmin`; replace `PUBLIC_BASE` constant with an env lookup + sane fallback.
-- **Edit** any UI referencing `claimFirstAdmin` (admin page) to drop the button.
-- **Auth config call** via `supabase--configure_auth` with the values in §1.
-- **New routes**: `src/routes/robots[.]txt.ts`, `src/routes/sitemap[.]xml.ts`, `src/routes/privacy.tsx`, `src/routes/terms.tsx` (RO/EN via existing i18n).
-- **Migration**: optional `published boolean not null default true` on `buildings` + RLS tweak so anon only sees `published = true`.
-- **Storage cleanup**: extend `deleteBuilding` / `deleteBuildingImage` server fns to also delete the storage object via `supabaseAdmin.storage`.
-
-No changes to `src/integrations/supabase/*` auto-generated files, and no touching `auth`/`storage`/`realtime` schemas.
+Articolele vor fi un instantaneu la momentul implementării — nu se actualizează automat când apar articole noi pe atomploiesti.ro. Dacă vrei actualizare automată mai târziu, se poate adăuga separat.
