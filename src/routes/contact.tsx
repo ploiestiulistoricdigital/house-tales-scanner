@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { ExternalLink, Facebook, Globe, Mail, MapPin, Send } from "lucide-react";
 import { SiteFooter, SiteNav } from "@/components/SiteNav";
 import { useI18n } from "@/lib/i18n";
-import { ATOM_LINKS, SUPPORT_PARAGRAPHS, tr } from "@/content/atom";
+import { ATOM_LINKS } from "@/content/atom";
 import { sendContactMessage } from "@/lib/contact.functions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,7 +38,7 @@ const itemClass =
   "flex items-center gap-3 rounded-md border border-border/80 bg-card px-5 py-4 min-h-11 text-base hover:border-primary/70 transition-colors";
 
 function ContactPage() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const send = useServerFn(sendContactMessage);
   const [sending, setSending] = useState(false);
   const [form, setForm] = useState({ full_name: "", email: "", phone: "", subject: "", message: "" });
