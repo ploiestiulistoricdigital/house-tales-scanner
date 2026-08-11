@@ -124,6 +124,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          message: string
+          phone: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          message: string
+          phone: string
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          message?: string
+          phone?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       qr_code_exports: {
         Row: {
           building_id: string
