@@ -48,7 +48,7 @@ function AdminPage() {
     await qc.cancelQueries();
     qc.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", search: {}, replace: true });
+    navigate({ to: "/auth", search: { next: undefined }, replace: true });
   }
 
   async function confirmDelete() {
