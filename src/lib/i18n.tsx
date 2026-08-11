@@ -17,6 +17,38 @@ const RO: Dict = {
   "nav.back": "Înapoi",
   "nav.backHome": "Înapoi acasă",
   "nav.backArchive": "Arhivă",
+  "nav.home": "Acasă",
+  "nav.about": "Despre",
+  "nav.projects": "Proiecte",
+  "nav.news": "Noutăți",
+  "nav.contact": "Contact",
+  "nav.archiveLink": "Arhivă",
+
+  "about.title": "Despre ATOM Ploiești",
+  "about.lead": "Societatea Culturală „ATOM” Ploiești — înființată în 2018 pentru a păstra și a face cunoscută istoria urbană a Ploieștiului.",
+  "about.joinBtn": "Cerere de adeziune",
+
+  "projects.title": "Proiecte și publicații",
+  "projects.lead": "Volume publicate de Societatea Culturală ATOM Ploiești, dedicate istoriei și patrimoniului orașului.",
+  "projects.featured": "Proiect în prim-plan",
+  "projects.volumes": "Volume publicate",
+  "projects.source": "Vezi pe atomploiesti.ro",
+  "projects.author": "Autor",
+
+  "news.title": "Noutăți",
+  "news.lead": "Noutăți recente despre activitățile asociației și viața patrimoniului ploieștean.",
+  "news.readMore": "Citește articolul",
+  "news.sourceNote": "Articolele se deschid pe atomploiesti.ro.",
+
+  "contact.title": "Contact",
+  "contact.lead": "Scrie-ne, urmărește-ne sau susține proiectele noastre.",
+  "contact.channels": "Canale de contact",
+  "contact.form": "Formular de contact",
+  "contact.facebook": "Facebook",
+  "contact.site": "Site oficial",
+  "contact.support": "Susține-ne: 3,5% din impozitul pe venit",
+  "contact.form230": "Formularul 230 (venituri din salarii)",
+  "contact.declaration": "Declarația Unică (alte venituri)",
 
   // Home
   "home.badge": "Cronica clădirilor",
