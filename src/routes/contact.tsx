@@ -117,28 +117,73 @@ function ContactPage() {
             <MapPin className="h-4 w-4 text-accent shrink-0" />
             {t("contact.city")}
           </p>
-          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <a href={ATOM_LINKS.site} target="_blank" rel="noopener noreferrer" className={itemClass}>
-              <Globe className="h-5 w-5 text-accent shrink-0" />
-              <span className="flex-1">{t("contact.site")}</span>
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-            </a>
-            <a href={ATOM_LINKS.facebook} target="_blank" rel="noopener noreferrer" className={itemClass}>
-              <Facebook className="h-5 w-5 text-accent shrink-0" />
-              <span className="flex-1">{t("contact.facebook")}</span>
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-            </a>
-            <a
-              href={ATOM_LINKS.emailSubscribe}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${itemClass} sm:col-span-2`}
-            >
-              <Mail className="h-5 w-5 text-accent shrink-0" />
-              <span className="flex-1">{t("contact.subscribe")}</span>
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-            </a>
-          </div>
+          <dl className="mt-5 space-y-3 font-serif text-base">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <dt className="flex items-center gap-2 text-foreground/70">
+                <Phone className="h-4 w-4 text-accent shrink-0" />
+                {t("contact.phones")}:
+              </dt>
+              <dd className="flex flex-wrap gap-x-3">
+                {["0733.104.814", "0762.210.142", "0723.453.184"].map((p) => (
+                  <a key={p} href={`tel:+40${p.replace(/[.\s]/g, "").slice(1)}`} className="hover:text-primary">
+                    {p}
+                  </a>
+                ))}
+              </dd>
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-2">
+              <dt className="flex items-center gap-2 text-foreground/70">
+                <Printer className="h-4 w-4 text-accent shrink-0" />
+                {t("contact.fax")}:
+              </dt>
+              <dd>(+40) 0244-525.419</dd>
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-2">
+              <dt className="flex items-center gap-2 text-foreground/70">
+                <Mail className="h-4 w-4 text-accent shrink-0" />
+                {t("contact.emailAddr")}:
+              </dt>
+              <dd>
+                <a href="mailto:contact@atomploiesti.ro" className="hover:text-primary">
+                  contact@atomploiesti.ro
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-2">
+              <dt className="flex items-center gap-2 text-foreground/70">
+                <Globe className="h-4 w-4 text-accent shrink-0" />
+                {t("contact.website")}:
+              </dt>
+              <dd>
+                <a
+                  href={ATOM_LINKS.site}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 hover:text-primary"
+                >
+                  www.atomploiesti.ro
+                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-2">
+              <dt className="flex items-center gap-2 text-foreground/70">
+                <Facebook className="h-4 w-4 text-accent shrink-0" />
+                {t("contact.facebook")}:
+              </dt>
+              <dd>
+                <a
+                  href={ATOM_LINKS.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 hover:text-primary"
+                >
+                  /atomploiesti
+                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                </a>
+              </dd>
+            </div>
+          </dl>
         </div>
       </main>
       <SiteFooter />
