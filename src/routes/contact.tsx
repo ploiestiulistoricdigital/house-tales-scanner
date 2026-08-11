@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { ExternalLink, Facebook, Globe, Mail, MapPin, Send } from "lucide-react";
+import { ExternalLink, Facebook, Globe, Mail, MapPin, Phone, Printer, Send } from "lucide-react";
 import { SiteFooter, SiteNav } from "@/components/SiteNav";
 import { useI18n } from "@/lib/i18n";
 import { ATOM_LINKS } from "@/content/atom";
