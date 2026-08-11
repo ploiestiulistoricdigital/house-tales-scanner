@@ -109,51 +109,36 @@ function ContactPage() {
         </form>
 
         <h2 className="mt-14 font-display text-2xl font-semibold border-b border-border/70 pb-3">
-          {t("contact.followTitle")}
+          {t("contact.infoTitle")}
         </h2>
-        <p className="mt-4 font-serif text-base sm:text-lg leading-relaxed">{t("contact.followLead")}</p>
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <a href={ATOM_LINKS.emailSubscribe} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <Mail className="h-5 w-5 text-accent shrink-0" />
-            <span className="flex-1">{t("contact.subscribe")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
-          <a href={ATOM_LINKS.facebook} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <Facebook className="h-5 w-5 text-accent shrink-0" />
-            <span className="flex-1">{t("contact.facebook")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
-          <a href={ATOM_LINKS.site} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <Globe className="h-5 w-5 text-accent shrink-0" />
-            <span className="flex-1">{t("contact.site")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
-          <a href={ATOM_LINKS.membership} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <HandCoins className="h-5 w-5 text-accent shrink-0" />
-            <span className="flex-1">{t("about.joinBtn")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
-        </div>
-
-        <h2 className="mt-14 font-display text-2xl font-semibold border-b border-border/70 pb-3">
-          {t("contact.support")}
-        </h2>
-        <div className="mt-6 space-y-4">
-          {SUPPORT_PARAGRAPHS.map((p, i) => (
-            <p key={i} className="font-serif text-base sm:text-lg leading-relaxed text-justify">
-              {tr(lang, p)}
-            </p>
-          ))}
-        </div>
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <a href={ATOM_LINKS.form230} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <span className="flex-1">{t("contact.form230")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
-          <a href={ATOM_LINKS.declaratieUnica} target="_blank" rel="noopener noreferrer" className={itemClass}>
-            <span className="flex-1">{t("contact.declaration")}</span>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
-          </a>
+        <div className="mt-6 rounded-md border border-border/80 bg-card p-5 sm:p-7">
+          <p className="font-display text-xl font-semibold">{t("contact.org")}</p>
+          <p className="mt-1 flex items-center gap-2 font-serif text-base text-foreground/80">
+            <MapPin className="h-4 w-4 text-accent shrink-0" />
+            {t("contact.city")}
+          </p>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href={ATOM_LINKS.site} target="_blank" rel="noopener noreferrer" className={itemClass}>
+              <Globe className="h-5 w-5 text-accent shrink-0" />
+              <span className="flex-1">{t("contact.site")}</span>
+              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            </a>
+            <a href={ATOM_LINKS.facebook} target="_blank" rel="noopener noreferrer" className={itemClass}>
+              <Facebook className="h-5 w-5 text-accent shrink-0" />
+              <span className="flex-1">{t("contact.facebook")}</span>
+              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            </a>
+            <a
+              href={ATOM_LINKS.emailSubscribe}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${itemClass} sm:col-span-2`}
+            >
+              <Mail className="h-5 w-5 text-accent shrink-0" />
+              <span className="flex-1">{t("contact.subscribe")}</span>
+              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            </a>
+          </div>
         </div>
       </main>
       <SiteFooter />
