@@ -22,6 +22,9 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const navLinkClass =
+  "inline-flex items-center justify-center min-h-11 px-2 py-2 text-sm font-medium uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors";
+
 function pick(
   lang: string,
   ro: string | null | undefined,
@@ -64,13 +67,21 @@ function Home() {
               </span>
             </div>
           </Link>
-          <div className="flex items-center gap-2 shrink-0">
-            <LanguageSwitcher />
-            <Link
-              to="/auth"
-              search={{}}
-              className="inline-flex items-center justify-center min-h-11 px-3 py-2 text-sm font-medium uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
-            >
+          <div className="flex flex-wrap items-center justify-end gap-x-1 gap-y-1">
+            <Link to="/despre" className={navLinkClass}>
+              {t("nav.about")}
+            </Link>
+            <Link to="/proiecte" className={navLinkClass}>
+              {t("nav.projects")}
+            </Link>
+            <Link to="/noutati" className={navLinkClass}>
+              {t("nav.news")}
+            </Link>
+            <Link to="/contact" className={navLinkClass}>
+              {t("nav.contact")}
+            </Link>
+            <LanguageSwitcher className="ml-1" />
+            <Link to="/auth" search={{ next: undefined }} className={navLinkClass}>
               {t("nav.admin")}
             </Link>
           </div>
@@ -179,8 +190,22 @@ function Home() {
       </section>
 
       <footer className="border-t border-border/70 bg-secondary/50 py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm uppercase tracking-[0.2em] text-muted-foreground">
-          {t("home.footer")}
+        <div className="mx-auto max-w-6xl px-4 flex flex-col items-center gap-3 text-center">
+          <nav className="flex flex-wrap justify-center gap-x-4">
+            <Link to="/despre" className={navLinkClass}>
+              {t("nav.about")}
+            </Link>
+            <Link to="/proiecte" className={navLinkClass}>
+              {t("nav.projects")}
+            </Link>
+            <Link to="/noutati" className={navLinkClass}>
+              {t("nav.news")}
+            </Link>
+            <Link to="/contact" className={navLinkClass}>
+              {t("nav.contact")}
+            </Link>
+          </nav>
+          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">{t("home.footer")}</p>
         </div>
       </footer>
     </div>
