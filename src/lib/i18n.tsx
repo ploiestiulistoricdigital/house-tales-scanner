@@ -379,6 +379,12 @@ const FR: Dict = {
   "home.records.many": "fiches",
   "home.loading": "Ouverture des pages de l'archive…",
   "home.empty": "L'archive est encore vide. Connectez-vous en tant qu'administrateur pour ajouter la première chronique.",
+  "home.pagination.perPage": "Par page",
+  "home.pagination.pageOf": "Page {page} sur {total}",
+  "home.pagination.prev": "Précédent",
+  "home.pagination.next": "Suivant",
+  "home.pagination.first": "Première",
+  "home.pagination.last": "Dernière",
   "home.footer": "Contes de Maisons · La mémoire de la ville",
 
   "building.chronicle": "Chronique du bâtiment",
