@@ -28,6 +28,12 @@ const RO: Dict = {
   "home.records.many": "înregistrări",
   "home.loading": "Se răsfoiesc filele arhivei…",
   "home.empty": "Arhiva este încă goală. Autentifică-te ca administrator pentru a adăuga prima cronică.",
+  "home.pagination.perPage": "Pe pagină",
+  "home.pagination.pageOf": "Pagina {page} din {total}",
+  "home.pagination.prev": "Înapoi",
+  "home.pagination.next": "Înainte",
+  "home.pagination.first": "Prima",
+  "home.pagination.last": "Ultima",
   "home.footer": "Poveștile Caselor · Memoria orașului",
 
   // Building page
@@ -204,6 +210,12 @@ const EN: Dict = {
   "home.records.many": "records",
   "home.loading": "Turning the pages of the archive…",
   "home.empty": "The archive is still empty. Sign in as admin to add the first chronicle.",
+  "home.pagination.perPage": "Per page",
+  "home.pagination.pageOf": "Page {page} of {total}",
+  "home.pagination.prev": "Previous",
+  "home.pagination.next": "Next",
+  "home.pagination.first": "First",
+  "home.pagination.last": "Last",
   "home.footer": "House Tales · The city's memory",
 
   "building.chronicle": "Building chronicle",
@@ -367,6 +379,12 @@ const FR: Dict = {
   "home.records.many": "fiches",
   "home.loading": "Ouverture des pages de l'archive…",
   "home.empty": "L'archive est encore vide. Connectez-vous en tant qu'administrateur pour ajouter la première chronique.",
+  "home.pagination.perPage": "Par page",
+  "home.pagination.pageOf": "Page {page} sur {total}",
+  "home.pagination.prev": "Précédent",
+  "home.pagination.next": "Suivant",
+  "home.pagination.first": "Première",
+  "home.pagination.last": "Dernière",
   "home.footer": "Contes de Maisons · La mémoire de la ville",
 
   "building.chronicle": "Chronique du bâtiment",
