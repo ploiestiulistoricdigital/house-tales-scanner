@@ -25,9 +25,10 @@ function AuthPage() {
   const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -35,11 +36,20 @@ function AuthPage() {
     });
   }, [target]);
 
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + "/reset-password",
+        });
+        if (error) throw error;
+        setResetSent(true);
+        return;
+      }
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email,
@@ -59,6 +69,13 @@ function AuthPage() {
     }
   }
 
+  const title =
+    mode === "signin"
+      ? t("auth.signin")
+      : mode === "signup"
+        ? t("auth.signup")
+        : t("auth.reset.title");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="fixed top-4 right-4">
@@ -69,44 +86,84 @@ function AuthPage() {
           <Building2 className="h-6 w-6 text-primary" />
           <span className="font-semibold text-lg">{t("auth.admin")}</span>
         </div>
-        <h1 className="text-xl sm:text-2xl font-semibold mb-2">
-          {mode === "signin" ? t("auth.signin") : t("auth.signup")}
-        </h1>
-        <p className="text-base text-muted-foreground mb-6 leading-relaxed">{t("auth.help")}</p>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <input
-            className="w-full rounded-md border px-3 py-3 text-base bg-background"
-            type="email"
-            required
-            placeholder={t("auth.email")}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="w-full rounded-md border px-3 py-3 text-base bg-background"
-            type="password"
-            required
-            minLength={6}
-            placeholder={t("auth.password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {error && <p className="text-base text-destructive">{error}</p>}
+        <h1 className="text-xl sm:text-2xl font-semibold mb-2">{title}</h1>
+        <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+          {mode === "forgot" ? t("auth.reset.desc") : t("auth.help")}
+        </p>
+        {mode === "forgot" && resetSent ? (
+          <p className="text-base text-primary">{t("auth.reset.sent")}</p>
+        ) : (
+          <form onSubmit={onSubmit} className="space-y-4">
+            <input
+              className="w-full rounded-md border px-3 py-3 text-base bg-background"
+              type="email"
+              required
+              placeholder={t("auth.email")}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {mode !== "forgot" && (
+              <input
+                className="w-full rounded-md border px-3 py-3 text-base bg-background"
+                type="password"
+                required
+                minLength={6}
+                placeholder={t("auth.password")}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
+            {error && <p className="text-base text-destructive">{error}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
+            >
+              {loading
+                ? "…"
+                : mode === "signin"
+                  ? t("auth.signin")
+                  : mode === "signup"
+                    ? t("auth.register")
+                    : t("auth.reset.send")}
+            </button>
+          </form>
+        )}
+        {mode === "forgot" ? (
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
+            type="button"
+            onClick={() => {
+              setMode("signin");
+              setResetSent(false);
+              setError(null);
+            }}
+            className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
           >
-            {loading ? "…" : mode === "signin" ? t("auth.signin") : t("auth.register")}
+            {t("auth.reset.back")}
           </button>
-        </form>
-        <button
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
-        >
-          {mode === "signin" ? t("auth.toSignup") : t("auth.toSignin")}
-        </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("forgot");
+                setError(null);
+              }}
+              className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
+            >
+              {t("auth.forgot")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+              className="w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
+            >
+              {mode === "signin" ? t("auth.toSignup") : t("auth.toSignin")}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
+
 }
