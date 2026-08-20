@@ -210,6 +210,12 @@ const EN: Dict = {
   "home.records.many": "records",
   "home.loading": "Turning the pages of the archive…",
   "home.empty": "The archive is still empty. Sign in as admin to add the first chronicle.",
+  "home.pagination.perPage": "Per page",
+  "home.pagination.pageOf": "Page {page} of {total}",
+  "home.pagination.prev": "Previous",
+  "home.pagination.next": "Next",
+  "home.pagination.first": "First",
+  "home.pagination.last": "Last",
   "home.footer": "House Tales · The city's memory",
 
   "building.chronicle": "Building chronicle",
