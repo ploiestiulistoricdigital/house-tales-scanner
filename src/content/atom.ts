@@ -16,8 +16,6 @@ export const ATOM_LINKS = {
   gallery: "https://atomploiesti.ro/galerie-foto/",
   shop: "https://atomploiesti.ro/magazin/",
   usefulLinks: "https://atomploiesti.ro/link-uri-utile/",
-  emailSubscribe:
-    "http://www.specificfeeds.com/widgets/emailSubscribeEncFeed/WmFMdXpBckx5SzRWekYzbWdQM21DclRNWHZWQTNka1RRalliQ1YwNlBDUGVvY1duckZtZEE0Qlh6VjlnRUIrMlh1SVlvaWowQVB5TEkwQTVtUG9CZUx3TG55WVJNZ1pKNEtJeTcxTEp6VWkxZEh5b09LckFWVmo5eEswb3huNC98MjQ0dmxWalA1c0ErVDYwenNjbGRPWVY4N0NuRlBydW1hdVhQWWRKczdUdz0=/OA==/",
 };
 
 export const MOTTO: L10n = {

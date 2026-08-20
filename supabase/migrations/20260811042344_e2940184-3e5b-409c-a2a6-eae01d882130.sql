@@ -1,1 +1,0 @@
-DELETE FROM public.contact_messages WHERE email = 'test@example.com';
