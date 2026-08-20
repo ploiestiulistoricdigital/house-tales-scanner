@@ -28,6 +28,12 @@ const RO: Dict = {
   "home.records.many": "înregistrări",
   "home.loading": "Se răsfoiesc filele arhivei…",
   "home.empty": "Arhiva este încă goală. Autentifică-te ca administrator pentru a adăuga prima cronică.",
+  "home.pagination.perPage": "Pe pagină",
+  "home.pagination.pageOf": "Pagina {page} din {total}",
+  "home.pagination.prev": "Înapoi",
+  "home.pagination.next": "Înainte",
+  "home.pagination.first": "Prima",
+  "home.pagination.last": "Ultima",
   "home.footer": "Poveștile Caselor · Memoria orașului",
 
   // Building page
