@@ -30,7 +30,26 @@ function AdminPage() {
 
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery({
     queryKey: ["is-admin"],
-    queryFn: () => checkAdmin(),
+    queryFn: async () => {
+      // Client-side role check: works on static/edge deployments where the
+      // authenticated server function may not receive the bearer token.
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) return { isAdmin: false };
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userData.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (error) throw error;
+      if (data) return { isAdmin: true };
+      // Fallback to the server function (may resolve roles the client can't read).
+      try {
+        return await checkAdmin();
+      } catch {
+        return { isAdmin: false };
+      }
+    },
   });
 
   const { data: buildings } = useQuery({
