@@ -9,11 +9,12 @@ interface AtomLogoProps {
 }
 
 const sizeMap: Record<NonNullable<AtomLogoProps["size"]>, string> = {
-  sm: "h-8 sm:h-9 text-sm",
-  md: "h-10 sm:h-12 text-base",
-  lg: "h-12 sm:h-14 text-lg",
-  hero: "h-16 sm:h-20 text-2xl sm:text-3xl",
+  sm: "h-7 sm:h-8 max-w-[140px] sm:max-w-[180px] text-sm",
+  md: "h-8 sm:h-10 max-w-[180px] sm:max-w-[240px] text-sm sm:text-base",
+  lg: "h-10 sm:h-12 max-w-[220px] sm:max-w-[280px] text-base sm:text-lg",
+  hero: "h-12 sm:h-16 md:h-20 max-w-[280px] sm:max-w-[360px] md:max-w-[440px] text-xl sm:text-2xl md:text-3xl",
 };
+
 
 export function AtomLogo({
   src = "/atom-logo.png",
@@ -47,7 +48,7 @@ export function AtomLogo({
     <img
       src={src}
       alt={alt}
-      className={`w-auto object-contain shrink-0 ${className}`}
+      className={`w-auto max-w-full object-contain shrink-0 ${sizeMap[size]} ${className}`}
       onError={() => setFailed(true)}
     />
   );
