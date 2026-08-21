@@ -19,7 +19,6 @@ function safeNext(next: string | undefined): string {
 }
 
 function AuthPage() {
-  const navigate = useNavigate();
   const { next } = Route.useSearch();
   const target = safeNext(next);
   const { t } = useI18n();
