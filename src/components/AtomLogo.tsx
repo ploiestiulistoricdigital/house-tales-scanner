@@ -48,7 +48,7 @@ export function AtomLogo({
     <img
       src={src}
       alt={alt}
-      className={`w-auto object-contain shrink-0 ${className}`}
+      className={`w-auto max-w-full object-contain shrink-0 ${sizeMap[size]} ${className}`}
       onError={() => setFailed(true)}
     />
   );
