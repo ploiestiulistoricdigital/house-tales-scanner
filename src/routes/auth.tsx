@@ -105,13 +105,7 @@ function AuthPage() {
               disabled={loading}
               className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
             >
-              {loading
-                ? "…"
-                : mode === "signin"
-                  ? t("auth.signin")
-                  : mode === "signup"
-                    ? t("auth.register")
-                    : t("auth.reset.send")}
+              {loading ? "…" : mode === "signin" ? t("auth.signin") : t("auth.reset.send")}
             </button>
           </form>
         )}
