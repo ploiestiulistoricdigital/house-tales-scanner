@@ -50,17 +50,7 @@ function AuthPage() {
         setResetSent(true);
         return;
       }
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin + target },
-        });
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       window.location.href = target;
     } catch (err: any) {
       setError(err.message ?? t("auth.error.generic"));
