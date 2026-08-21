@@ -51,6 +51,7 @@ function AuthPage() {
         return;
       }
       const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       window.location.href = target;
     } catch (err: any) {
       setError(err.message ?? t("auth.error.generic"));
