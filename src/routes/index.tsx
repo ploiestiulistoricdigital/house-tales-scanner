@@ -28,6 +28,9 @@ export const Route = createFileRoute("/")({
     ],
   }),
   validateSearch: zodValidator(searchSchema),
+  search: {
+    middlewares: [stripSearchParams({ page: 1, perPage: 6 })],
+  },
   component: Home,
 });
 
