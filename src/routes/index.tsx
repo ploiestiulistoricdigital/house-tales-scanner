@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode, ChevronLeft, ChevronRight } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
-const atomLogo = { url: "/atom-logo.png" };
+import { AtomLogo } from "@/components/AtomLogo";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useEffect, useMemo } from "react";
