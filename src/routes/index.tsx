@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode, ChevronLeft, ChevronRight } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
-const atomLogo = { url: "/atom-logo.png" };
+import { AtomLogo } from "@/components/AtomLogo";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useEffect, useMemo } from "react";
@@ -134,10 +134,10 @@ function Home() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.13_72/0.18),transparent_60%)]" />
         <div className="mx-auto max-w-4xl px-4 py-14 sm:py-24 text-center">
           <div className="flex justify-center mb-6">
-            <img
-              src={atomLogo.url}
+            <AtomLogo
+              size="hero"
               alt="ATOM Ploiești"
-              className="h-16 sm:h-20 w-auto object-contain drop-shadow-sm"
+              className="drop-shadow-sm"
             />
           </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/15 px-4 py-2 text-sm uppercase tracking-[0.15em] text-accent-foreground mb-8">
