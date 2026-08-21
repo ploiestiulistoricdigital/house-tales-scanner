@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Building2 } from "lucide-react";
@@ -19,13 +19,12 @@ function safeNext(next: string | undefined): string {
 }
 
 function AuthPage() {
-  const navigate = useNavigate();
   const { next } = Route.useSearch();
   const target = safeNext(next);
   const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [mode, setMode] = useState<"signin" | "forgot">("signin");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
@@ -50,17 +49,8 @@ function AuthPage() {
         setResetSent(true);
         return;
       }
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin + target },
-        });
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       window.location.href = target;
     } catch (err: any) {
       setError(err.message ?? t("auth.error.generic"));
@@ -69,12 +59,7 @@ function AuthPage() {
     }
   }
 
-  const title =
-    mode === "signin"
-      ? t("auth.signin")
-      : mode === "signup"
-        ? t("auth.signup")
-        : t("auth.reset.title");
+  const title = mode === "signin" ? t("auth.signin") : t("auth.reset.title");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
@@ -119,13 +104,7 @@ function AuthPage() {
               disabled={loading}
               className="w-full min-h-11 rounded-md bg-primary text-primary-foreground py-3 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
             >
-              {loading
-                ? "…"
-                : mode === "signin"
-                  ? t("auth.signin")
-                  : mode === "signup"
-                    ? t("auth.register")
-                    : t("auth.reset.send")}
+              {loading ? "…" : mode === "signin" ? t("auth.signin") : t("auth.reset.send")}
             </button>
           </form>
         )}
@@ -142,25 +121,16 @@ function AuthPage() {
             {t("auth.reset.back")}
           </button>
         ) : (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                setMode("forgot");
-                setError(null);
-              }}
-              className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
-            >
-              {t("auth.forgot")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-              className="w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
-            >
-              {mode === "signin" ? t("auth.toSignup") : t("auth.toSignin")}
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("forgot");
+              setError(null);
+            }}
+            className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
+          >
+            {t("auth.forgot")}
+          </button>
         )}
       </div>
     </div>
