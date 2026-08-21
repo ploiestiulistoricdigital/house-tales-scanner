@@ -5,11 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut, FileDown } from "lucide-react";
 import { useState } from "react";
+import { requireAdminRoute } from "@/lib/admin-guard";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  beforeLoad: () => requireAdminRoute(),
   head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
   component: AdminPage,
 });
