@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate, stripSearchParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode, ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,8 +9,8 @@ import { z } from "zod";
 import { useEffect, useMemo } from "react";
 
 const searchSchema = z.object({
-  page: fallback(z.number().int(), 1).default(1),
-  perPage: fallback(z.number().int(), 6).default(6),
+  page: fallback(z.number().int(), 1).optional(),
+  perPage: fallback(z.number().int(), 6).optional(),
 });
 
 export const Route = createFileRoute("/")({
@@ -28,9 +28,6 @@ export const Route = createFileRoute("/")({
     ],
   }),
   validateSearch: zodValidator(searchSchema),
-  search: {
-    middlewares: [stripSearchParams({ page: 1, perPage: 6 })],
-  },
   component: Home,
 });
 
@@ -68,7 +65,9 @@ function getPageNumbers(current: number, total: number): (number | string)[] {
 function Home() {
   const { t, lang } = useI18n();
   const navigate = useNavigate({ from: "/" });
-  const { page, perPage } = Route.useSearch();
+  const search = Route.useSearch();
+  const page = search.page ?? 1;
+  const perPage = search.perPage ?? 6;
   const safePerPage = PER_PAGE_OPTIONS.includes(perPage) ? perPage : 6;
 
   const { data: buildings, isLoading } = useQuery({
@@ -96,7 +95,10 @@ function Home() {
   useEffect(() => {
     if (page !== safePage || perPage !== safePerPage) {
       navigate({
-        search: (prev) => ({ ...prev, page: safePage, perPage: safePerPage }),
+        search: {
+          page: safePage === 1 ? undefined : safePage,
+          perPage: safePerPage === 6 ? undefined : safePerPage,
+        },
         replace: true,
       });
     }
@@ -271,7 +273,7 @@ function PaginationControls({
               <Link
                 key={n}
                 to="/"
-                search={(prev) => ({ ...prev, perPage: n, page: 1 })}
+                search={{ perPage: n === 6 ? undefined : n, page: undefined }}
                 className={`px-3 py-2 min-h-9 inline-flex items-center justify-center transition-colors ${
                   active ? "bg-primary text-primary-foreground" : "hover:bg-accent/40"
                 }`}
@@ -291,7 +293,7 @@ function PaginationControls({
         ) : (
           <Link
             to="/"
-            search={(prev) => ({ ...prev, page: page - 1 })}
+            search={(prev) => ({ ...prev, page: page - 1 === 1 ? undefined : page - 1 })}
             className={pageBase}
             aria-label={t("home.pagination.prev")}
           >
@@ -312,7 +314,7 @@ function PaginationControls({
             <Link
               key={p}
               to="/"
-              search={(prev) => ({ ...prev, page: p })}
+              search={(prev) => ({ ...prev, page: p === 1 ? undefined : p })}
               className={pageBase}
             >
               {p}
