@@ -59,12 +59,7 @@ function AuthPage() {
     }
   }
 
-  const title =
-    mode === "signin"
-      ? t("auth.signin")
-      : mode === "signup"
-        ? t("auth.signup")
-        : t("auth.reset.title");
+  const title = mode === "signin" ? t("auth.signin") : t("auth.reset.title");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
