@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MapPin, Calendar, User } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
-import atomLogo from "@/assets/atom-logo.png.asset.json";
+const atomLogo = { url: "/atom-logo.png" };
 
 type Building = {
   id: string;
