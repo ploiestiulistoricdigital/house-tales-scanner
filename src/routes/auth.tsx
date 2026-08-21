@@ -122,25 +122,16 @@ function AuthPage() {
             {t("auth.reset.back")}
           </button>
         ) : (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                setMode("forgot");
-                setError(null);
-              }}
-              className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
-            >
-              {t("auth.forgot")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-              className="w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
-            >
-              {mode === "signin" ? t("auth.toSignup") : t("auth.toSignin")}
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("forgot");
+              setError(null);
+            }}
+            className="mt-4 w-full min-h-11 text-sm text-muted-foreground hover:text-foreground"
+          >
+            {t("auth.forgot")}
+          </button>
         )}
       </div>
     </div>
