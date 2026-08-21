@@ -10,7 +10,7 @@ export async function requireAdminRoute() {
   try {
     const res = await checkIsAdmin();
     if (!res?.isAdmin) {
-      throw redirect({ to: "/auth", search: { next: undefined } });
+      throw redirect({ to: "/" });
     }
     return { isAdmin: true as const };
   } catch (error) {

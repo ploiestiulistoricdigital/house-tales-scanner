@@ -30,9 +30,15 @@ function AuthPage() {
   const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) window.location.href = target;
+    let active = true;
+
+    supabase.auth.getUser().then(({ data, error }) => {
+      if (active && !error && data.user) window.location.replace(target);
     });
+
+    return () => {
+      active = false;
+    };
   }, [target]);
 
 
@@ -51,7 +57,7 @@ function AuthPage() {
       }
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      window.location.href = target;
+      window.location.replace(target);
     } catch (err: any) {
       setError(err.message ?? t("auth.error.generic"));
     } finally {
