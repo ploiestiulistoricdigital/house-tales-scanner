@@ -15,37 +15,34 @@ const TARGET_NAME: Record<"en" | "ro" | "fr", string> = {
 export const translateText = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => Input.parse(data))
   .handler(async ({ data }) => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("Missing LOVABLE_API_KEY");
+    const key = process.env.ANTHROPIC_API_KEY;
+    if (!key) throw new Error("Missing ANTHROPIC_API_KEY");
 
     const targetName = TARGET_NAME[data.target];
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "Lovable-API-Key": key,
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "openai/gpt-5.5",
-        messages: [
-          {
-            role: "system",
-            content: `You are a professional translator specialized in Romanian historical and architectural content. Translate the user's text into ${targetName}. Preserve tone, proper nouns, dates, and formatting (paragraph breaks). Return ONLY the translated text, no preamble, no quotes.`,
-          },
-          { role: "user", content: data.text },
-        ],
+        model: "claude-sonnet-5",
+        max_tokens: 8192,
+        system: `You are a professional translator specialized in Romanian historical and architectural content. Translate the user's text into ${targetName}. Preserve tone, proper nouns, dates, and formatting (paragraph breaks). Return ONLY the translated text, no preamble, no quotes.`,
+        messages: [{ role: "user", content: data.text }],
       }),
     });
 
     if (res.status === 429) throw new Error("Rate limit exceeded. Please retry shortly.");
-    if (res.status === 402) throw new Error("AI credits exhausted. Please add credits in workspace billing.");
+    if (res.status === 401) throw new Error("Invalid Anthropic API key.");
     if (!res.ok) {
       const t = await res.text().catch(() => "");
       throw new Error(`Translation failed (${res.status}): ${t.slice(0, 200)}`);
     }
 
     const json: any = await res.json();
-    const out = json?.choices?.[0]?.message?.content?.trim();
+    const out = json?.content?.[0]?.text?.trim();
     if (!out) throw new Error("Empty translation response");
     return { text: out as string };
   });
