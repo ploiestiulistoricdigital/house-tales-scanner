@@ -20,6 +20,9 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Netlify (nitro's build-time function output, not the CLI's site-link state)
+.netlify/
+
 # Environment variables / secrets
 .env
 
