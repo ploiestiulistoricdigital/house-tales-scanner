@@ -6,7 +6,6 @@ import { ImageUploader } from "@/components/ImageUploader";
 import { QrCodePreview } from "@/components/QrCodePreview";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
-import { chunkText } from "@/lib/text-chunks";
 
 export type BuildingFormValues = {
   slug: string;
@@ -97,29 +96,6 @@ export function BuildingForm({
   const [fillingEn, setFillingEn] = useState(false);
   const translate = useServerFn(translateText);
 
-  // Long fields (e.g. history) are split into paragraph-sized chunks and
-  // translated as separate requests, since a single request covering the
-  // whole field can run long enough to exceed Netlify's function execution
-  // time limit, regardless of streaming the Anthropic response internally.
-  async function translateLong(text: string, target: FormLang): Promise<string> {
-    const chunks = chunkText(text);
-    if (chunks.length <= 1) {
-      const res = await translate({ data: { text, target } });
-      return res.text;
-    }
-    const results: string[] = new Array(chunks.length);
-    let next = 0;
-    async function worker() {
-      while (next < chunks.length) {
-        const i = next++;
-        const res = await translate({ data: { text: chunks[i], target } });
-        results[i] = res.text;
-      }
-    }
-    await Promise.all(Array.from({ length: Math.min(3, chunks.length) }, worker));
-    return results.join("\n\n");
-  }
-
   async function handleFillLang(target: "fr" | "en") {
     const fields: TranslatableField[] = ["name", "address", "short_description", "history"];
     const otherLang: FormLang = target === "fr" ? "en" : "fr";
@@ -138,8 +114,8 @@ export function BuildingForm({
         }
         const text = source === "ro" ? ro : other;
         try {
-          const translated = await translateLong(text, target);
-          setV((p) => ({ ...p, [fieldKey(field, target)]: translated }));
+          const res = await translate({ data: { text, target } });
+          setV((p) => ({ ...p, [fieldKey(field, target)]: res.text }));
           filled++;
         } catch (e: any) {
           toast.error(e?.message ?? t("translate.error"));
@@ -166,8 +142,8 @@ export function BuildingForm({
     }
     setTranslating({ field, source, target });
     try {
-      const translated = await translateLong(text, target);
-      setV((p) => ({ ...p, [destKey]: translated }));
+      const res = await translate({ data: { text, target } });
+      setV((p) => ({ ...p, [destKey]: res.text }));
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
     } finally {

@@ -23,9 +23,6 @@ dist-ssr
 # Environment variables / secrets
 .env
 
-# Local working docs
-PROD.md
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

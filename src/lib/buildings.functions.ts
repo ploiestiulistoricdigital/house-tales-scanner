@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { PUBLIC_SITE_URL } from "@/lib/site-url";
 
 const buildingInput = z.object({
   slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
@@ -34,9 +33,10 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 }
 
 
+const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 function qrUrlFor(slug: string) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&format=png&data=${encodeURIComponent(
-    `${PUBLIC_SITE_URL}/b/${slug}`,
+    `${PUBLIC_BASE}/b/${slug}`,
   )}`;
 }
 

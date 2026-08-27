@@ -5,12 +5,13 @@ import { useServerFn } from "@tanstack/react-start";
 import { saveQrExport } from "@/lib/qr-exports.functions";
 import { QrExportHistory } from "@/components/QrExportHistory";
 import { useI18n } from "@/lib/i18n";
-import { PUBLIC_SITE_URL } from "@/lib/site-url";
+
+const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 
 export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?: string }) {
   const { t } = useI18n();
   const cleaned = slug.trim();
-  const url = cleaned ? `${PUBLIC_SITE_URL}/b/${cleaned}` : "";
+  const url = cleaned ? `${PUBLIC_BASE}/b/${cleaned}` : "";
   const qrSrc = url
     ? `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(url)}`
     : "";
