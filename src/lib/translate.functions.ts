@@ -42,7 +42,11 @@ export const translateText = createServerFn({ method: "POST" })
     }
 
     const json: any = await res.json();
-    const out = json?.content?.[0]?.text?.trim();
+    const out = (json?.content ?? [])
+      .filter((block: any) => block?.type === "text")
+      .map((block: any) => block.text)
+      .join("")
+      .trim();
     if (!out) throw new Error("Empty translation response");
     return { text: out as string };
   });
