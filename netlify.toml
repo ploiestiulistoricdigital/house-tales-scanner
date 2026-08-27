@@ -1,3 +1,9 @@
 [build]
   command = "bun run build"
   publish = "dist"
+  # SUPABASE_URL and VITE_SUPABASE_URL hold the same value (the Supabase
+  # project URL). It's not a credential -- every Supabase browser client
+  # needs it -- but Netlify's secret scanner flags SUPABASE_URL as secret
+  # and matches by value, so it fires on the intentional VITE_SUPABASE_URL
+  # occurrence in the client bundle. Omit it from scanning.
+  environment = { SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL" }
