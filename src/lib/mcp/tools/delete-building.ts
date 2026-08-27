@@ -28,7 +28,8 @@ export default defineTool({
       .maybeSingle();
     if (!isAdmin) return { content: [{ type: "text", text: "Necesită rol de administrator." }], isError: true };
 
-    const { error } = await supabase.from("buildings").delete().eq("id", id);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("buildings").delete().eq("id", id);
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return { content: [{ type: "text", text: `Clădirea ${id} a fost ștearsă.` }] };
   },

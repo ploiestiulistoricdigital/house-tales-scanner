@@ -31,7 +31,17 @@ export default defineTool({
       .maybeSingle();
     if (!isAdmin) return { content: [{ type: "text", text: "Necesită rol de administrator." }], isError: true };
 
-    const { data, error } = await supabase.from("building_images").insert(input).select().single();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin
+      .from("building_images")
+      .insert({
+        building_id: input.building_id,
+        image_url: input.url,
+        caption: input.caption,
+        sort_order: input.position,
+      })
+      .select()
+      .single();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: `Imagine adăugată (id: ${data.id}).` }],

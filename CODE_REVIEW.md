@@ -65,6 +65,7 @@ Add a lightweight per-user rate-limit middleware or use Netlify Edge rate limiti
 **Note found along the way:** `supabase/config.toml` and the local `.env` disagreed on which Supabase project is production (`gxpiixyldoqxvluogziy` vs. the `.env`'s `qbfbbpmpgzsairoejztx`). Confirmed via the live site's network requests that `gxpiixyldoqxvluogziy` is the real one — `config.toml` now points there. The regenerated `types.ts` also dropped a `contact_messages` table that was in the old file but isn't used anywhere in the code and doesn't exist on `gxpiixyldoqxvluogziy`; it was almost certainly a leftover from generating types against the wrong project. The local `.env` is still stale and should be updated separately (out of scope for this fix).
 
 #### SEC-5 · Overly permissive `GRANT` on `authenticated` role
+**Status:** Done
 **File:** `supabase/migrations/20260718163324_*.sql:51,80`
 **Also in:** `plan.md §1` (RLS audit)
 
@@ -74,6 +75,14 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.building_images TO authenticated;
 ```
 
 RLS policies enforce admin-only writes, but if RLS is ever accidentally disabled or a policy is misconfigured, any logged-in user can freely mutate data. Restrict to `SELECT`; let service_role and RLS policies handle writes.
+
+**Resolution:** Added migration `supabase/migrations/20260827180000_restrict_authenticated_write_grants.sql`, which revokes `INSERT, UPDATE, DELETE` on `public.buildings` and `public.building_images` from `authenticated` (leaving the existing `SELECT` grant). Writes now go through the service-role client (`supabaseAdmin`, lazily imported) after the existing app-level `assertAdmin()`/admin-role check, matching the pattern already used for `qr_code_exports` in `qr-exports.functions.ts`:
+- `src/lib/buildings.functions.ts` — `createBuilding`, `updateBuilding`, `deleteBuilding`, `addBuildingImage`, `updateBuildingImage`, `deleteBuildingImage` now write via `supabaseAdmin` instead of the caller's RLS-bound `context.supabase`.
+- `src/lib/mcp/tools/{create,update,delete}-building.ts` and `add-building-image.ts` write via `supabaseAdmin` for the same reason — they run under the `authenticated` role too (a client built from the caller's bearer token), so they would otherwise have broken once the GRANT was restricted.
+
+**Note found along the way:** while switching `add-building-image.ts` to the properly-typed `supabaseAdmin` client, TypeScript caught a pre-existing bug — the MCP tool's `insert()` call passed the raw input object (`url`, `position`) instead of mapping to the actual column names (`image_url`, `sort_order`). The untyped ad-hoc client used previously (`createClient(...)` with no type parameter) silently allowed this, so the tool has likely been failing at runtime with a Postgres "column not found" error since it was added. Fixed the mapping as part of this change; worth a follow-up look under SEC-6 (MCP input validation) for whether the other MCP tools have similar drift from the DB schema.
+
+Applied to the live project (`gxpiixyldoqxvluogziy`): the `REVOKE` statements were run directly via the dashboard SQL editor (the CLI account initially linked didn't have management-API privileges for that project), and `supabase migration repair --status applied 20260827180000` brought the CLI's local migration history back in sync with the remote — confirmed via `supabase migration list`.
 
 #### SEC-6 · MCP write tools have weaker input validation than server functions
 **Files:** `src/lib/mcp/tools/create-building.ts`, `update-building.ts`, `add-building-image.ts`

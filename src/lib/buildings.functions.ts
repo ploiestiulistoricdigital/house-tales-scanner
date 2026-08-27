@@ -47,12 +47,13 @@ export const createBuilding = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const payload = {
       ...data,
       cover_image_url: data.cover_image_url || null,
       qr_code_url: qrUrlFor(data.slug),
     };
-    const { data: row, error } = await context.supabase
+    const { data: row, error } = await supabaseAdmin
       .from("buildings")
       .insert(payload)
       .select()
@@ -69,13 +70,14 @@ export const updateBuilding = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { id, ...rest } = data;
     const payload = {
       ...rest,
       cover_image_url: rest.cover_image_url || null,
       qr_code_url: qrUrlFor(rest.slug),
     };
-    const { data: row, error } = await context.supabase
+    const { data: row, error } = await supabaseAdmin
       .from("buildings")
       .update(payload)
       .eq("id", id)
@@ -91,7 +93,8 @@ export const deleteBuilding = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
-    const { error } = await context.supabase.from("buildings").delete().eq("id", data.id);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("buildings").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -111,7 +114,8 @@ export const addBuildingImage = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
-    const { data: row, error } = await context.supabase
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
       .from("building_images")
       .insert(data)
       .select()
@@ -133,8 +137,9 @@ export const updateBuildingImage = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { id, ...rest } = data;
-    const { data: row, error } = await context.supabase
+    const { data: row, error } = await supabaseAdmin
       .from("building_images")
       .update(rest)
       .eq("id", id)
@@ -150,7 +155,8 @@ export const deleteBuildingImage = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
-    const { error } = await context.supabase.from("building_images").delete().eq("id", data.id);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("building_images").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

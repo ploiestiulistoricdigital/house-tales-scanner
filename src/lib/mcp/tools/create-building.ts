@@ -38,7 +38,8 @@ export default defineTool({
     if (roleError) return { content: [{ type: "text", text: roleError.message }], isError: true };
     if (!isAdmin) return { content: [{ type: "text", text: "Necesită rol de administrator." }], isError: true };
 
-    const { data, error } = await supabase.from("buildings").insert(input).select().single();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("buildings").insert(input).select().single();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: `Clădirea "${data.name}" a fost creată (id: ${data.id}).` }],

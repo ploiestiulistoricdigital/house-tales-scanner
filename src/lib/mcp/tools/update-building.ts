@@ -36,7 +36,8 @@ export default defineTool({
       .maybeSingle();
     if (!isAdmin) return { content: [{ type: "text", text: "Necesită rol de administrator." }], isError: true };
 
-    const { data, error } = await supabase.from("buildings").update(updates).eq("id", id).select().single();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("buildings").update(updates).eq("id", id).select().single();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: `Clădirea "${data.name}" actualizată.` }],
