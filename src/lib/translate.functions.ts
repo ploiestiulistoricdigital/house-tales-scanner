@@ -29,6 +29,7 @@ export const translateText = createServerFn({ method: "POST" })
       body: JSON.stringify({
         model: "claude-sonnet-5",
         max_tokens: 8192,
+        stream: true,
         system: `You are a professional translator specialized in Romanian historical and architectural content. Translate the user's text into ${targetName}. Preserve tone, proper nouns, dates, and formatting (paragraph breaks). Return ONLY the translated text, no preamble, no quotes.`,
         messages: [{ role: "user", content: data.text }],
       }),
@@ -40,13 +41,42 @@ export const translateText = createServerFn({ method: "POST" })
       const t = await res.text().catch(() => "");
       throw new Error(`Translation failed (${res.status}): ${t.slice(0, 200)}`);
     }
+    if (!res.body) throw new Error("Empty translation response");
 
-    const json: any = await res.json();
-    const out = (json?.content ?? [])
-      .filter((block: any) => block?.type === "text")
-      .map((block: any) => block.text)
-      .join("")
-      .trim();
+    // Long completions (e.g. a full French History translation) can take long
+    // enough to generate that a non-streaming request sits idle and gets killed
+    // by an intermediary (proxy/AV TLS inspection) before Anthropic finishes.
+    // Streaming keeps bytes flowing continuously so nothing times out the
+    // connection; we just accumulate the deltas server-side and return the
+    // finished text, so the client-facing contract is unchanged.
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let out = "";
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+        const payload = line.slice(6);
+        let event: any;
+        try {
+          event = JSON.parse(payload);
+        } catch {
+          continue;
+        }
+        if (event.type === "content_block_delta" && event.delta?.type === "text_delta") {
+          out += event.delta.text;
+        } else if (event.type === "error") {
+          throw new Error(event.error?.message ?? "Translation stream error");
+        }
+      }
+    }
+
+    out = out.trim();
     if (!out) throw new Error("Empty translation response");
-    return { text: out as string };
+    return { text: out };
   });
