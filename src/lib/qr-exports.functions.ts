@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertRateLimit } from "@/lib/rate-limit";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
   const { data, error } = await ctx.supabase
@@ -24,6 +25,7 @@ export const saveQrExport = createServerFn({ method: "POST" })
   .inputValidator((d: z.infer<typeof saveInput>) => saveInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "qrExports:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const bin = Uint8Array.from(atob(data.base64), (c) => c.charCodeAt(0));
@@ -58,6 +60,7 @@ export const deleteQrExport = createServerFn({ method: "POST" })
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "qrExports:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error: selErr } = await supabaseAdmin
       .from("qr_code_exports")

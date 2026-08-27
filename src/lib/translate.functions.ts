@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertRateLimit } from "@/lib/rate-limit";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
   const { data, error } = await ctx.supabase
@@ -29,6 +30,11 @@ export const translateText = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => Input.parse(data))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    // Long fields are chunked client-side (~1500 chars/request) before reaching
+    // here, so a single max-length history translation can already be ~35
+    // requests; "fill language" fires that for 4 fields at once. Limit is sized
+    // to comfortably cover that burst while still bounding runaway automation.
+    await assertRateLimit(context.userId, "translateText", 150, 600);
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) throw new Error("Missing ANTHROPIC_API_KEY");
 

@@ -53,11 +53,16 @@ Fix: remove the structural pre-check and rely entirely on `getClaims()` for vali
 ### HIGH
 
 #### SEC-4 · No rate limiting on any server function
+**Status:** Complete
 **Files:** `src/lib/*.functions.ts` (all)
 
 All eleven server functions — including `translateText` (Anthropic API) and bulk operations on buildings — have zero rate limiting. This enables cost-amplification attacks and DoS.
 
 Add a lightweight per-user rate-limit middleware or use Netlify Edge rate limiting. Priority: `translateText` first (direct financial cost), then mutations.
+
+**Resolution:** Added `assertRateLimit()` (`src/lib/rate-limit.ts`), backed by a `public.rate_limits` table + atomic `public.check_rate_limit()` SQL function (migration `supabase/migrations/20260827120000_add_rate_limiting.sql`), both locked to `service_role`. Wired into `translateText` (150 req / 10 min — sized for the client-side chunking burst on a max-length field) and every mutating function in `buildings.functions.ts` / `qr-exports.functions.ts` (60 req / 5 min). Migration applied to the live project (`gxpiixyldoqxvluogziy`) and `types.ts` regenerated against it.
+
+**Note found along the way:** `supabase/config.toml` and the local `.env` disagreed on which Supabase project is production (`gxpiixyldoqxvluogziy` vs. the `.env`'s `qbfbbpmpgzsairoejztx`). Confirmed via the live site's network requests that `gxpiixyldoqxvluogziy` is the real one — `config.toml` now points there. The regenerated `types.ts` also dropped a `contact_messages` table that was in the old file but isn't used anywhere in the code and doesn't exist on `gxpiixyldoqxvluogziy`; it was almost certainly a leftover from generating types against the wrong project. The local `.env` is still stale and should be updated separately (out of scope for this fix).
 
 #### SEC-5 · Overly permissive `GRANT` on `authenticated` role
 **File:** `supabase/migrations/20260718163324_*.sql:51,80`

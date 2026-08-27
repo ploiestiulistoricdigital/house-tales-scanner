@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { PUBLIC_SITE_URL } from "@/lib/site-url";
+import { assertRateLimit } from "@/lib/rate-limit";
 
 const buildingInput = z.object({
   slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
@@ -45,6 +46,7 @@ export const createBuilding = createServerFn({ method: "POST" })
   .inputValidator((d: z.infer<typeof buildingInput>) => buildingInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const payload = {
       ...data,
       cover_image_url: data.cover_image_url || null,
@@ -66,6 +68,7 @@ export const updateBuilding = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { id, ...rest } = data;
     const payload = {
       ...rest,
@@ -87,6 +90,7 @@ export const deleteBuilding = createServerFn({ method: "POST" })
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { error } = await context.supabase.from("buildings").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -106,6 +110,7 @@ export const addBuildingImage = createServerFn({ method: "POST" })
   .inputValidator((d: z.infer<typeof imageInput>) => imageInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { data: row, error } = await context.supabase
       .from("building_images")
       .insert(data)
@@ -127,6 +132,7 @@ export const updateBuildingImage = createServerFn({ method: "POST" })
   .inputValidator((d: z.infer<typeof imageUpdateInput>) => imageUpdateInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { id, ...rest } = data;
     const { data: row, error } = await context.supabase
       .from("building_images")
@@ -143,6 +149,7 @@ export const deleteBuildingImage = createServerFn({ method: "POST" })
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { error } = await context.supabase.from("building_images").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
