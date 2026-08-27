@@ -9,6 +9,7 @@ import { requireAdminRoute } from "@/lib/admin-guard";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
+import { PUBLIC_SITE_URL } from "@/lib/site-url";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: () => requireAdminRoute(),
@@ -93,7 +94,6 @@ function AdminPage() {
     setExporting(true);
     try {
       const { jsPDF } = await import("jspdf");
-      const PUBLIC_BASE = "https://house-tales-scanner.lovable.app";
 
       // Load a Unicode font (Noto Sans) so Romanian diacritics render correctly.
       const fontUrls = {
@@ -122,7 +122,7 @@ function AdminPage() {
         Promise.all(
           buildings.map(async (b) => {
             const src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=${encodeURIComponent(
-              `${PUBLIC_BASE}/b/${b.slug}`,
+              `${PUBLIC_SITE_URL}/b/${b.slug}`,
             )}`;
             const res = await fetch(src);
             const blob = await res.blob();
