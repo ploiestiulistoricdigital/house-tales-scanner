@@ -7,12 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider, useT } from "../lib/i18n";
 import { Toaster } from "@/components/ui/sonner";
+import { PUBLIC_SITE_URL } from "../lib/site-url";
 
 function NotFoundComponent() {
   const t = useT();
@@ -39,9 +39,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   const t = useT();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -83,8 +80,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Poveștile Caselor — Descoperă istoria clădirilor" },
       { property: "og:description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
       { name: "twitter:description", content: "Scanează un cod QR de pe o clădire sau răsfoiește catalogul nostru pentru a descoperi istoria și poveștile caselor și clădirilor istorice." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91922318-acca-483d-add8-67298eb031d5/id-preview-674dea8b--3a6fab7b-73e8-45d1-9345-62db7d580e91.lovable.app-1784392633510.png" },
+      { property: "og:image", content: `${PUBLIC_SITE_URL}/atom-logo.png` },
+      { name: "twitter:image", content: `${PUBLIC_SITE_URL}/atom-logo.png` },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
