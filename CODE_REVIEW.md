@@ -41,6 +41,7 @@ export const translateText = createServerFn({ method: "POST" })
 The function is still deployed and reachable. The count check is non-atomic; two concurrent authenticated users could both satisfy `count === 0` and both be granted admin. **Delete this function and every call site before production.**
 
 #### SEC-3 · JWT validation is structural, not cryptographic
+**Status:** Complete
 **File:** `src/integrations/supabase/auth-middleware.ts:69–97`
 
 The middleware checks `token.split('.').length !== 3` before calling `supabase.auth.getClaims(token)`. The structural check is trivially satisfied by any malformed token. `getClaims()` is the real verification step, but the code is unclear about this contract.
