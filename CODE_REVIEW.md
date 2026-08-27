@@ -34,6 +34,7 @@ export const translateText = createServerFn({ method: "POST" })
 ```
 
 #### SEC-2 · `claimFirstAdmin` is an active privilege-escalation path
+**Status:** Complete
 **File:** `src/lib/buildings.functions.ts:167–181`
 **Already in:** `plan.md §1`
 

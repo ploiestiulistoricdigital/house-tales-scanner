@@ -4,7 +4,7 @@ This document lists the concrete steps to take this app from its current preview
 
 ## 1. Security hardening
 
-- **Remove the bootstrap escalation path.** Delete `claimFirstAdmin` from `src/lib/buildings.functions.ts` and any UI that calls it. Admin bootstrapping is complete; leaving it in is a privilege-escalation risk.
+- [x] **Remove the bootstrap escalation path.** Deleted `claimFirstAdmin` from `src/lib/buildings.functions.ts` and the claim UI in `admin.tsx`. Admin bootstrapping is complete.
 - **Tighten auth config** (via the Supabase dashboard, Authentication → Settings):
   - `auto_confirm_email: false` — require real email confirmation.
   - `password_hibp_enabled: true` — block leaked passwords.

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin, deleteBuilding, claimFirstAdmin } from "@/lib/buildings.functions";
+import { checkIsAdmin, deleteBuilding } from "@/lib/buildings.functions";
 import { Plus, Pencil, Trash2, Copy, ExternalLink, LogOut, FileDown } from "lucide-react";
 import { useState } from "react";
 import { requireAdminRoute } from "@/lib/admin-guard";
@@ -23,9 +23,7 @@ function AdminPage() {
   const { t } = useI18n();
   const checkAdmin = useServerFn(checkIsAdmin);
   const deleteFn = useServerFn(deleteBuilding);
-  const claimAdmin = useServerFn(claimFirstAdmin);
   const [copied, setCopied] = useState<string | null>(null);
-  const [claiming, setClaiming] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
   const [exporting, setExporting] = useState(false);
 
@@ -222,21 +220,6 @@ function AdminPage() {
   }
 
   if (!adminCheck?.isAdmin) {
-    async function tryClaim() {
-      setClaiming(true);
-      try {
-        const res = await claimAdmin();
-        if (res.granted) {
-          qc.invalidateQueries({ queryKey: ["is-admin"] });
-        } else {
-          toast.error(t("admin.claim.exists"));
-        }
-      } catch (e: any) {
-        toast.error(e.message ?? t("admin.claim.failed"));
-      } finally {
-        setClaiming(false);
-      }
-    }
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8">
         <div className="fixed top-4 right-4">
@@ -248,13 +231,6 @@ function AdminPage() {
             {t("admin.unauthorized.desc")}
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
-            <button
-              onClick={tryClaim}
-              disabled={claiming}
-              className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90 disabled:opacity-50"
-            >
-              {claiming ? "…" : t("admin.claim")}
-            </button>
             <button
               onClick={signOut}
               className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md border px-4 py-2 text-base hover:bg-accent"

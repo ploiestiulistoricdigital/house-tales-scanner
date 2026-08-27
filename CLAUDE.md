@@ -71,9 +71,6 @@ calls directly. Pattern (see `src/lib/buildings.functions.ts`):
    an `admin` row), then performs the query with the request-scoped, RLS-bound `context.supabase`
    client (not the service-role client).
 
-`claimFirstAdmin` is a one-time bootstrap (first authenticated caller becomes admin, then permanently
-refuses further self-grants) — see the removal note in [plan.md](plan.md) once bootstrapping is done.
-
 ### Supabase clients (`src/integrations/supabase/`)
 
 Three distinct clients:
