@@ -157,6 +157,7 @@ When the buildings query fails, `isLoading` becomes `false` and the component re
 **Resolution:** Destructured `isError` from both `useQuery` calls and added a dedicated error branch (rendered before the empty-state check) in `src/routes/index.tsx` and `src/routes/_authenticated/admin.tsx`, styled with the existing `destructive` design tokens so it's visually distinct from the muted empty/loading states. Added `home.error` / `admin.error` strings to all three i18n dictionaries (RO/EN/FR) in `src/lib/i18n.tsx`.
 
 #### ARCH-2 · Silent error swallowing in PDF QR export
+**Status:** Done
 **File:** `src/routes/_authenticated/admin.tsx:201–203`
 
 ```ts
@@ -164,6 +165,8 @@ try { pdf.addImage(...) } catch {}
 ```
 
 Failed image embeds are silently dropped. Admins receive a PDF with missing QR codes and no warning. At minimum `console.warn` with context; preferably accumulate failures and show a toast after generation.
+
+**Resolution:** The `catch {}` around `pdf.addImage()` now logs `console.warn` with the building name and the underlying error, and pushes the name onto a `failedQrNames` array collected across the export loop. After `pdf.save()`, if any names were collected, a `toast.error()` lists which buildings are missing their QR code in the generated PDF, so the export still completes but the admin isn't left unaware.
 
 #### ARCH-3 · `Promise.all` over QR fetches crashes entire export on one failure
 **File:** `src/routes/_authenticated/admin.tsx:119–137`

@@ -177,6 +177,8 @@ function AdminPage() {
       let y = marginTop + 2;
       pdf.setFontSize(9);
 
+      const failedQrNames: string[] = [];
+
       buildings.forEach((b, i) => {
         if (y + rowH > pageH - marginBottom) {
           pdf.addPage();
@@ -201,7 +203,10 @@ function AdminPage() {
         const qrY = rowTop + (rowH - qrSize) / 2;
         try {
           pdf.addImage(qrDataUrls[i], "PNG", qrX, qrY, qrSize, qrSize);
-        } catch {}
+        } catch (err) {
+          console.warn(`Failed to embed QR code for "${b.name}" in export PDF`, err);
+          failedQrNames.push(b.name);
+        }
 
         y += rowH;
         pdf.setDrawColor(200);
@@ -210,6 +215,12 @@ function AdminPage() {
       });
 
       pdf.save(`lista-cladiri-${new Date().toISOString().slice(0, 10)}.pdf`);
+
+      if (failedQrNames.length > 0) {
+        toast.error(
+          `PDF generat, dar codul QR lipsește pentru: ${failedQrNames.join(", ")}`,
+        );
+      }
     } catch (e: any) {
       toast.error(e?.message ?? "Export eșuat");
     } finally {
