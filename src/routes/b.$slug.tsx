@@ -79,6 +79,9 @@ export const Route = createFileRoute("/b/$slug")({
             ]
           : []),
       ],
+      links: building.cover_image_url
+        ? [{ rel: "preload", as: "image", href: building.cover_image_url }]
+        : [],
     };
   },
   component: BuildingPage,

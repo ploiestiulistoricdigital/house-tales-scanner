@@ -256,10 +256,13 @@ Add cache rules for `/b/*` (5 min client / 1 hr CDN with stale-while-revalidate)
 **Note:** Couldn't run an actual `vite build`/`bun run build` in this environment to confirm the emitted headers on a real response (`bun` isn't installed here, and `vite build` hits an unrelated pre-existing Windows path-separator bug in the MCP plugin — see SEC-8's resolution for the same limitation). Worth a quick check of response headers on `/b/<slug>` and a built `/assets/*.js` file after the next real deploy.
 
 #### PERF-4 · Missing preload hints for hero image and fonts
+**Status:** Done
 **File:** `src/routes/__root.tsx:86–98`
 **Already in:** `plan.md §6`
 
 Add `<link rel="preload" as="image" href="/atom-logo.png">` in the root head. On building detail pages, add a `preload` for `building.cover_image_url` from the loader.
+
+**Resolution:** Added `{ rel: "preload", as: "image", href: "/atom-logo.png" }` to the root `head()` links (`src/routes/__root.tsx`) — it's rendered by `AtomLogo` on every page (home hero, building detail header, admin header) so a global preload is the right scope. Also added a `{ rel: "preload", as: "style", ... }` for the Google Fonts stylesheet alongside the existing `preconnect` hints, since the stylesheet itself wasn't being prioritized despite the connection being warmed. On `src/routes/b.$slug.tsx`, the route's `head()` now returns a `links` array with a `preload` for `building.cover_image_url` (from `loaderData`) when the building has one, so the hero image starts fetching before React hydrates and renders the `<img>`.
 
 #### PERF-5 · Admin-only heavy deps shipped in public bundle
 **Files:** `package.json`, `src/routes/_authenticated/admin.tsx`
