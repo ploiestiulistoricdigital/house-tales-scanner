@@ -321,6 +321,7 @@ Pass the detected/default language to the root shell so the `lang` attribute is 
 This is a real, narrower gap now (affects only non-JS clients on a returning visitor's very first frame — a Romanian-default site showing "ro" to a crawler with no session is arguably correct anyway) rather than the original, more visible one (every real browser user saw a flash of wrong language and a wrong attribute on every load). Worth a follow-up once a working dev server is available to verify the bundler behavior.
 
 #### DX-2 · Silent persistence failure in QR export (user data loss)
+**Status:** Done
 **File:** `src/components/QrCodePreview.tsx:31`
 
 ```ts
@@ -330,6 +331,8 @@ This is a real, narrower gap now (affects only non-JS clients on a returning vis
 ```
 
 The download completes but the database record is never written. The admin believes the export is saved; audit history is silently broken. Emit a `toast.error()` when persistence fails.
+
+**Resolution:** Added `toast.error(t("qr.saveFailed"))` alongside the existing `console.error` in `persist()`'s catch block, so the admin is told the download succeeded but wasn't recorded in the export history — instead of silently believing it was saved. Added the `qr.saveFailed` string to all three i18n dictionaries (RO/EN/FR) in `src/lib/i18n.tsx`.
 
 #### DX-3 · No `.env.example` file
 **File:** (missing)

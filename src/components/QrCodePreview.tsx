@@ -2,6 +2,7 @@ import { Download, FileImage, FileText } from "lucide-react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { saveQrExport } from "@/lib/qr-exports.functions";
 import { QrExportHistory } from "@/components/QrExportHistory";
 import { useI18n } from "@/lib/i18n";
@@ -29,6 +30,7 @@ export function QrCodePreview({ slug, buildingId }: { slug: string; buildingId?:
       qc.invalidateQueries({ queryKey: ["qr-exports", buildingId] });
     } catch (e) {
       console.error("Failed to save QR export", e);
+      toast.error(t("qr.saveFailed"));
     }
   }
 
