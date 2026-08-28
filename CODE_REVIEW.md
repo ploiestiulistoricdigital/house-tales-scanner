@@ -149,9 +149,12 @@ MCP write tools inline an ad-hoc admin check (query `user_roles` directly) inste
 ### HIGH
 
 #### ARCH-1 · Missing error state on `useQuery` results (home page & admin list)
+**Status:** Done
 **Files:** `src/routes/index.tsx:73–83`, `src/routes/_authenticated/admin.tsx:56–67`
 
 When the buildings query fails, `isLoading` becomes `false` and the component renders the empty state — users cannot distinguish a network error from "no buildings." Both call sites must destructure `isError`/`error` and render a visible error UI.
+
+**Resolution:** Destructured `isError` from both `useQuery` calls and added a dedicated error branch (rendered before the empty-state check) in `src/routes/index.tsx` and `src/routes/_authenticated/admin.tsx`, styled with the existing `destructive` design tokens so it's visually distinct from the muted empty/loading states. Added `home.error` / `admin.error` strings to all three i18n dictionaries (RO/EN/FR) in `src/lib/i18n.tsx`.
 
 #### ARCH-2 · Silent error swallowing in PDF QR export
 **File:** `src/routes/_authenticated/admin.tsx:201–203`

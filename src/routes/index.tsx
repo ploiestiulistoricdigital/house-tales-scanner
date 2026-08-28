@@ -70,7 +70,7 @@ function Home() {
   const perPage = search.perPage ?? 6;
   const safePerPage = PER_PAGE_OPTIONS.includes(perPage) ? perPage : 6;
 
-  const { data: buildings, isLoading } = useQuery({
+  const { data: buildings, isLoading, isError } = useQuery({
     queryKey: ["buildings"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -169,6 +169,10 @@ function Home() {
 
         {isLoading ? (
           <p className="text-muted-foreground italic text-lg">{t("home.loading")}</p>
+        ) : isError ? (
+          <div className="rounded-md border-2 border-destructive/50 p-16 text-center text-destructive italic bg-destructive/5 text-lg leading-relaxed">
+            {t("home.error")}
+          </div>
         ) : !buildings || buildings.length === 0 ? (
           <div className="rounded-md border-2 border-dashed border-border p-16 text-center text-muted-foreground italic bg-card/40 text-lg leading-relaxed">
             {t("home.empty")}

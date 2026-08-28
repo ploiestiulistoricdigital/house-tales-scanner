@@ -51,7 +51,10 @@ function AdminPage() {
     },
   });
 
-  const { data: buildings } = useQuery({
+  const {
+    data: buildings,
+    isError: buildingsError,
+  } = useQuery({
     queryKey: ["admin-buildings"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -289,7 +292,11 @@ function AdminPage() {
           </div>
         </div>
 
-        {!buildings || buildings.length === 0 ? (
+        {buildingsError ? (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/5 p-12 text-center text-base text-destructive leading-relaxed">
+            {t("admin.error")}
+          </div>
+        ) : !buildings || buildings.length === 0 ? (
           <div className="rounded-lg border border-dashed p-12 text-center text-base text-muted-foreground leading-relaxed">
             {t("admin.empty")}
           </div>
