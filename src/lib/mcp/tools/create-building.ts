@@ -1,20 +1,21 @@
 import { createClient } from "@supabase/supabase-js";
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
+import { safeImageUrl } from "./validation";
 
 export default defineTool({
   name: "create_building",
   title: "Creează clădire",
   description: "Adaugă o clădire nouă în catalog. Necesită drept de administrator.",
   inputSchema: {
-    slug: z.string().min(1).regex(/^[a-z0-9-]+$/, "Doar litere mici, cifre și liniuțe."),
-    name: z.string().min(1),
-    address: z.string().optional(),
-    short_description: z.string().optional(),
-    history: z.string().optional(),
-    year_built: z.string().optional(),
-    architect: z.string().optional(),
-    cover_image_url: z.string().url().optional(),
+    slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/, "Doar litere mici, cifre și liniuțe."),
+    name: z.string().min(1).max(200),
+    address: z.string().max(300).optional(),
+    short_description: z.string().max(500).optional(),
+    history: z.string().max(50000).optional(),
+    year_built: z.string().max(50).optional(),
+    architect: z.string().max(200).optional(),
+    cover_image_url: safeImageUrl.optional(),
   },
   annotations: { readOnlyHint: false, destructiveHint: false },
   handler: async (input, ctx) => {

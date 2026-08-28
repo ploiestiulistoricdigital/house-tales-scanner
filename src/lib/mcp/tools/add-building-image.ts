@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
+import { safeImageUrl } from "./validation";
 
 export default defineTool({
   name: "add_building_image",
@@ -8,9 +9,9 @@ export default defineTool({
   description: "Adaugă o imagine (URL) în galeria unei clădiri. Necesită rol admin.",
   inputSchema: {
     building_id: z.string().uuid(),
-    url: z.string().url(),
-    caption: z.string().optional(),
-    position: z.number().int().optional(),
+    url: safeImageUrl,
+    caption: z.string().max(300).optional(),
+    position: z.number().int().min(0).max(9999).optional(),
   },
   annotations: { readOnlyHint: false, destructiveHint: false },
   handler: async (input, ctx) => {

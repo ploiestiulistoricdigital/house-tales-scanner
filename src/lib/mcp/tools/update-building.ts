@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
+import { safeImageUrl } from "./validation";
 
 export default defineTool({
   name: "update_building",
@@ -8,14 +9,14 @@ export default defineTool({
   description: "Modifică una sau mai multe proprietăți ale unei clădiri existente. Necesită rol admin.",
   inputSchema: {
     id: z.string().uuid().describe("ID-ul clădirii de modificat."),
-    slug: z.string().min(1).regex(/^[a-z0-9-]+$/).optional(),
-    name: z.string().min(1).optional(),
-    address: z.string().optional(),
-    short_description: z.string().optional(),
-    history: z.string().optional(),
-    year_built: z.string().optional(),
-    architect: z.string().optional(),
-    cover_image_url: z.string().url().optional(),
+    slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/).optional(),
+    name: z.string().min(1).max(200).optional(),
+    address: z.string().max(300).optional(),
+    short_description: z.string().max(500).optional(),
+    history: z.string().max(50000).optional(),
+    year_built: z.string().max(50).optional(),
+    architect: z.string().max(200).optional(),
+    cover_image_url: safeImageUrl.optional(),
   },
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
   handler: async ({ id, ...updates }, ctx) => {

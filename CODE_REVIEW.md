@@ -85,6 +85,7 @@ RLS policies enforce admin-only writes, but if RLS is ever accidentally disabled
 Applied to the live project (`gxpiixyldoqxvluogziy`): the `REVOKE` statements were run directly via the dashboard SQL editor (the CLI account initially linked didn't have management-API privileges for that project), and `supabase migration repair --status applied 20260827180000` brought the CLI's local migration history back in sync with the remote — confirmed via `supabase migration list`.
 
 #### SEC-6 · MCP write tools have weaker input validation than server functions
+**Status:** Done
 **Files:** `src/lib/mcp/tools/create-building.ts`, `update-building.ts`, `add-building-image.ts`
 
 The MCP tools lack max-length constraints and URL-scheme guards that `buildings.functions.ts` already applies. A malicious client could submit a 10 MB `history` string or a `javascript:` URL as `cover_image_url`.
@@ -92,6 +93,8 @@ The MCP tools lack max-length constraints and URL-scheme guards that `buildings.
 Mirror the Zod schema from `buildings.functions.ts` in all MCP write tools:
 - `name`: `max(200)`, `address`: `max(300)`, `history`: `max(50000)`
 - `cover_image_url`: reject `data:` and `javascript:` schemes
+
+**Resolution:** Added max-length constraints to every string field in `create_building` and `update_building` (`slug` 120, `name` 200, `address` 300, `short_description` 500, `history` 50000, `year_built` 50, `architect` 200) and to `caption` (300) and `position` (0–9999) in `add_building_image`, mirroring `buildingInput`/`imageInput` in `src/lib/buildings.functions.ts`. Added a shared `safeImageUrl` Zod schema (`src/lib/mcp/tools/validation.ts` — `.url().max(2000)` plus a refinement rejecting `javascript:`/`data:`/`vbscript:` schemes) and applied it to `cover_image_url` in both building tools and `url` in `add_building_image`, since none of these schemes were actually blocked by plain `z.string().url()` in either the MCP tools or the server functions.
 
 #### SEC-7 · Error messages expose internal config names
 **File:** `src/integrations/supabase/auth-middleware.ts:44–45`
