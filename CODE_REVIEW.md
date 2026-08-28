@@ -335,9 +335,12 @@ The download completes but the database record is never written. The admin belie
 **Resolution:** Added `toast.error(t("qr.saveFailed"))` alongside the existing `console.error` in `persist()`'s catch block, so the admin is told the download succeeded but wasn't recorded in the export history — instead of silently believing it was saved. Added the `qr.saveFailed` string to all three i18n dictionaries (RO/EN/FR) in `src/lib/i18n.tsx`.
 
 #### DX-3 · No `.env.example` file
+**Status:** Done
 **File:** (missing)
 
 Developers must grep the codebase to discover required environment variables. Create `.env.example` documenting every variable (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `PUBLIC_SITE_URL`, `VITE_PUBLIC_SITE_URL`, `ANTHROPIC_API_KEY`) with placeholder values and comments.
+
+**Resolution:** Added `.env.example` (not gitignored — `.gitignore` only excludes the literal `.env`, not `.env*`). Re-grepped `process.env.*`/`import.meta.env.*` across `src/` rather than trusting the review's list as complete, and found two more variables it missed: `SUPABASE_SERVICE_ROLE_KEY` (the service-role client, `client.server.ts`) and `VITE_SUPABASE_PROJECT_ID` (MCP OAuth issuer URL, `mcp/index.ts`) — both included alongside the seven the review named, each with a comment on where it's read and whether it's secret, public, or has a safe default.
 
 #### DX-4 · i18n fallback silently serves wrong language
 **File:** `src/lib/i18n.tsx:613–620`
