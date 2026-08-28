@@ -18,7 +18,7 @@ export function QrExportHistory({ buildingId }: { buildingId: string }) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("qr_code_exports")
-        .select("*")
+        .select("id, format, created_at, file_size, file_url")
         .eq("building_id", buildingId)
         .order("created_at", { ascending: false });
       if (error) throw error;

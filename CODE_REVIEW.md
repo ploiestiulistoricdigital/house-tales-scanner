@@ -237,9 +237,12 @@ No intrinsic dimensions cause Cumulative Layout Shift; no `srcset` wastes bandwi
 `srcset` was left out of this pass: none of the images go through a resizing service — `cover_image_url`/`image_url` are plain Supabase Storage object URLs with no image-transformation endpoint configured in `supabase/config.toml` (that's a paid Supabase add-on), and there's no upload-time pipeline generating multiple sizes. Emitting a `srcset` pointing at the same full-resolution URL for every descriptor would add markup without saving any bandwidth. Real `srcset` support would need either enabling Supabase's image transformation API or a resize-on-upload step — worth a follow-up item of its own rather than folding into this one.
 
 #### PERF-2 · `SELECT *` on building queries sends unnecessary payload
+**Status:** Done
 **Files:** `src/routes/b.$slug.tsx:48`, `src/components/QrExportHistory.tsx:21`
 
 The public building detail page fetches all columns including large `history_*` fields regardless of current language. Select only the columns the page renders. (The admin edit page legitimately needs all columns.)
+
+**Resolution:** `loadBuilding()` now lists every `buildings` column the page actually renders (`id, slug, name, name_en, name_fr, address, address_en, address_fr, year_built, architect, short_description, short_description_en, short_description_fr, history, history_en, history_fr, cover_image_url`) instead of `*`. All three language variants of `history`/`short_description`/etc. are still selected — `pick()` falls back across RO/EN/FR at render time, so any one of them may be what's actually shown — but `created_at`, `updated_at`, and `qr_code_url` are no longer fetched since nothing on this page uses them. `QrExportHistory.tsx` similarly narrowed its `qr_code_exports` select to `id, format, created_at, file_size, file_url`, dropping `building_id` (already the filter) and `file_path` (server-only, used by `deleteQrExport`).
 
 #### PERF-3 · No `Cache-Control` headers for SSR pages
 **File:** `netlify.toml`

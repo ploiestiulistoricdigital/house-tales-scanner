@@ -45,7 +45,9 @@ type Img = { id: string; image_url: string; caption: string | null; caption_en: 
 async function loadBuilding(slug: string): Promise<{ building: Building; images: Img[] }> {
   const { data, error } = await supabase
     .from("buildings")
-    .select("*, building_images(id, image_url, caption, caption_en, caption_fr, sort_order)")
+    .select(
+      "id, slug, name, name_en, name_fr, address, address_en, address_fr, year_built, architect, short_description, short_description_en, short_description_fr, history, history_en, history_fr, cover_image_url, building_images(id, image_url, caption, caption_en, caption_fr, sort_order)",
+    )
     .eq("slug", slug)
     .order("sort_order", { referencedTable: "building_images" })
     .maybeSingle();
