@@ -97,11 +97,14 @@ Mirror the Zod schema from `buildings.functions.ts` in all MCP write tools:
 **Resolution:** Added max-length constraints to every string field in `create_building` and `update_building` (`slug` 120, `name` 200, `address` 300, `short_description` 500, `history` 50000, `year_built` 50, `architect` 200) and to `caption` (300) and `position` (0–9999) in `add_building_image`, mirroring `buildingInput`/`imageInput` in `src/lib/buildings.functions.ts`. Added a shared `safeImageUrl` Zod schema (`src/lib/mcp/tools/validation.ts` — `.url().max(2000)` plus a refinement rejecting `javascript:`/`data:`/`vbscript:` schemes) and applied it to `cover_image_url` in both building tools and `url` in `add_building_image`, since none of these schemes were actually blocked by plain `z.string().url()` in either the MCP tools or the server functions.
 
 #### SEC-7 · Error messages expose internal config names
+**Status:** Done
 **File:** `src/integrations/supabase/auth-middleware.ts:44–45`
 
 When Supabase env vars are missing, the thrown `Error` message includes the variable names (`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`). This message propagates to clients.
 
 Keep detailed messages in `console.error()`; throw a generic `"Missing required server configuration"` to the caller.
+
+**Resolution:** The variable-name list now only goes to `console.error()`; the thrown error the caller/client sees is the generic `"Missing required server configuration"`.
 
 #### SEC-8 · `trustForwardedHost: true` in MCP handler without documented guarantees
 **File:** `src/routes/mcp.ts:12`

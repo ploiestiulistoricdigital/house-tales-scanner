@@ -40,9 +40,10 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
         ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
         ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
       ];
-      const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Set them in the deployment environment.`;
-      console.error(`[Supabase] ${message}`);
-      throw new Error(message);
+      console.error(
+        `[Supabase] Missing Supabase environment variable(s): ${missing.join(', ')}. Set them in the deployment environment.`,
+      );
+      throw new Error('Missing required server configuration');
     }
     
     const request = getRequest();
