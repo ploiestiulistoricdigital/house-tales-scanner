@@ -177,9 +177,12 @@ A single failed QR fetch aborts the PDF for all buildings. Replace with `Promise
 **Resolution:** The QR fetch/`FileReader` step now runs through `Promise.allSettled()` (also treating a non-OK HTTP response as a failure, which previously would have produced a broken data URL instead of an explicit error); rejected entries are logged via `console.warn` and mapped to `null` instead of aborting the whole batch. The PDF-generation loop skips `pdf.addImage()` for a `null` entry and records the building under the same `failedQrNames` list added for ARCH-2, so a fetch failure and an embed failure both surface through the same end-of-export `toast.error()` summary.
 
 #### ARCH-4 · Pervasive `as any` casts on Supabase query results
+**Status:** Done
 **Files:** `src/routes/_authenticated/admin_.buildings.$id.edit.tsx:230–255`, `src/lib/buildings.functions.ts:25`, `src/lib/qr-exports.functions.ts:5`
 
 Supabase's generated `types.ts` covers all query shapes. Replace `(building as any)` with the generated row type and use proper null narrowing. This surfaces real type bugs that are currently hidden.
+
+**Resolution:** `types.ts` already has full column coverage for `buildings` (including the `_en`/`_fr` fields), so `supabase.from("buildings").select("*")` was already correctly typed — the `(building as any)` casts in `admin_.buildings.$id.edit.tsx` were pure noise. Removed them (and the redundant `img: any` annotation on the gallery `.map()`, which was suppressing the same already-correct inference for `building_images` rows) and confirmed with `tsc --noEmit` that nothing was actually relying on the cast to paper over a type mismatch. Also replaced `assertAdmin(ctx: { supabase: any; ... })` with `SupabaseClient<Database>` in `buildings.functions.ts` and `qr-exports.functions.ts` — and in `translate.functions.ts`, which has the identical helper duplicated a third time but wasn't listed in this item; fixed it too since leaving one of three copies untyped would have defeated the point.
 
 #### ARCH-5 · Sequential building + images fetches on the public detail page
 **File:** `src/routes/b.$slug.tsx:45–59`

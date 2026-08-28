@@ -1,8 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { PUBLIC_SITE_URL } from "@/lib/site-url";
 import { assertRateLimit } from "@/lib/rate-limit";
+import type { Database } from "@/integrations/supabase/types";
 
 const buildingInput = z.object({
   slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
@@ -23,7 +25,7 @@ const buildingInput = z.object({
   cover_image_url: z.string().url().max(2000).optional().nullable().or(z.literal("")),
 });
 
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
+async function assertAdmin(ctx: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await ctx.supabase
     .from("user_roles")
     .select("role")

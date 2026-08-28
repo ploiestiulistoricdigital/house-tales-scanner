@@ -227,19 +227,19 @@ function EditBuilding() {
           initial={{
             slug: building.slug,
             name: building.name,
-            name_en: (building as any).name_en ?? "",
-            name_fr: (building as any).name_fr ?? "",
+            name_en: building.name_en ?? "",
+            name_fr: building.name_fr ?? "",
             address: building.address ?? "",
-            address_en: (building as any).address_en ?? "",
-            address_fr: (building as any).address_fr ?? "",
+            address_en: building.address_en ?? "",
+            address_fr: building.address_fr ?? "",
             year_built: building.year_built ?? "",
             architect: building.architect ?? "",
             short_description: building.short_description ?? "",
-            short_description_en: (building as any).short_description_en ?? "",
-            short_description_fr: (building as any).short_description_fr ?? "",
+            short_description_en: building.short_description_en ?? "",
+            short_description_fr: building.short_description_fr ?? "",
             history: building.history ?? "",
-            history_en: (building as any).history_en ?? "",
-            history_fr: (building as any).history_fr ?? "",
+            history_en: building.history_en ?? "",
+            history_fr: building.history_fr ?? "",
             cover_image_url: building.cover_image_url ?? "",
           }}
           submitLabel={t("form.save")}
@@ -252,7 +252,7 @@ function EditBuilding() {
         <section className="mt-12 border-t border-border/70 pt-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">{t("gallery.title")}</h2>
           <div className="space-y-2 mb-4">
-            {images?.map((img: any) => {
+            {images?.map((img) => {
               const isEditing = editingImg === img.id;
               return (
                 <div key={img.id} className="rounded-md border border-border/70 p-2">
