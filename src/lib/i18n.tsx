@@ -619,6 +619,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const t = useCallback(
     (key: string, vars?: Record<string, string | number>) => {
       const dict = DICTS[lang];
+      if (import.meta.env.DEV && !(key in dict)) {
+        console.warn(
+          `[i18n] Missing "${lang}" translation for key "${key}"` +
+            (key in RO ? " — falling back to RO" : " — missing in RO too, falling back to the key itself"),
+        );
+      }
       const raw = dict[key] ?? RO[key] ?? key;
       return interpolate(raw, vars);
     },

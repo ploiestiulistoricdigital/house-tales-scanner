@@ -343,6 +343,7 @@ Developers must grep the codebase to discover required environment variables. Cr
 **Resolution:** Added `.env.example` (not gitignored — `.gitignore` only excludes the literal `.env`, not `.env*`). Re-grepped `process.env.*`/`import.meta.env.*` across `src/` rather than trusting the review's list as complete, and found two more variables it missed: `SUPABASE_SERVICE_ROLE_KEY` (the service-role client, `client.server.ts`) and `VITE_SUPABASE_PROJECT_ID` (MCP OAuth issuer URL, `mcp/index.ts`) — both included alongside the seven the review named, each with a comment on where it's read and whether it's secret, public, or has a safe default.
 
 #### DX-4 · i18n fallback silently serves wrong language
+**Status:** Done
 **File:** `src/lib/i18n.tsx:613–620`
 
 ```ts
@@ -350,6 +351,8 @@ const raw = dict[key] ?? RO[key] ?? key;
 ```
 
 If a key exists in EN/FR but not in RO, Romanian users silently see English text. Add a development-mode warning (e.g., `if (import.meta.env.DEV && !dict[key] && !RO[key]) console.warn(...)`) to surface missing keys during authoring.
+
+**Resolution:** `t()` now checks `!(key in dict)` for the active language and, in dev only, `console.warn`s which key is missing and whether it's falling back to RO or all the way to the raw key — covering the actual reported scenario too (an EN/FR user silently seeing Romanian text because their dictionary is missing the key), not just the narrower "missing everywhere" case in the review's suggested snippet.
 
 ---
 
