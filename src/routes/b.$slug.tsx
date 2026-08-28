@@ -43,19 +43,16 @@ function pick(
 type Img = { id: string; image_url: string; caption: string | null; caption_en: string | null; caption_fr: string | null };
 
 async function loadBuilding(slug: string): Promise<{ building: Building; images: Img[] }> {
-  const { data: building, error } = await supabase
+  const { data, error } = await supabase
     .from("buildings")
-    .select("*")
+    .select("*, building_images(id, image_url, caption, caption_en, caption_fr, sort_order)")
     .eq("slug", slug)
+    .order("sort_order", { referencedTable: "building_images" })
     .maybeSingle();
   if (error) throw new Error(error.message);
-  if (!building) throw notFound();
-  const { data: images } = await supabase
-    .from("building_images")
-    .select("id, image_url, caption, caption_en, caption_fr")
-    .eq("building_id", building.id)
-    .order("sort_order");
-  return { building: building as Building, images: (images ?? []) as Img[] };
+  if (!data) throw notFound();
+  const { building_images, ...building } = data;
+  return { building: building as Building, images: (building_images ?? []) as Img[] };
 }
 
 export const Route = createFileRoute("/b/$slug")({

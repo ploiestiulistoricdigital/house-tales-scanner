@@ -185,6 +185,7 @@ Supabase's generated `types.ts` covers all query shapes. Replace `(building as a
 **Resolution:** `types.ts` already has full column coverage for `buildings` (including the `_en`/`_fr` fields), so `supabase.from("buildings").select("*")` was already correctly typed — the `(building as any)` casts in `admin_.buildings.$id.edit.tsx` were pure noise. Removed them (and the redundant `img: any` annotation on the gallery `.map()`, which was suppressing the same already-correct inference for `building_images` rows) and confirmed with `tsc --noEmit` that nothing was actually relying on the cast to paper over a type mismatch. Also replaced `assertAdmin(ctx: { supabase: any; ... })` with `SupabaseClient<Database>` in `buildings.functions.ts` and `qr-exports.functions.ts` — and in `translate.functions.ts`, which has the identical helper duplicated a third time but wasn't listed in this item; fixed it too since leaving one of three copies untyped would have defeated the point.
 
 #### ARCH-5 · Sequential building + images fetches on the public detail page
+**Status:** Done
 **File:** `src/routes/b.$slug.tsx:45–59`
 
 Two round-trips to Supabase on every page load. Combine into a single query using a Supabase join:
@@ -192,6 +193,8 @@ Two round-trips to Supabase on every page load. Combine into a single query usin
 supabase.from("buildings").select("*, building_images(id, image_url, caption, sort_order)").eq("slug", slug)
 ```
 or at minimum fetch in parallel with `Promise.all`.
+
+**Resolution:** `loadBuilding()` now issues a single query — `select("*, building_images(id, image_url, caption, caption_en, caption_fr, sort_order)")` — with `.order("sort_order", { referencedTable: "building_images" })` to preserve gallery ordering (PostgREST's embedded-resource ordering, since a plain `.order()` would sort the parent `buildings` row instead). The response is destructured into `{ building_images, ...building }` and returned as before. `tsc --noEmit` is clean against the existing hand-written `Building`/`Img` types.
 
 ---
 
