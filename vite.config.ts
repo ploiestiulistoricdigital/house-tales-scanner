@@ -20,7 +20,29 @@ export default defineConfig(async ({ command }) => {
     // generic server bundle with no Netlify wiring, so every dynamic route
     // 404s in production even though the client assets build fine.
     const { nitro } = await import("nitro/vite");
-    plugins.push(nitro({ preset: "netlify" }));
+    plugins.push(
+      nitro({
+        preset: "netlify",
+        routeRules: {
+          // Public building pages: cache briefly on the client, longer at
+          // the CDN, and serve stale content while a fresh copy revalidates
+          // in the background so an editor's change is never blocked on a
+          // cache miss.
+          "/b/**": {
+            headers: {
+              "cache-control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
+            },
+          },
+          // Vite fingerprints these filenames with a content hash, so a
+          // given URL never changes meaning — safe to cache for a year.
+          "/assets/**": {
+            headers: {
+              "cache-control": "public, max-age=31536000, immutable",
+            },
+          },
+        },
+      }),
+    );
   }
 
   // trustForwardedHost defaults to true, which is meant for proxies (like

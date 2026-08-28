@@ -245,10 +245,15 @@ The public building detail page fetches all columns including large `history_*` 
 **Resolution:** `loadBuilding()` now lists every `buildings` column the page actually renders (`id, slug, name, name_en, name_fr, address, address_en, address_fr, year_built, architect, short_description, short_description_en, short_description_fr, history, history_en, history_fr, cover_image_url`) instead of `*`. All three language variants of `history`/`short_description`/etc. are still selected — `pick()` falls back across RO/EN/FR at render time, so any one of them may be what's actually shown — but `created_at`, `updated_at`, and `qr_code_url` are no longer fetched since nothing on this page uses them. `QrExportHistory.tsx` similarly narrowed its `qr_code_exports` select to `id, format, created_at, file_size, file_url`, dropping `building_id` (already the filter) and `file_path` (server-only, used by `deleteQrExport`).
 
 #### PERF-3 · No `Cache-Control` headers for SSR pages
+**Status:** Done
 **File:** `netlify.toml`
 **Already in:** `plan.md §6`
 
 Add cache rules for `/b/*` (5 min client / 1 hr CDN with stale-while-revalidate) and for hashed static assets (1 year immutable).
+
+**Resolution:** `netlify.toml` has no `[[headers]]` mechanism that reliably reaches SSR responses on this stack — pages under `/b/*` are rendered per-request by the Nitro-generated Netlify Function, not served as static files, and Netlify's static header rules aren't guaranteed to apply to function output. Used Nitro's own `routeRules` option instead (`vite.config.ts`, inside the existing `nitro({ preset: "netlify" })` call), which sets response headers per matched route directly in the SSR pipeline: `/b/**` gets `public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` (5 min client, 1 hr CDN, background revalidation), and `/assets/**` (Vite's default content-hashed output directory) gets `public, max-age=31536000, immutable`.
+
+**Note:** Couldn't run an actual `vite build`/`bun run build` in this environment to confirm the emitted headers on a real response (`bun` isn't installed here, and `vite build` hits an unrelated pre-existing Windows path-separator bug in the MCP plugin — see SEC-8's resolution for the same limitation). Worth a quick check of response headers on `/b/<slug>` and a built `/assets/*.js` file after the next real deploy.
 
 #### PERF-4 · Missing preload hints for hero image and fonts
 **File:** `src/routes/__root.tsx:86–98`
