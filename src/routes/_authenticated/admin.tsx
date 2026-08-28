@@ -120,12 +120,13 @@ function AdminPage() {
       const [fontNormal, fontBold, qrDataUrls] = await Promise.all([
         toBase64(fontUrls.normal),
         toBase64(fontUrls.bold),
-        Promise.all(
+        Promise.allSettled(
           buildings.map(async (b) => {
             const src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=${encodeURIComponent(
               `${PUBLIC_SITE_URL}/b/${b.slug}`,
             )}`;
             const res = await fetch(src);
+            if (!res.ok) throw new Error(`QR fetch failed with status ${res.status}`);
             const blob = await res.blob();
             return await new Promise<string>((resolve, reject) => {
               const r = new FileReader();
@@ -133,6 +134,12 @@ function AdminPage() {
               r.onerror = reject;
               r.readAsDataURL(blob);
             });
+          }),
+        ).then((results) =>
+          results.map((r, i) => {
+            if (r.status === "fulfilled") return r.value;
+            console.warn(`Failed to fetch QR code for "${buildings[i].name}"`, r.reason);
+            return null;
           }),
         ),
       ]);
@@ -201,11 +208,16 @@ function AdminPage() {
 
         const qrX = marginX + colName + colAddr + (colQr - qrSize) / 2;
         const qrY = rowTop + (rowH - qrSize) / 2;
-        try {
-          pdf.addImage(qrDataUrls[i], "PNG", qrX, qrY, qrSize, qrSize);
-        } catch (err) {
-          console.warn(`Failed to embed QR code for "${b.name}" in export PDF`, err);
+        const qrDataUrl = qrDataUrls[i];
+        if (!qrDataUrl) {
           failedQrNames.push(b.name);
+        } else {
+          try {
+            pdf.addImage(qrDataUrl, "PNG", qrX, qrY, qrSize, qrSize);
+          } catch (err) {
+            console.warn(`Failed to embed QR code for "${b.name}" in export PDF`, err);
+            failedQrNames.push(b.name);
+          }
         }
 
         y += rowH;

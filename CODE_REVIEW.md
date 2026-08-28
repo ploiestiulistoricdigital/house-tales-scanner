@@ -169,9 +169,12 @@ Failed image embeds are silently dropped. Admins receive a PDF with missing QR c
 **Resolution:** The `catch {}` around `pdf.addImage()` now logs `console.warn` with the building name and the underlying error, and pushes the name onto a `failedQrNames` array collected across the export loop. After `pdf.save()`, if any names were collected, a `toast.error()` lists which buildings are missing their QR code in the generated PDF, so the export still completes but the admin isn't left unaware.
 
 #### ARCH-3 · `Promise.all` over QR fetches crashes entire export on one failure
+**Status:** Done
 **File:** `src/routes/_authenticated/admin.tsx:119–137`
 
 A single failed QR fetch aborts the PDF for all buildings. Replace with `Promise.allSettled()` and skip (or placeholder) failed entries; report partial failures to the user.
+
+**Resolution:** The QR fetch/`FileReader` step now runs through `Promise.allSettled()` (also treating a non-OK HTTP response as a failure, which previously would have produced a broken data URL instead of an explicit error); rejected entries are logged via `console.warn` and mapped to `null` instead of aborting the whole batch. The PDF-generation loop skips `pdf.addImage()` for a `null` entry and records the building under the same `failedQrNames` list added for ARCH-2, so a fetch failure and an embed failure both surface through the same end-of-export `toast.error()` summary.
 
 #### ARCH-4 · Pervasive `as any` casts on Supabase query results
 **Files:** `src/routes/_authenticated/admin_.buildings.$id.edit.tsx:230–255`, `src/lib/buildings.functions.ts:25`, `src/lib/qr-exports.functions.ts:5`
