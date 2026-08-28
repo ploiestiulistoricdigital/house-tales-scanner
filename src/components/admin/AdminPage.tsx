@@ -72,7 +72,6 @@ export function AdminPage() {
     await deleteFn({ data: { id: pendingDelete.id } });
     setPendingDelete(null);
     qc.invalidateQueries({ queryKey: ["admin-buildings"] });
-    qc.invalidateQueries({ queryKey: ["buildings"] });
   }
 
 

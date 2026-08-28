@@ -1,5 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode, ChevronLeft, ChevronRight } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
@@ -13,7 +12,38 @@ const searchSchema = z.object({
   perPage: fallback(z.number().int(), 6).optional(),
 });
 
+type BuildingSummary = {
+  id: string;
+  slug: string;
+  name: string;
+  name_en: string | null;
+  name_fr: string | null;
+  address: string | null;
+  address_en: string | null;
+  address_fr: string | null;
+  short_description: string | null;
+  short_description_en: string | null;
+  short_description_fr: string | null;
+  cover_image_url: string | null;
+  year_built: string | null;
+};
+
+async function fetchBuildings(): Promise<BuildingSummary[] | null> {
+  const { data, error } = await supabase
+    .from("buildings")
+    .select(
+      "id, slug, name, name_en, name_fr, address, address_en, address_fr, short_description, short_description_en, short_description_fr, cover_image_url, year_built",
+    )
+    .order("name");
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data;
+}
+
 export const Route = createFileRoute("/")({
+  loader: () => fetchBuildings(),
   head: () => ({
     meta: [
       { title: "Poveștile Caselor — Descoperă istoria clădirilor" },
@@ -70,17 +100,8 @@ function Home() {
   const perPage = search.perPage ?? 6;
   const safePerPage = PER_PAGE_OPTIONS.includes(perPage) ? perPage : 6;
 
-  const { data: buildings, isLoading, isError } = useQuery({
-    queryKey: ["buildings"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("buildings")
-        .select("id, slug, name, name_en, name_fr, address, address_en, address_fr, short_description, short_description_en, short_description_fr, cover_image_url, year_built")
-        .order("name");
-      if (error) throw error;
-      return data;
-    },
-  });
+  const buildings = Route.useLoaderData();
+  const isError = buildings === null;
 
   const total = buildings?.length ?? 0;
   const pageCount = Math.max(1, Math.ceil(total / safePerPage));
@@ -167,9 +188,7 @@ function Home() {
           )}
         </div>
 
-        {isLoading ? (
-          <p className="text-muted-foreground italic text-lg">{t("home.loading")}</p>
-        ) : isError ? (
+        {isError ? (
           <div className="rounded-md border-2 border-destructive/50 p-16 text-center text-destructive italic bg-destructive/5 text-lg leading-relaxed">
             {t("home.error")}
           </div>

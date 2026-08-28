@@ -90,7 +90,6 @@ export function EditBuildingPage({ id }: { id: string }) {
       });
       qc.invalidateQueries({ queryKey: ["building", id] });
       qc.invalidateQueries({ queryKey: ["admin-buildings"] });
-      qc.invalidateQueries({ queryKey: ["buildings"] });
       navigate({ to: "/admin" });
     } catch (e: any) {
       setError(e.message ?? t("form.saveFailed"));
