@@ -150,6 +150,10 @@ function BuildingPage() {
           <img
             src={building.cover_image_url}
             alt={name}
+            width={1200}
+            height={448}
+            loading="eager"
+            decoding="async"
             className="h-full w-full object-cover sepia-[0.1]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
@@ -242,6 +246,8 @@ function BuildingPage() {
                       <img
                         src={img.image_url}
                         alt={cap ?? ""}
+                        width={400}
+                        height={400}
                         className="h-full w-full object-cover sepia-[0.1] group-hover:sepia-0 group-hover:scale-105 transition-all duration-500"
                         loading="lazy"
                       />

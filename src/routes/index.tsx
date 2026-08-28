@@ -197,6 +197,8 @@ function Home() {
                           <img
                             src={b.cover_image_url}
                             alt={name}
+                            width={400}
+                            height={300}
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.1] group-hover:sepia-0"
                             loading="lazy"
                           />

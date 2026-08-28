@@ -227,9 +227,14 @@ Minor prop-drilling. A `CaptionRowGroup` component owning its own state would be
 ### HIGH
 
 #### PERF-1 · Images missing `width`, `height`, and `srcset`
+**Status:** Done
 **Files:** `src/routes/b.$slug.tsx:153,245`, `src/routes/index.tsx:193`
 
 No intrinsic dimensions cause Cumulative Layout Shift; no `srcset` wastes bandwidth on mobile. Add explicit `width`/`height` on every `<img>`. For the hero cover, use `loading="eager" decoding="async"`; for gallery thumbnails and archive cards, `loading="lazy"`.
+
+**Resolution:** Added explicit `width`/`height` attributes (matching each container's designed aspect ratio — 1200×448 for the hero, 400×400 for the gallery grid, 400×300 for the 4:3 archive cards) plus `loading="eager" decoding="async"` on the building-detail hero image and confirmed `loading="lazy"` stays on the gallery thumbnails and archive cards (b.$slug.tsx gallery already had it; index.tsx archive cards already had it too). The full-screen lightbox `<img>` was intentionally left alone — it's an overlay shown on click, not part of normal document flow, so it has no CLS to prevent and no natural "intrinsic size" to declare.
+
+`srcset` was left out of this pass: none of the images go through a resizing service — `cover_image_url`/`image_url` are plain Supabase Storage object URLs with no image-transformation endpoint configured in `supabase/config.toml` (that's a paid Supabase add-on), and there's no upload-time pipeline generating multiple sizes. Emitting a `srcset` pointing at the same full-resolution URL for every descriptor would add markup without saving any bandwidth. Real `srcset` support would need either enabling Supabase's image transformation API or a resize-on-upload step — worth a follow-up item of its own rather than folding into this one.
 
 #### PERF-2 · `SELECT *` on building queries sends unnecessary payload
 **Files:** `src/routes/b.$slug.tsx:48`, `src/components/QrExportHistory.tsx:21`
