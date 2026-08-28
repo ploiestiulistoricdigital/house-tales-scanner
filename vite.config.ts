@@ -23,7 +23,12 @@ export default defineConfig(async ({ command }) => {
     plugins.push(nitro({ preset: "netlify" }));
   }
 
-  plugins.push(viteReact(), mcpPlugin());
+  // trustForwardedHost defaults to true, which is meant for proxies (like
+  // Lovable's) that rewrite Host and overwrite X-Forwarded-Host themselves.
+  // This site has a single fixed public origin (see src/lib/site-url.ts) and
+  // Netlify passes the real Host through unmodified, so there's no need to
+  // trust a client-suppliable header for the advertised OAuth resource URL.
+  plugins.push(viteReact(), mcpPlugin({ trustForwardedHost: false }));
 
   return {
     resolve: {

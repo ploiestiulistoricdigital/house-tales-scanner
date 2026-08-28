@@ -107,9 +107,12 @@ Keep detailed messages in `console.error()`; throw a generic `"Missing required 
 **Resolution:** The variable-name list now only goes to `console.error()`; the thrown error the caller/client sees is the generic `"Missing required server configuration"`.
 
 #### SEC-8 · `trustForwardedHost: true` in MCP handler without documented guarantees
+**Status:** Done
 **File:** `src/routes/mcp.ts:12`
 
 If Netlify's edge does not strip user-supplied `X-Forwarded-Host` headers, OAuth redirect URIs can be hijacked. Verify Netlify strips this header, or set `trustForwardedHost: false` and hard-code the expected origin.
+
+**Resolution:** `trustForwardedHost` only exists to support proxies (Lovable's own) that rewrite `Host` to an internal backend name and overwrite `X-Forwarded-Host` with the real public host themselves — the option's own doc comment (`node_modules/@lovable.dev/mcp-js/dist/stacks/tanstack/vite.d.ts`) says to set it `false` for any other proxy, since a client could otherwise spoof the header to redirect the advertised OAuth resource URL. This site doesn't need it at all: it serves a single fixed public origin (`PUBLIC_SITE_URL` in `src/lib/site-url.ts`, defaulting to `https://ploiestiulistoricdigital.ro`), not multiple custom domains behind a rewriting proxy, and Netlify passes the real `Host` through to the origin unmodified. Set `mcpPlugin({ trustForwardedHost: false })` in `vite.config.ts` (the actual source of truth) and synced the four generated route files (`src/routes/mcp.ts`, `src/routes/[.mcp]/list-tools.ts`, `src/routes/[.mcp]/invoke-tool/$tool.ts`, `src/routes/[.well-known]/oauth-protected-resource.ts`) to match — normally `mcpPlugin()` regenerates these automatically on `bun run dev`/`build`, but that couldn't be exercised in this environment (`bun` isn't installed here, and running `vite build` directly hits an unrelated Windows path-separator bug in the plugin's `routesDir` check). The edit made to each file is exactly what the generator's `buildRouteSource` would emit for `trustForwardedHost: false` — the option is simply omitted from the handler's options object.
 
 ---
 
