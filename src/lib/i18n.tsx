@@ -1,9 +1,15 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 
 export type Lang = "ro" | "en" | "fr";
 export const LANGS: Lang[] = ["ro", "en", "fr"];
-const DEFAULT_LANG: Lang = "ro";
+export const DEFAULT_LANG: Lang = "ro";
 const STORAGE_KEY = "hts.lang";
+
+// useLayoutEffect warns when it runs during SSR (it can't affect the
+// server-rendered output), but on the client it flushes synchronously before
+// paint — exactly what we want so a returning EN/FR visitor's saved language
+// applies before the browser ever shows the RO-default first frame.
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 type Dict = Record<string, string>;
 
@@ -587,14 +593,14 @@ function interpolate(str: string, vars?: Record<string, string | number>) {
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
       if (saved === "ro" || saved === "en" || saved === "fr") setLangState(saved);
     } catch {}
   }, []);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof document !== "undefined") {
       document.documentElement.lang = lang;
     }

@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { I18nProvider, useT } from "../lib/i18n";
+import { DEFAULT_LANG, I18nProvider, useT } from "../lib/i18n";
 import { Toaster } from "@/components/ui/sonner";
 import { PUBLIC_SITE_URL } from "../lib/site-url";
 
@@ -111,7 +111,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ro">
+    // The client corrects this to the visitor's saved language before first
+    // paint (see useIsomorphicLayoutEffect in lib/i18n.tsx) — this default
+    // only governs the raw SSR byte stream seen by non-JS clients (crawlers,
+    // screen readers before hydration), where DEFAULT_LANG is the right call
+    // for a Romanian-primary site with no per-request language detection.
+    <html lang={DEFAULT_LANG}>
       <head>
         <HeadContent />
       </head>

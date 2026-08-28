@@ -302,11 +302,23 @@ Building cards re-render on every language switch or pagination change. Memoize 
 ### HIGH
 
 #### DX-1 · `<html lang="ro">` is hardcoded and never updates
+**Status:** Done
 **File:** `src/routes/__root.tsx:108`
 
 The SSR shell serves `lang="ro"` regardless of the user's chosen language. `i18n.tsx` does patch `document.documentElement.lang` on the client (line ~602), but the SSR HTML is wrong for EN/FR users, breaking screenreaders and language-aware search engines.
 
 Pass the detected/default language to the root shell so the `lang` attribute is correct on first paint.
+
+**Resolution:** Two things were actually true here and one wasn't quite what it looked like:
+
+- The client-side correction already existed (`document.documentElement.lang = lang` in a `useEffect`), so it wasn't literally "never updates" — but that effect runs in `useEffect` (after paint), so a returning EN/FR visitor saw a flash of the RO-default frame (wrong `lang` attribute *and* wrong text, since `I18nProvider`'s dictionary is also RO until the same effect fires) before the correction landed. Switched both of `I18nProvider`'s localStorage-sync effects (`src/lib/i18n.tsx`) to a `useIsomorphicLayoutEffect` (a `useLayoutEffect` on the client, plain `useEffect` on the server to avoid its SSR warning) — `useLayoutEffect` updates are flushed synchronously before the browser paints, so the saved-language correction now lands before the first visible frame instead of after it.
+- `<html lang="ro">` was a disconnected magic string; it now reads `<html lang={DEFAULT_LANG}>`, sourced from the same exported constant `i18n.tsx` uses everywhere else, with a comment explaining why "ro" remains the right default for the raw SSR byte stream.
+
+**Deliberately not done — true per-request SSR detection (e.g. from a language cookie or `Accept-Language`), so the very first HTML bytes reflect a *returning* visitor's language before any JS runs:** investigated this and hit a real wall specific to this TanStack Start version, not just effort:
+- Reading a cookie server-side only works through `getCookie()`/`getRequest()` (`@tanstack/react-start/server`), which is backed by `AsyncLocalStorage` and throws outside an active request — it cannot be a top-level import in any file that also ships to the client (this file and `__root.tsx` both do), so it would need an `import.meta.env.SSR`-guarded dynamic import, which I could not verify tree-shakes cleanly out of the client bundle without a working build in this sandbox (`vite build` hits the unrelated pre-existing plugin bug noted in SEC-8/PERF-3).
+- Even with that solved, `shellComponent` (`RootShell`, where `<html>` is rendered) is rendered *outside* the router's per-route match context (confirmed by reading `@tanstack/react-router`'s `Match.js`: `shellComponent` wraps `matchContext.Provider`, not the reverse), so `Route.useLoaderData()` isn't available inside it — there's no documented `htmlAttrs`-style hook on `head()` either, so getting request-derived data into `RootShell` at all would need either undocumented use of `router.state` internals or restructuring how the router is constructed per-request in `src/router.tsx`/`src/server.ts`, none of which I could safely verify here.
+
+This is a real, narrower gap now (affects only non-JS clients on a returning visitor's very first frame — a Romanian-default site showing "ro" to a crawler with no session is arguably correct anyway) rather than the original, more visible one (every real browser user saw a flash of wrong language and a wrong attribute on every load). Worth a follow-up once a working dev server is available to verify the bundler behavior.
 
 #### DX-2 · Silent persistence failure in QR export (user data loss)
 **File:** `src/components/QrCodePreview.tsx:31`
