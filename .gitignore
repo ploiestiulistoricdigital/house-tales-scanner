@@ -29,6 +29,9 @@ dist-ssr
 # Local working docs
 PROD.md
 
+# Database dumps (may contain production data)
+supabase/backup/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

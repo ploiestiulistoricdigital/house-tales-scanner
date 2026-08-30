@@ -161,7 +161,7 @@ export function EditBuildingPage({ id }: { id: string }) {
       });
       setEditingImg(null);
       qc.invalidateQueries({ queryKey: ["building-images", id] });
-      toast.success(t("gallery.saveCaptions"));
+      toast.success(t("gallery.captionSaved"));
     } catch (e: any) {
       toast.error(e?.message ?? t("form.saveFailed"));
     } finally {
