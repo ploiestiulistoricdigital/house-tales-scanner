@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, Calendar, User } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
+import { SiteFooter } from "@/components/SiteFooter";
 
 type Building = {
   id: string;
@@ -278,6 +279,7 @@ function BuildingPage() {
         />
       </div>
 
+      <SiteFooter />
 
       {lightbox && (
         <div

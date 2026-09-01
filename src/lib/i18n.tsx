@@ -210,6 +210,22 @@ const RO: Dict = {
   "translate.loading": "Se traduce…",
   "translate.error": "Traducerea a eșuat",
   "translate.empty": "Nu există text de tradus",
+
+  // Cookie policy
+  "cookiePolicy.title": "Politica de cookie-uri",
+  "cookiePolicy.updated": "Ultima actualizare: 1 septembrie 2026",
+  "cookiePolicy.intro": "Acest site nu folosește cookie-uri de urmărire, publicitate sau analiză. Mai jos explicăm exact ce date stochează browserul tău atunci când vizitezi acest site și de ce.",
+  "cookiePolicy.noTracking.title": "Fără cookie-uri de urmărire",
+  "cookiePolicy.noTracking.body": "Nu folosim cookie-uri pentru publicitate, analiză de trafic sau urmărire între site-uri. Nu există un banner de consimțământ pentru cookie-uri, deoarece nu există cookie-uri de acest fel de acceptat.",
+  "cookiePolicy.stored.title": "Ce stochează acest site în browserul tău",
+  "cookiePolicy.stored.intro": "Site-ul folosește stocarea locală a browserului (localStorage), nu cookie-uri, în două scopuri:",
+  "cookiePolicy.stored.lang.title": "Preferința de limbă",
+  "cookiePolicy.stored.lang.body": "Cheia „hts.lang” reține limba aleasă (română, engleză sau franceză) pentru a-ți afișa site-ul în limba preferată la vizitele următoare.",
+  "cookiePolicy.stored.session.title": "Sesiunea de administrator",
+  "cookiePolicy.stored.session.body": "Dacă te autentifici în zona de administrare (/admin), datele sesiunii Supabase sunt stocate local pentru a rămâne autentificat între vizite. Acest lucru nu se aplică vizitatorilor obișnuiți ai arhivei publice.",
+  "cookiePolicy.manage.title": "Cum ștergi aceste date",
+  "cookiePolicy.manage.body": "Poți șterge datele stocate local oricând din setările browserului tău (de obicei sub „Confidențialitate” sau „Date site”). Ștergerea lor te va deconecta din contul de administrator (dacă erai autentificat) și va reseta limba site-ului la română.",
+  "cookiePolicy.contact.body": "Pentru întrebări despre această politică, contactează proprietarul site-ului.",
 };
 
 const EN: Dict = {
@@ -394,6 +410,22 @@ const EN: Dict = {
   "translate.loading": "Translating…",
   "translate.error": "Translation failed",
   "translate.empty": "No text to translate",
+
+  // Cookie policy
+  "cookiePolicy.title": "Cookie Policy",
+  "cookiePolicy.updated": "Last updated: September 1, 2026",
+  "cookiePolicy.intro": "This site does not use tracking, advertising, or analytics cookies. Below we explain exactly what your browser stores when you visit this site, and why.",
+  "cookiePolicy.noTracking.title": "No tracking cookies",
+  "cookiePolicy.noTracking.body": "We don't use cookies for advertising, traffic analytics, or cross-site tracking. There's no cookie consent banner, because there are no cookies of that kind to accept.",
+  "cookiePolicy.stored.title": "What this site stores in your browser",
+  "cookiePolicy.stored.intro": "The site uses browser local storage (localStorage), not cookies, for two purposes:",
+  "cookiePolicy.stored.lang.title": "Language preference",
+  "cookiePolicy.stored.lang.body": "The \"hts.lang\" key remembers your chosen language (Romanian, English, or French) so the site displays in your preferred language on future visits.",
+  "cookiePolicy.stored.session.title": "Admin session",
+  "cookiePolicy.stored.session.body": "If you sign in to the admin area (/admin), your Supabase session data is stored locally to keep you signed in between visits. This doesn't apply to regular visitors browsing the public archive.",
+  "cookiePolicy.manage.title": "How to clear this data",
+  "cookiePolicy.manage.body": "You can clear locally stored data at any time from your browser settings (usually under \"Privacy\" or \"Site data\"). Clearing it will sign you out of the admin account (if you were signed in) and reset the site's language to Romanian.",
+  "cookiePolicy.contact.body": "For questions about this policy, contact the site owner.",
 };
 
 const FR: Dict = {
@@ -578,6 +610,22 @@ const FR: Dict = {
   "translate.loading": "Traduction…",
   "translate.error": "La traduction a échoué",
   "translate.empty": "Aucun texte à traduire",
+
+  // Cookie policy
+  "cookiePolicy.title": "Politique de cookies",
+  "cookiePolicy.updated": "Dernière mise à jour : 1 septembre 2026",
+  "cookiePolicy.intro": "Ce site n'utilise aucun cookie de suivi, publicitaire ou d'analyse. Nous expliquons ci-dessous exactement ce que votre navigateur stocke lorsque vous visitez ce site, et pourquoi.",
+  "cookiePolicy.noTracking.title": "Aucun cookie de suivi",
+  "cookiePolicy.noTracking.body": "Nous n'utilisons pas de cookies à des fins publicitaires, d'analyse du trafic ou de suivi entre sites. Il n'y a pas de bandeau de consentement aux cookies, car il n'y a aucun cookie de ce type à accepter.",
+  "cookiePolicy.stored.title": "Ce que ce site stocke dans votre navigateur",
+  "cookiePolicy.stored.intro": "Le site utilise le stockage local du navigateur (localStorage), et non des cookies, à deux fins :",
+  "cookiePolicy.stored.lang.title": "Préférence de langue",
+  "cookiePolicy.stored.lang.body": "La clé « hts.lang » mémorise la langue choisie (roumain, anglais ou français) afin d'afficher le site dans votre langue préférée lors de vos prochaines visites.",
+  "cookiePolicy.stored.session.title": "Session d'administration",
+  "cookiePolicy.stored.session.body": "Si vous vous connectez à l'espace d'administration (/admin), les données de votre session Supabase sont stockées localement pour vous maintenir connecté entre les visites. Cela ne concerne pas les visiteurs habituels de l'archive publique.",
+  "cookiePolicy.manage.title": "Comment supprimer ces données",
+  "cookiePolicy.manage.body": "Vous pouvez supprimer les données stockées localement à tout moment depuis les paramètres de votre navigateur (généralement sous « Confidentialité » ou « Données du site »). Leur suppression vous déconnectera du compte administrateur (si vous étiez connecté) et réinitialisera la langue du site en roumain.",
+  "cookiePolicy.contact.body": "Pour toute question concernant cette politique, contactez le propriétaire du site.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };

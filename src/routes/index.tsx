@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Landmark, ScrollText, QrCode, ChevronLeft, ChevronRight } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
+import { SiteFooter } from "@/components/SiteFooter";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useEffect, useMemo } from "react";
@@ -259,11 +260,7 @@ function Home() {
         )}
       </section>
 
-      <footer className="border-t border-border/70 bg-secondary/50 py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm uppercase tracking-[0.2em] text-muted-foreground">
-          {t("home.footer")}
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
