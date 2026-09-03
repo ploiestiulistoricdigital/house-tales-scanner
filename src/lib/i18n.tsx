@@ -211,20 +211,28 @@ const RO: Dict = {
   "translate.error": "Traducerea a eșuat",
   "translate.empty": "Nu există text de tradus",
 
+  // Cookie consent banner
+  "cookieBanner.title": "Consimțământ pentru cookie-uri",
+  "cookieBanner.text": "Folosim cookie-uri de analiză (Google Analytics) pentru a înțelege cum este folosit site-ul. Le activăm doar cu acordul tău. Detalii în",
+  "cookieBanner.accept": "Accept",
+  "cookieBanner.decline": "Refuz",
+
   // Cookie policy
   "cookiePolicy.title": "Politica de cookie-uri",
-  "cookiePolicy.updated": "Ultima actualizare: 1 septembrie 2026",
-  "cookiePolicy.intro": "Acest site nu folosește cookie-uri de urmărire, publicitate sau analiză. Mai jos explicăm exact ce date stochează browserul tău atunci când vizitezi acest site și de ce.",
-  "cookiePolicy.noTracking.title": "Fără cookie-uri de urmărire",
-  "cookiePolicy.noTracking.body": "Nu folosim cookie-uri pentru publicitate, analiză de trafic sau urmărire între site-uri. Nu există un banner de consimțământ pentru cookie-uri, deoarece nu există cookie-uri de acest fel de acceptat.",
+  "cookiePolicy.updated": "Ultima actualizare: 3 septembrie 2026",
+  "cookiePolicy.intro": "Acest site folosește cookie-uri de analiză (Google Analytics) doar cu acordul tău. Mai jos explicăm exact ce date stochează browserul tău atunci când vizitezi acest site și de ce.",
+  "cookiePolicy.analytics.title": "Cookie-uri de analiză (Google Analytics)",
+  "cookiePolicy.analytics.body": "Folosim Google Analytics pentru a înțelege cum este folosit site-ul (de exemplu, ce pagini sunt vizitate). Aceste cookie-uri sunt încărcate doar dacă apeși „Accept” în bannerul de consimțământ afișat la prima vizită; dacă apeși „Refuz” sau ignori bannerul, nu se încarcă niciun cookie de analiză. Poți afla mai multe despre modul în care Google prelucrează aceste date în politica de confidențialitate Google.",
   "cookiePolicy.stored.title": "Ce stochează acest site în browserul tău",
-  "cookiePolicy.stored.intro": "Site-ul stochează date direct în browserul tău, nu cookie-uri, în două scopuri:",
+  "cookiePolicy.stored.intro": "Pe lângă cookie-urile de analiză de mai sus (dacă le-ai acceptat), site-ul stochează date direct în browserul tău, nu cookie-uri, în trei scopuri:",
   "cookiePolicy.stored.lang.title": "Preferința de limbă",
   "cookiePolicy.stored.lang.body": "Reținem limba aleasă (română, engleză sau franceză) pentru a-ți afișa site-ul în limba preferată la vizitele următoare.",
   "cookiePolicy.stored.session.title": "Sesiunea de administrator",
   "cookiePolicy.stored.session.body": "Dacă te autentifici în zona de administrare (/admin), datele sesiunii tale sunt stocate local pentru a rămâne autentificat între vizite. Acest lucru nu se aplică vizitatorilor obișnuiți ai arhivei publice.",
+  "cookiePolicy.stored.consent.title": "Alegerea ta privind cookie-urile",
+  "cookiePolicy.stored.consent.body": "Reținem dacă ai acceptat sau refuzat cookie-urile de analiză, pentru a nu-ți mai afișa bannerul de consimțământ la fiecare vizită.",
   "cookiePolicy.manage.title": "Cum ștergi aceste date",
-  "cookiePolicy.manage.body": "Poți șterge datele stocate local oricând din setările browserului tău (de obicei sub „Confidențialitate” sau „Date site”). Ștergerea lor te va deconecta din contul de administrator (dacă erai autentificat) și va reseta limba site-ului la română.",
+  "cookiePolicy.manage.body": "Poți șterge datele stocate local oricând din setările browserului tău (de obicei sub „Confidențialitate” sau „Date site”). Ștergerea lor te va deconecta din contul de administrator (dacă erai autentificat), va reseta limba site-ului la română și va afișa din nou bannerul de consimțământ pentru cookie-uri.",
   "cookiePolicy.contact.body": "Pentru întrebări despre această politică, contactează proprietarul site-ului.",
 };
 
@@ -411,20 +419,28 @@ const EN: Dict = {
   "translate.error": "Translation failed",
   "translate.empty": "No text to translate",
 
+  // Cookie consent banner
+  "cookieBanner.title": "Cookie consent",
+  "cookieBanner.text": "We use analytics cookies (Google Analytics) to understand how the site is used. We only enable them with your consent. Details in the",
+  "cookieBanner.accept": "Accept",
+  "cookieBanner.decline": "Decline",
+
   // Cookie policy
   "cookiePolicy.title": "Cookie Policy",
-  "cookiePolicy.updated": "Last updated: September 1, 2026",
-  "cookiePolicy.intro": "This site does not use tracking, advertising, or analytics cookies. Below we explain exactly what your browser stores when you visit this site, and why.",
-  "cookiePolicy.noTracking.title": "No tracking cookies",
-  "cookiePolicy.noTracking.body": "We don't use cookies for advertising, traffic analytics, or cross-site tracking. There's no cookie consent banner, because there are no cookies of that kind to accept.",
+  "cookiePolicy.updated": "Last updated: September 3, 2026",
+  "cookiePolicy.intro": "This site uses analytics cookies (Google Analytics) only with your consent. Below we explain exactly what your browser stores when you visit this site, and why.",
+  "cookiePolicy.analytics.title": "Analytics cookies (Google Analytics)",
+  "cookiePolicy.analytics.body": "We use Google Analytics to understand how the site is used (for example, which pages are visited). These cookies are only loaded if you click \"Accept\" on the consent banner shown on your first visit; if you click \"Decline\" or ignore the banner, no analytics cookies are loaded. You can learn more about how Google processes this data in Google's privacy policy.",
   "cookiePolicy.stored.title": "What this site stores in your browser",
-  "cookiePolicy.stored.intro": "The site stores data directly in your browser, not cookies, for two purposes:",
+  "cookiePolicy.stored.intro": "Besides the analytics cookies above (if you accepted them), the site stores data directly in your browser, not cookies, for three purposes:",
   "cookiePolicy.stored.lang.title": "Language preference",
   "cookiePolicy.stored.lang.body": "We remember your chosen language (Romanian, English, or French) so the site displays in your preferred language on future visits.",
   "cookiePolicy.stored.session.title": "Admin session",
   "cookiePolicy.stored.session.body": "If you sign in to the admin area (/admin), your session data is stored locally to keep you signed in between visits. This doesn't apply to regular visitors browsing the public archive.",
+  "cookiePolicy.stored.consent.title": "Your cookie choice",
+  "cookiePolicy.stored.consent.body": "We remember whether you accepted or declined analytics cookies, so we don't show the consent banner again on every visit.",
   "cookiePolicy.manage.title": "How to clear this data",
-  "cookiePolicy.manage.body": "You can clear locally stored data at any time from your browser settings (usually under \"Privacy\" or \"Site data\"). Clearing it will sign you out of the admin account (if you were signed in) and reset the site's language to Romanian.",
+  "cookiePolicy.manage.body": "You can clear locally stored data at any time from your browser settings (usually under \"Privacy\" or \"Site data\"). Clearing it will sign you out of the admin account (if you were signed in), reset the site's language to Romanian, and show the cookie consent banner again.",
   "cookiePolicy.contact.body": "For questions about this policy, contact the site owner.",
 };
 
@@ -611,20 +627,28 @@ const FR: Dict = {
   "translate.error": "La traduction a échoué",
   "translate.empty": "Aucun texte à traduire",
 
+  // Cookie consent banner
+  "cookieBanner.title": "Consentement aux cookies",
+  "cookieBanner.text": "Nous utilisons des cookies d'analyse (Google Analytics) pour comprendre comment le site est utilisé. Nous les activons uniquement avec votre accord. Détails dans la",
+  "cookieBanner.accept": "Accepter",
+  "cookieBanner.decline": "Refuser",
+
   // Cookie policy
   "cookiePolicy.title": "Politique de cookies",
-  "cookiePolicy.updated": "Dernière mise à jour : 1 septembre 2026",
-  "cookiePolicy.intro": "Ce site n'utilise aucun cookie de suivi, publicitaire ou d'analyse. Nous expliquons ci-dessous exactement ce que votre navigateur stocke lorsque vous visitez ce site, et pourquoi.",
-  "cookiePolicy.noTracking.title": "Aucun cookie de suivi",
-  "cookiePolicy.noTracking.body": "Nous n'utilisons pas de cookies à des fins publicitaires, d'analyse du trafic ou de suivi entre sites. Il n'y a pas de bandeau de consentement aux cookies, car il n'y a aucun cookie de ce type à accepter.",
+  "cookiePolicy.updated": "Dernière mise à jour : 3 septembre 2026",
+  "cookiePolicy.intro": "Ce site utilise des cookies d'analyse (Google Analytics) uniquement avec votre consentement. Nous expliquons ci-dessous exactement ce que votre navigateur stocke lorsque vous visitez ce site, et pourquoi.",
+  "cookiePolicy.analytics.title": "Cookies d'analyse (Google Analytics)",
+  "cookiePolicy.analytics.body": "Nous utilisons Google Analytics pour comprendre comment le site est utilisé (par exemple, quelles pages sont visitées). Ces cookies ne sont chargés que si vous cliquez sur « Accepter » dans le bandeau de consentement affiché lors de votre première visite ; si vous cliquez sur « Refuser » ou ignorez le bandeau, aucun cookie d'analyse n'est chargé. Vous pouvez en savoir plus sur la façon dont Google traite ces données dans la politique de confidentialité de Google.",
   "cookiePolicy.stored.title": "Ce que ce site stocke dans votre navigateur",
-  "cookiePolicy.stored.intro": "Le site stocke des données directement dans votre navigateur, et non des cookies, à deux fins :",
+  "cookiePolicy.stored.intro": "Outre les cookies d'analyse ci-dessus (si vous les avez acceptés), le site stocke des données directement dans votre navigateur, et non des cookies, à trois fins :",
   "cookiePolicy.stored.lang.title": "Préférence de langue",
   "cookiePolicy.stored.lang.body": "Nous mémorisons la langue choisie (roumain, anglais ou français) afin d'afficher le site dans votre langue préférée lors de vos prochaines visites.",
   "cookiePolicy.stored.session.title": "Session d'administration",
   "cookiePolicy.stored.session.body": "Si vous vous connectez à l'espace d'administration (/admin), les données de votre session sont stockées localement pour vous maintenir connecté entre les visites. Cela ne concerne pas les visiteurs habituels de l'archive publique.",
+  "cookiePolicy.stored.consent.title": "Votre choix concernant les cookies",
+  "cookiePolicy.stored.consent.body": "Nous mémorisons si vous avez accepté ou refusé les cookies d'analyse, afin de ne pas réafficher le bandeau de consentement à chaque visite.",
   "cookiePolicy.manage.title": "Comment supprimer ces données",
-  "cookiePolicy.manage.body": "Vous pouvez supprimer les données stockées localement à tout moment depuis les paramètres de votre navigateur (généralement sous « Confidentialité » ou « Données du site »). Leur suppression vous déconnectera du compte administrateur (si vous étiez connecté) et réinitialisera la langue du site en roumain.",
+  "cookiePolicy.manage.body": "Vous pouvez supprimer les données stockées localement à tout moment depuis les paramètres de votre navigateur (généralement sous « Confidentialité » ou « Données du site »). Leur suppression vous déconnectera du compte administrateur (si vous étiez connecté), réinitialisera la langue du site en roumain et réaffichera le bandeau de consentement aux cookies.",
   "cookiePolicy.contact.body": "Pour toute question concernant cette politique, contactez le propriétaire du site.",
 };
 

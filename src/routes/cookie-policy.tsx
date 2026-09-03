@@ -58,7 +58,7 @@ function CookiePolicyPage() {
           <span className="font-display text-accent text-xl">✦</span>
         </div>
 
-        <Section title={t("cookiePolicy.noTracking.title")} body={t("cookiePolicy.noTracking.body")} />
+        <Section title={t("cookiePolicy.analytics.title")} body={t("cookiePolicy.analytics.body")} />
 
         <h2 className="font-display text-lg sm:text-xl font-semibold text-foreground mb-2">
           {t("cookiePolicy.stored.title")}
@@ -72,6 +72,10 @@ function CookiePolicyPage() {
           <li className="border-l-[3px] border-accent pl-4">
             <span className="block font-semibold text-foreground">{t("cookiePolicy.stored.session.title")}</span>
             <span className="text-foreground/85 leading-relaxed">{t("cookiePolicy.stored.session.body")}</span>
+          </li>
+          <li className="border-l-[3px] border-accent pl-4">
+            <span className="block font-semibold text-foreground">{t("cookiePolicy.stored.consent.title")}</span>
+            <span className="text-foreground/85 leading-relaxed">{t("cookiePolicy.stored.consent.body")}</span>
           </li>
         </ul>
 
