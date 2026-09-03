@@ -7,12 +7,15 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { DEFAULT_LANG, I18nProvider, useT } from "../lib/i18n";
 import { Toaster } from "@/components/ui/sonner";
 import { PUBLIC_SITE_URL } from "../lib/site-url";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
+import { getConsent } from "@/lib/cookie-consent";
+import { loadGoogleAnalytics } from "@/lib/analytics";
 
 function NotFoundComponent() {
   const t = useT();
@@ -131,12 +134,17 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    if (import.meta.env.PROD && getConsent() === "accepted") loadGoogleAnalytics();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster richColors position="top-center" />
+        <CookieConsentBanner />
       </I18nProvider>
     </QueryClientProvider>
   );
