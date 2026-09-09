@@ -132,7 +132,7 @@ function BuildingPage() {
       <div className="fixed top-4 left-4 right-4 z-50 flex items-start justify-between gap-3">
         <div className="flex flex-col items-stretch gap-2">
           <Link
-            to="/"
+            to="/patrimoniu"
             className="inline-flex h-11 items-center justify-center gap-1.5 rounded-sm bg-background/90 backdrop-blur px-3 text-xs sm:text-sm uppercase tracking-widest text-foreground hover:bg-background border border-border/60"
           >
             <ArrowLeft className="h-4 w-4 shrink-0" />

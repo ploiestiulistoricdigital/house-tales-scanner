@@ -270,7 +270,7 @@ export function AdminPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <Link
-              to="/"
+              to="/patrimoniu"
               className="text-sm sm:text-base text-muted-foreground hover:text-foreground px-3 py-2 min-h-11 inline-flex items-center"
             >
               {t("nav.viewSite")}
