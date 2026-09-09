@@ -143,7 +143,7 @@ function RootShell({ children }: { children: ReactNode }) {
               backgroundPosition: "center",
               filter: "blur(20px) contrast(1.15) saturate(1.1)",
               transform: "scale(1.1)",
-              opacity: 0.22,
+              opacity: 0.45,
             }}
           />
         </div>
