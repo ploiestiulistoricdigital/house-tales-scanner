@@ -15,14 +15,22 @@ type Dict = Record<string, string>;
 
 const RO: Dict = {
   // Brand / header
-  "brand.title": "Poveștile Caselor",
-  "brand.tagline": "Arhivă urbană",
+  "brand.title": "Ploieștiul Istoric Digital",
+  "brand.tagline": "Memoria orașului în spațiul digital",
   "nav.admin": "Administrare",
   "nav.viewSite": "Vezi site-ul",
   "nav.signOut": "Deconectare",
   "nav.back": "Înapoi",
   "nav.backHome": "Înapoi acasă",
   "nav.backArchive": "Arhivă",
+  "nav.acasa": "Acasă",
+  "nav.istoriaPloiestiului": "Istoria Ploieștiului",
+  "nav.patrimoniu": "Patrimoniu",
+  "nav.personalitati": "Personalități",
+  "nav.harti": "Hărți",
+  "nav.trasee": "Trasee",
+  "nav.arhiva": "Arhivă",
+  "nav.despreProiect": "Despre proiect",
 
   // Home
   "home.badge": "Cronica clădirilor",
@@ -41,7 +49,7 @@ const RO: Dict = {
   "home.pagination.next": "Înainte",
   "home.pagination.first": "Prima",
   "home.pagination.last": "Ultima",
-  "home.footer": "Poveștile Caselor · Memoria orașului",
+  "home.footer": "Ploieștiul Istoric Digital · Memoria orașului",
 
   // Building page
   "building.chronicle": "Cronica clădirii",
@@ -234,17 +242,37 @@ const RO: Dict = {
   "cookiePolicy.manage.title": "Cum ștergi aceste date",
   "cookiePolicy.manage.body": "Poți șterge datele stocate local oricând din setările browserului tău (de obicei sub „Confidențialitate” sau „Date site”). Ștergerea lor te va deconecta din contul de administrator (dacă erai autentificat), va reseta limba site-ului la română și va afișa din nou bannerul de consimțământ pentru cookie-uri.",
   "cookiePolicy.contact.body": "Pentru întrebări despre această politică, contactează proprietarul site-ului.",
+
+  // Landing page
+  "landing.description": "Descoperă istoria Ploieștiului prin clădiri, oameni, hărți și documente, într-o călătorie digitală prin trecutul unui oraș cu o moștenire remarcabilă.",
+  "landing.atomCaption": "INIȚIATORUL PROIECTULUI",
+  "landing.heroPhotoCaption": "Ploiești, vedere generală — perioada interbelică",
+  "landing.heroPhotoPlaceholder": "Fotografie istorică — de adăugat",
+  "landing.cta": "Explorează Ploieștiul de altădată",
+  "landing.partners.title": "Parteneri",
+  "landing.partnersMedia.title": "Parteneri media",
+
+  // Coming soon
+  "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
 };
 
 const EN: Dict = {
-  "brand.title": "House Tales",
-  "brand.tagline": "Urban archive",
+  "brand.title": "Digital Historic Ploiești",
+  "brand.tagline": "The city's memory in digital space",
   "nav.admin": "Admin",
   "nav.viewSite": "View site",
   "nav.signOut": "Sign out",
   "nav.back": "Back",
   "nav.backHome": "Back home",
   "nav.backArchive": "Archive",
+  "nav.acasa": "Home",
+  "nav.istoriaPloiestiului": "History of Ploiești",
+  "nav.patrimoniu": "Heritage",
+  "nav.personalitati": "Personalities",
+  "nav.harti": "Maps",
+  "nav.trasee": "Trails",
+  "nav.arhiva": "Archive",
+  "nav.despreProiect": "About the project",
 
   "home.badge": "Building chronicles",
   "home.h1.a": "Discover the story behind",
@@ -262,7 +290,7 @@ const EN: Dict = {
   "home.pagination.next": "Next",
   "home.pagination.first": "First",
   "home.pagination.last": "Last",
-  "home.footer": "House Tales · The city's memory",
+  "home.footer": "Digital Historic Ploiești · The city's memory",
 
   "building.chronicle": "Building chronicle",
   "building.gallery": "Gallery",
@@ -442,17 +470,37 @@ const EN: Dict = {
   "cookiePolicy.manage.title": "How to clear this data",
   "cookiePolicy.manage.body": "You can clear locally stored data at any time from your browser settings (usually under \"Privacy\" or \"Site data\"). Clearing it will sign you out of the admin account (if you were signed in), reset the site's language to Romanian, and show the cookie consent banner again.",
   "cookiePolicy.contact.body": "For questions about this policy, contact the site owner.",
+
+  // Landing page
+  "landing.description": "Discover the history of Ploiești through buildings, people, maps and documents, in a digital journey through the past of a city with a remarkable heritage.",
+  "landing.atomCaption": "PROJECT INITIATOR",
+  "landing.heroPhotoCaption": "Ploiești, general view — interwar period",
+  "landing.heroPhotoPlaceholder": "Historic photograph — to be added",
+  "landing.cta": "Explore Ploiești of old",
+  "landing.partners.title": "Partners",
+  "landing.partnersMedia.title": "Media partners",
+
+  // Coming soon
+  "comingSoon.body": "This section is coming soon. Check back later.",
 };
 
 const FR: Dict = {
-  "brand.title": "Contes de Maisons",
-  "brand.tagline": "Archive urbaine",
+  "brand.title": "Ploiești Historique Numérique",
+  "brand.tagline": "La mémoire de la ville dans l'espace numérique",
   "nav.admin": "Administration",
   "nav.viewSite": "Voir le site",
   "nav.signOut": "Se déconnecter",
   "nav.back": "Retour",
   "nav.backHome": "Retour à l'accueil",
   "nav.backArchive": "Archive",
+  "nav.acasa": "Accueil",
+  "nav.istoriaPloiestiului": "Histoire de Ploiești",
+  "nav.patrimoniu": "Patrimoine",
+  "nav.personalitati": "Personnalités",
+  "nav.harti": "Cartes",
+  "nav.trasee": "Itinéraires",
+  "nav.arhiva": "Archives",
+  "nav.despreProiect": "À propos du projet",
 
   "home.badge": "Chroniques des bâtiments",
   "home.h1.a": "Découvrez l'histoire derrière",
@@ -470,7 +518,7 @@ const FR: Dict = {
   "home.pagination.next": "Suivant",
   "home.pagination.first": "Première",
   "home.pagination.last": "Dernière",
-  "home.footer": "Contes de Maisons · La mémoire de la ville",
+  "home.footer": "Ploiești Historique Numérique · La mémoire de la ville",
 
   "building.chronicle": "Chronique du bâtiment",
   "building.gallery": "Galerie",
@@ -650,6 +698,18 @@ const FR: Dict = {
   "cookiePolicy.manage.title": "Comment supprimer ces données",
   "cookiePolicy.manage.body": "Vous pouvez supprimer les données stockées localement à tout moment depuis les paramètres de votre navigateur (généralement sous « Confidentialité » ou « Données du site »). Leur suppression vous déconnectera du compte administrateur (si vous étiez connecté), réinitialisera la langue du site en roumain et réaffichera le bandeau de consentement aux cookies.",
   "cookiePolicy.contact.body": "Pour toute question concernant cette politique, contactez le propriétaire du site.",
+
+  // Landing page
+  "landing.description": "Découvrez l'histoire de Ploiești à travers ses bâtiments, ses habitants, ses cartes et ses documents, dans un voyage numérique à travers le passé d'une ville au patrimoine remarquable.",
+  "landing.atomCaption": "INITIATEUR DU PROJET",
+  "landing.heroPhotoCaption": "Ploiești, vue générale — période de l'entre-deux-guerres",
+  "landing.heroPhotoPlaceholder": "Photographie historique — à ajouter",
+  "landing.cta": "Explorez le Ploiești d'antan",
+  "landing.partners.title": "Partenaires",
+  "landing.partnersMedia.title": "Partenaires médias",
+
+  // Coming soon
+  "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };
