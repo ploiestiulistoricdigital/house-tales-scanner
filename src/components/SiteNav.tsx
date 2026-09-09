@@ -36,6 +36,10 @@ export function SiteNav() {
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.to;
             return (
+              // TODO(task-7): remove this cast once /patrimoniu and the six
+              // coming-soon stub routes exist and routeTree.gen.ts is
+              // regenerated (see SDD ledger ruling on routeTree.gen.ts
+              // regeneration + SiteNav forward-reference typing).
               <Link
                 key={item.to}
                 to={item.to as any}
