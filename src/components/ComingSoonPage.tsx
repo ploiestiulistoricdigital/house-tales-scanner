@@ -2,7 +2,15 @@ import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useI18n } from "@/lib/i18n";
 
-export function ComingSoonPage({ titleKey }: { titleKey: string }) {
+type ComingSoonTitleKey =
+  | "nav.istoriaPloiestiului"
+  | "nav.personalitati"
+  | "nav.harti"
+  | "nav.trasee"
+  | "nav.arhiva"
+  | "nav.despreProiect";
+
+export function ComingSoonPage({ titleKey }: { titleKey: ComingSoonTitleKey }) {
   const { t } = useI18n();
   return (
     <div className="min-h-screen flex flex-col">

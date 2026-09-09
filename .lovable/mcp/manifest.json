@@ -11,9 +11,9 @@
   },
   "mcp": {
     "server": {
-      "name": "poveștile-caselor-mcp",
+      "name": "ploieștiul-istoric-digital-mcp",
       "version": "0.1.0",
-      "title": "Poveștile Caselor"
+      "title": "Ploieștiul Istoric Digital"
     },
     "tools": [
       {
