@@ -9,43 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
-import { Route as McpRouteImport } from './routes/mcp'
+import { Route as TraseeRouteImport } from './routes/trasee'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as PersonalitatiRouteImport } from './routes/personalitati'
+import { Route as PatrimoniuRouteImport } from './routes/patrimoniu'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as IstoriaPloiestiuluiRouteImport } from './routes/istoria-ploiestiului'
+import { Route as HartiRouteImport } from './routes/harti'
+import { Route as DespreProiectRouteImport } from './routes/despre-proiect'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ArhivaRouteImport } from './routes/arhiva'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as BSlugRouteImport } from './routes/b.$slug'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookiePolicyRoute = CookiePolicyRouteImport.update({
-  id: '/cookie-policy',
-  path: '/cookie-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
+const TraseeRoute = TraseeRouteImport.update({
+  id: '/trasee',
+  path: '/trasee',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -53,39 +41,93 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const PersonalitatiRoute = PersonalitatiRouteImport.update({
+  id: '/personalitati',
+  path: '/personalitati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PatrimoniuRoute = PatrimoniuRouteImport.update({
+  id: '/patrimoniu',
+  path: '/patrimoniu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IstoriaPloiestiuluiRoute = IstoriaPloiestiuluiRouteImport.update({
+  id: '/istoria-ploiestiului',
+  path: '/istoria-ploiestiului',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HartiRoute = HartiRouteImport.update({
+  id: '/harti',
+  path: '/harti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DespreProiectRoute = DespreProiectRouteImport.update({
+  id: '/despre-proiect',
+  path: '/despre-proiect',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArhivaRoute = ArhivaRouteImport.update({
+  id: '/arhiva',
+  path: '/arhiva',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BSlugRoute = BSlugRouteImport.update({
   id: '/b/$slug',
   path: '/b/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminBuildingsNewRoute =
   AuthenticatedAdminBuildingsNewRouteImport.update({
     id: '/admin_/buildings/new',
@@ -101,10 +143,17 @@ const AuthenticatedAdminBuildingsIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/despre-proiect': typeof DespreProiectRoute
+  '/harti': typeof HartiRoute
+  '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
+  '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/trasee': typeof TraseeRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -116,10 +165,17 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/despre-proiect': typeof DespreProiectRoute
+  '/harti': typeof HartiRoute
+  '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
+  '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/trasee': typeof TraseeRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -133,10 +189,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/despre-proiect': typeof DespreProiectRoute
+  '/harti': typeof HartiRoute
+  '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
+  '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/trasee': typeof TraseeRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -150,10 +213,17 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/arhiva'
     | '/auth'
     | '/cookie-policy'
+    | '/despre-proiect'
+    | '/harti'
+    | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
+    | '/personalitati'
     | '/reset-password'
+    | '/trasee'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -165,10 +235,17 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/arhiva'
     | '/auth'
     | '/cookie-policy'
+    | '/despre-proiect'
+    | '/harti'
+    | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
+    | '/personalitati'
     | '/reset-password'
+    | '/trasee'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -181,10 +258,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/arhiva'
     | '/auth'
     | '/cookie-policy'
+    | '/despre-proiect'
+    | '/harti'
+    | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
+    | '/personalitati'
     | '/reset-password'
+    | '/trasee'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
@@ -198,10 +282,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ArhivaRoute: typeof ArhivaRoute
   AuthRoute: typeof AuthRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  DespreProiectRoute: typeof DespreProiectRoute
+  HartiRoute: typeof HartiRoute
+  IstoriaPloiestiuluiRoute: typeof IstoriaPloiestiuluiRoute
   McpRoute: typeof McpRoute
+  PatrimoniuRoute: typeof PatrimoniuRoute
+  PersonalitatiRoute: typeof PersonalitatiRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TraseeRoute: typeof TraseeRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BSlugRoute: typeof BSlugRoute
@@ -211,39 +302,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookie-policy': {
-      id: '/cookie-policy'
-      path: '/cookie-policy'
-      fullPath: '/cookie-policy'
-      preLoaderRoute: typeof CookiePolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
+    '/trasee': {
+      id: '/trasee'
+      path: '/trasee'
+      fullPath: '/trasee'
+      preLoaderRoute: typeof TraseeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -253,18 +316,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+    '/personalitati': {
+      id: '/personalitati'
+      path: '/personalitati'
+      fullPath: '/personalitati'
+      preLoaderRoute: typeof PersonalitatiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+    '/patrimoniu': {
+      id: '/patrimoniu'
+      path: '/patrimoniu'
+      fullPath: '/patrimoniu'
+      preLoaderRoute: typeof PatrimoniuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/istoria-ploiestiului': {
+      id: '/istoria-ploiestiului'
+      path: '/istoria-ploiestiului'
+      fullPath: '/istoria-ploiestiului'
+      preLoaderRoute: typeof IstoriaPloiestiuluiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/harti': {
+      id: '/harti'
+      path: '/harti'
+      fullPath: '/harti'
+      preLoaderRoute: typeof HartiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/despre-proiect': {
+      id: '/despre-proiect'
+      path: '/despre-proiect'
+      fullPath: '/despre-proiect'
+      preLoaderRoute: typeof DespreProiectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arhiva': {
+      id: '/arhiva'
+      path: '/arhiva'
+      fullPath: '/arhiva'
+      preLoaderRoute: typeof ArhivaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/b/$slug': {
+      id: '/b/$slug'
+      path: '/b/$slug'
+      fullPath: '/b/$slug'
+      preLoaderRoute: typeof BSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -274,18 +407,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/b/$slug': {
-      id: '/b/$slug'
-      path: '/b/$slug'
-      fullPath: '/b/$slug'
-      preLoaderRoute: typeof BSlugRouteImport
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -293,6 +426,13 @@ declare module '@tanstack/react-router' {
       path: '/.mcp/invoke-tool/$tool'
       fullPath: '/.mcp/invoke-tool/$tool'
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin_/buildings/new': {
@@ -331,10 +471,17 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ArhivaRoute: ArhivaRoute,
   AuthRoute: AuthRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  DespreProiectRoute: DespreProiectRoute,
+  HartiRoute: HartiRoute,
+  IstoriaPloiestiuluiRoute: IstoriaPloiestiuluiRoute,
   McpRoute: McpRoute,
+  PatrimoniuRoute: PatrimoniuRoute,
+  PersonalitatiRoute: PersonalitatiRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  TraseeRoute: TraseeRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
@@ -347,7 +494,9 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
+
 import type { startInstance } from './start.ts'
+
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

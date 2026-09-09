@@ -5,7 +5,7 @@ import { Building2 } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Autentificare administrator — Poveștile Caselor" }] }),
+  head: () => ({ meta: [{ title: "Autentificare administrator — Ploieștiul Istoric Digital" }] }),
   validateSearch: (s: Record<string, unknown>) => ({
     next: typeof s.next === "string" ? s.next : undefined,
   }),
