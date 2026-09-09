@@ -9,7 +9,7 @@ export function PartnerLogo({ name, src, className = "" }: PartnerLogoProps) {
     <div
       className={`flex h-16 w-32 sm:h-20 sm:w-40 items-center justify-center rounded-sm border border-border/70 bg-transparent p-3 ${className}`}
     >
-      <img src={src} alt={name} className="max-h-full max-w-full object-contain" loading="lazy" />
+      <img src={src} alt={name} className="max-h-full max-w-full object-contain mix-blend-multiply" loading="lazy" />
     </div>
   );
 }
