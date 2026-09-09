@@ -3,7 +3,6 @@ import { useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LogoPlaceholder } from "@/components/LogoPlaceholder";
 import { PartnerLogo } from "@/components/PartnerLogo";
 
 const PARTNERS = [
@@ -17,7 +16,10 @@ const PARTNERS = [
   { name: "Elipso Design", src: "/partners/elipso-design.jpeg" },
 ];
 
-const MEDIA_PARTNERS = ["DADA TV", "Ploiestii.ro"];
+const MEDIA_PARTNERS = [
+  { name: "DADA TV", src: "/partners/dada-tv.jpg" },
+  { name: "Ploiestii.ro", src: "/partners/ploiestii-ro.png" },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -129,8 +131,8 @@ function Home() {
                 {t("landing.partnersMedia.title")}
               </h2>
               <div className="flex flex-wrap justify-center sm:justify-start gap-3">
-                {MEDIA_PARTNERS.map((name) => (
-                  <LogoPlaceholder key={name} name={name} />
+                {MEDIA_PARTNERS.map((partner) => (
+                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} />
                 ))}
               </div>
             </div>
