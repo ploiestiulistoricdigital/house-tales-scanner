@@ -8,10 +8,10 @@ import { PartnerLogo } from "@/components/PartnerLogo";
 const PARTNERS = [
   { name: "Primăria Ploiești", src: "/partners/primaria-ploiesti.jpg" },
   { name: "Consiliul Județean Prahova", src: "/partners/consiliul-judetean-prahova.jpg" },
-  { name: "HEVECO", src: "/partners/heveco.jpg" },
-  { name: "WAM Romania", src: "/partners/wam-romania.jpg" },
   { name: 'Biblioteca Județeană "Nicolae Iorga" Ploiești', src: "/partners/biblioteca-nicolae-iorga.jpg" },
   { name: "Muzeul Județean de Istorie și Arheologie Prahova", src: "/partners/muzeul-judetean-prahova.jpg" },
+  { name: "HEVECO", src: "/partners/heveco.jpg" },
+  { name: "WAM Romania", src: "/partners/wam-romania.jpg" },
   { name: "Consproiect S.A.", src: "/partners/consproiect.jpg" },
   { name: "Elipso Design", src: "/partners/elipso-design.jpeg" },
 ];
