@@ -141,9 +141,9 @@ function RootShell({ children }: { children: ReactNode }) {
               backgroundImage: "url(/ploiesti-vedere-generala-1938.jpg)",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              filter: "blur(28px) sepia(0.15)",
+              filter: "blur(20px) contrast(1.15) saturate(1.1)",
               transform: "scale(1.1)",
-              opacity: 0.08,
+              opacity: 0.22,
             }}
           />
         </div>
