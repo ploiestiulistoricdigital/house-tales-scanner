@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image as ImageIcon } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
 import { SiteNav } from "@/components/SiteNav";
@@ -82,11 +81,16 @@ function Home() {
           <Divider />
 
           <figure>
-            <div className="aspect-video w-full rounded-md border-2 border-dashed border-border/70 bg-card/40 flex flex-col items-center justify-center gap-3 text-muted-foreground">
-              <ImageIcon className="h-10 w-10" />
-              <span className="text-sm uppercase tracking-widest px-4 text-center">
-                {t("landing.heroPhotoPlaceholder")}
-              </span>
+            <div className="aspect-video w-full rounded-md border border-border/70 overflow-hidden bg-card/40">
+              <img
+                src="/ploiesti-vedere-generala-1938.jpg"
+                alt={t("landing.heroPhotoCaption")}
+                width={1600}
+                height={900}
+                className="h-full w-full object-cover sepia-[0.1]"
+                loading="eager"
+                decoding="async"
+              />
             </div>
             <figcaption className="mt-3 text-sm italic text-muted-foreground">
               {t("landing.heroPhotoCaption")}
