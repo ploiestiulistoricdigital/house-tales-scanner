@@ -6,14 +6,22 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { PartnerLogo } from "@/components/PartnerLogo";
 
 const PARTNERS = [
-  { name: "Primăria Ploiești", src: "/partners/primaria-ploiesti.jpg" },
-  { name: "Consiliul Județean Prahova", src: "/partners/consiliul-judetean-prahova.jpg" },
-  { name: 'Biblioteca Județeană "Nicolae Iorga" Ploiești', src: "/partners/biblioteca-nicolae-iorga.jpg" },
-  { name: "Muzeul Județean de Istorie și Arheologie Prahova", src: "/partners/muzeul-judetean-prahova.jpg" },
-  { name: "HEVECO", src: "/partners/heveco.jpg" },
-  { name: "WAM Romania", src: "/partners/wam-romania.jpg" },
-  { name: "Consproiect S.A.", src: "/partners/consproiect.jpg" },
-  { name: "Elipso Design", src: "/partners/elipso-design.jpeg" },
+  { name: "Primăria Ploiești", src: "/partners/primaria-ploiesti.jpg", href: "https://ploiesti.ro/" },
+  { name: "Consiliul Județean Prahova", src: "/partners/consiliul-judetean-prahova.jpg", href: "https://cjph.ro/" },
+  {
+    name: 'Biblioteca Județeană "Nicolae Iorga" Ploiești',
+    src: "/partners/biblioteca-nicolae-iorga.jpg",
+    href: "https://bibliotecaprahova.ro/",
+  },
+  {
+    name: "Muzeul Județean de Istorie și Arheologie Prahova",
+    src: "/partners/muzeul-judetean-prahova.jpg",
+    href: "https://muzeuldeistorieprahova.ro/",
+  },
+  { name: "HEVECO", src: "/partners/heveco.jpg", href: "https://heveco.ro/" },
+  { name: "WAM Romania", src: "/partners/wam-romania.jpg", href: "https://wamgroup.ro/ro/wamro/home" },
+  { name: "Consproiect S.A.", src: "/partners/consproiect.jpg", href: "https://www.consproiect.ro/" },
+  { name: "Elipso Design", src: "/partners/elipso-design.jpeg", href: "https://www.elipsodesign.ro/" },
 ];
 
 const MEDIA_PARTNERS = [
@@ -121,7 +129,7 @@ function Home() {
               </h2>
               <div className="flex flex-wrap justify-center sm:justify-start gap-3">
                 {PARTNERS.map((partner) => (
-                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} />
+                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
                 ))}
               </div>
             </div>
