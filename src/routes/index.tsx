@@ -25,8 +25,8 @@ const PARTNERS = [
 ];
 
 const MEDIA_PARTNERS = [
-  { name: "DADA TV", src: "/partners/dada-tv.jpg" },
-  { name: "Ploiestii.ro", src: "/partners/ploiestii-ro.png" },
+  { name: "DADA TV", src: "/partners/dada-tv.jpg", href: "https://dadatv.ro/" },
+  { name: "Ploiestii.ro", src: "/partners/ploiestii-ro.png", href: "https://ploiestii.ro/" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -140,7 +140,7 @@ function Home() {
               </h2>
               <div className="flex flex-wrap justify-center sm:justify-start gap-3">
                 {MEDIA_PARTNERS.map((partner) => (
-                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} />
+                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
                 ))}
               </div>
             </div>
