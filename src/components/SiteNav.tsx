@@ -32,33 +32,25 @@ export function SiteNav() {
           </div>
         </Link>
 
-        <nav className="flex items-center gap-1 flex-wrap order-3 sm:order-2 w-full sm:w-auto justify-center">
-          {NAV_ITEMS.map((item) => {
-            const active = pathname === item.to;
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                aria-current={active ? "page" : undefined}
-                className={`px-3 py-2 min-h-11 inline-flex items-center text-sm uppercase tracking-wider transition-colors ${
-                  active ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"
-                }`}
-              >
-                {t(item.labelKey)}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2 shrink-0 order-2 sm:order-3">
+        <div className="flex items-center gap-3 flex-wrap justify-center w-full sm:w-auto">
+          <nav className="flex items-center gap-1 flex-wrap justify-center">
+            {NAV_ITEMS.map((item) => {
+              const active = pathname === item.to;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  aria-current={active ? "page" : undefined}
+                  className={`px-3 py-2 min-h-11 inline-flex items-center text-sm uppercase tracking-wider transition-colors ${
+                    active ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  {t(item.labelKey)}
+                </Link>
+              );
+            })}
+          </nav>
           <LanguageSwitcher />
-          <Link
-            to="/auth"
-            search={{ next: undefined }}
-            className="inline-flex items-center justify-center min-h-11 px-3 py-2 text-sm font-medium uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
-          >
-            {t("nav.admin")}
-          </Link>
         </div>
       </div>
     </header>
