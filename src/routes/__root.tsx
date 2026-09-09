@@ -124,7 +124,30 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 0,
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "url(/ploiesti-vedere-generala-1938.jpg)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(28px) sepia(0.15)",
+              transform: "scale(1.1)",
+              opacity: 0.08,
+            }}
+          />
+        </div>
+        <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
         <Scripts />
       </body>
     </html>
