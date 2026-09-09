@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TraseeRouteImport } from './routes/trasee'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PersonalitatiRouteImport } from './routes/personalitati'
+import { Route as PatrimoniuRouteImport } from './routes/patrimoniu'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IstoriaPloiestiuluiRouteImport } from './routes/istoria-ploiestiului'
 import { Route as HartiRouteImport } from './routes/harti'
@@ -43,6 +44,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const PersonalitatiRoute = PersonalitatiRouteImport.update({
   id: '/personalitati',
   path: '/personalitati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PatrimoniuRoute = PatrimoniuRouteImport.update({
+  id: '/patrimoniu',
+  path: '/patrimoniu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/harti': typeof HartiRoute
   '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
   '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
   '/trasee': typeof TraseeRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/harti': typeof HartiRoute
   '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
   '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
   '/trasee': typeof TraseeRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/harti': typeof HartiRoute
   '/istoria-ploiestiului': typeof IstoriaPloiestiuluiRoute
   '/mcp': typeof McpRoute
+  '/patrimoniu': typeof PatrimoniuRoute
   '/personalitati': typeof PersonalitatiRoute
   '/reset-password': typeof ResetPasswordRoute
   '/trasee': typeof TraseeRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/harti'
     | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
     | '/personalitati'
     | '/reset-password'
     | '/trasee'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/harti'
     | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
     | '/personalitati'
     | '/reset-password'
     | '/trasee'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/harti'
     | '/istoria-ploiestiului'
     | '/mcp'
+    | '/patrimoniu'
     | '/personalitati'
     | '/reset-password'
     | '/trasee'
@@ -277,6 +289,7 @@ export interface RootRouteChildren {
   HartiRoute: typeof HartiRoute
   IstoriaPloiestiuluiRoute: typeof IstoriaPloiestiuluiRoute
   McpRoute: typeof McpRoute
+  PatrimoniuRoute: typeof PatrimoniuRoute
   PersonalitatiRoute: typeof PersonalitatiRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TraseeRoute: typeof TraseeRoute
@@ -308,6 +321,13 @@ declare module '@tanstack/react-router' {
       path: '/personalitati'
       fullPath: '/personalitati'
       preLoaderRoute: typeof PersonalitatiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/patrimoniu': {
+      id: '/patrimoniu'
+      path: '/patrimoniu'
+      fullPath: '/patrimoniu'
+      preLoaderRoute: typeof PatrimoniuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -458,6 +478,7 @@ const rootRouteChildren: RootRouteChildren = {
   HartiRoute: HartiRoute,
   IstoriaPloiestiuluiRoute: IstoriaPloiestiuluiRoute,
   McpRoute: McpRoute,
+  PatrimoniuRoute: PatrimoniuRoute,
   PersonalitatiRoute: PersonalitatiRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TraseeRoute: TraseeRoute,
