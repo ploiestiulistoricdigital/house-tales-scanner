@@ -68,7 +68,7 @@ export const Route = createFileRoute("/b/$slug")({
     const desc = building.short_description ?? `Descoperă istoria clădirii ${building.name}.`;
     return {
       meta: [
-        { title: `${building.name} — Poveștile Caselor` },
+        { title: `${building.name} — Ploieștiul Istoric Digital` },
         { name: "description", content: desc },
         { property: "og:title", content: building.name },
         { property: "og:description", content: desc },

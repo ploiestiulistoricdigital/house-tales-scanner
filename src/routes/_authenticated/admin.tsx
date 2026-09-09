@@ -12,7 +12,7 @@ function AdminPageFallback() {
 
 export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: () => requireAdminRoute(),
-  head: () => ({ meta: [{ title: "Administrare — Poveștile Caselor" }] }),
+  head: () => ({ meta: [{ title: "Administrare — Ploieștiul Istoric Digital" }] }),
   component: () => (
     <Suspense fallback={<AdminPageFallback />}>
       <AdminPage />

@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 export const Route = createFileRoute("/cookie-policy")({
   head: () => ({
     meta: [
-      { title: "Politica de cookie-uri — Poveștile Caselor" },
+      { title: "Politica de cookie-uri — Ploieștiul Istoric Digital" },
       { name: "robots", content: "noindex" },
     ],
   }),
