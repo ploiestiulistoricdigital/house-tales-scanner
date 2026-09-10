@@ -11,8 +11,12 @@ const Input = z.object({
 });
 
 function getClientIp(request: Request | null): string {
+  // Netlify's edge sets this from the real peer connection; unlike
+  // x-forwarded-for it cannot be spoofed by the caller.
+  const nf = request?.headers.get("x-nf-client-connection-ip");
+  if (nf) return nf.trim();
   const forwarded = request?.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
+  if (forwarded) return forwarded.split(",").pop()!.trim(); // last hop, not first
   return "unknown";
 }
 
