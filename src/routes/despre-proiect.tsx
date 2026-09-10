@@ -5,6 +5,7 @@ import { ExternalLink, Mail } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AtomLogo } from "@/components/AtomLogo";
 import { sendContactMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/despre-proiect")({
@@ -41,9 +42,12 @@ function DespreProiect() {
         </h1>
 
         <div className="mb-12">
-          <h2 className="font-display text-lg sm:text-xl font-semibold text-foreground mb-2">
-            {t("despreProiect.org.title")}
-          </h2>
+          <div className="flex items-center gap-3 mb-2">
+            <AtomLogo size="sm" />
+            <h2 className="font-display text-lg sm:text-xl font-semibold text-foreground">
+              {t("despreProiect.org.title")}
+            </h2>
+          </div>
           <p className="text-foreground/85 leading-relaxed mb-4">{t("despreProiect.org.body")}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
