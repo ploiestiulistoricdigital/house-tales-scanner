@@ -46,6 +46,8 @@ const RO: Dict = {
   "home.pagination.first": "Prima",
   "home.pagination.last": "Ultima",
   "home.footer": "Ploieștiul Istoric Digital · Memoria orașului",
+  "patrimoniu.search.placeholder": "Caută o clădire…",
+  "patrimoniu.search.empty": "Nicio clădire găsită",
 
   // Building page
   "building.chronicle": "Cronica clădirii",
@@ -297,6 +299,8 @@ const EN: Dict = {
   "home.pagination.first": "First",
   "home.pagination.last": "Last",
   "home.footer": "Digital Historic Ploiești · The city's memory",
+  "patrimoniu.search.placeholder": "Search for a building…",
+  "patrimoniu.search.empty": "No buildings found",
 
   "building.chronicle": "Building chronicle",
   "building.gallery": "Gallery",
@@ -535,6 +539,8 @@ const FR: Dict = {
   "home.pagination.first": "Première",
   "home.pagination.last": "Dernière",
   "home.footer": "Ploiești Historique Numérique · La mémoire de la ville",
+  "patrimoniu.search.placeholder": "Rechercher un bâtiment…",
+  "patrimoniu.search.empty": "Aucun bâtiment trouvé",
 
   "building.chronicle": "Chronique du bâtiment",
   "building.gallery": "Galerie",
