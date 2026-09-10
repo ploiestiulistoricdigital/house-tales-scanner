@@ -7,13 +7,13 @@ import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Setează o parolă nouă — Poveștile Caselor" },
+      { title: "Setează o parolă nouă — Ploieștiul Istoric Digital" },
       {
         name: "description",
         content:
-          "Setează o parolă nouă pentru contul de administrare al arhivei Poveștile Caselor.",
+          "Setează o parolă nouă pentru contul de administrare al platformei Ploieștiul Istoric Digital.",
       },
-      { property: "og:title", content: "Setează o parolă nouă — Poveștile Caselor" },
+      { property: "og:title", content: "Setează o parolă nouă — Ploieștiul Istoric Digital" },
       {
         property: "og:description",
         content: "Finalizează resetarea parolei pentru contul de administrare.",

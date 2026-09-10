@@ -158,7 +158,7 @@ export function AdminPage() {
       const drawHeader = () => {
         pdf.setFont("NotoSans", "bold");
         pdf.setFontSize(13);
-        pdf.text("Poveștile Caselor — Listă clădiri", pageW / 2, 12, { align: "center" });
+        pdf.text("Ploieștiul Istoric Digital — Listă clădiri", pageW / 2, 12, { align: "center" });
         pdf.setFontSize(9);
         let x = marginX;
         const y = marginTop - 4;
@@ -270,7 +270,7 @@ export function AdminPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <Link
-              to="/"
+              to="/patrimoniu"
               className="text-sm sm:text-base text-muted-foreground hover:text-foreground px-3 py-2 min-h-11 inline-flex items-center"
             >
               {t("nav.viewSite")}

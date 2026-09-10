@@ -9,8 +9,8 @@ import addBuildingImage from "./tools/add-building-image";
 const projectRef = import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unset";
 
 export default defineMcp({
-  name: "poveștile-caselor-mcp",
-  title: "Poveștile Caselor",
+  name: "ploieștiul-istoric-digital-mcp",
+  title: "Ploieștiul Istoric Digital",
   version: "0.1.0",
   instructions:
     "Tool-uri pentru catalogul de clădiri istorice. Folosește `list_buildings` și `get_building` pentru a explora catalogul; tool-urile de creare/actualizare/ștergere necesită rol de administrator.",
