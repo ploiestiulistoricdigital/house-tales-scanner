@@ -247,6 +247,21 @@ const RO: Dict = {
   "landing.partners.title": "Parteneri",
   "landing.partnersMedia.title": "Parteneri media",
 
+  // Despre proiect
+  "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
+  "despreProiect.org.body":
+    "Asociația Societatea Culturală ATOM Ploiești este inițiatoarea proiectului Ploieștiul Istoric Digital, dedicat promovării patrimoniului istoric și cultural al orașului Ploiești.",
+  "despreProiect.org.websiteLink": "Vizitează site-ul asociației",
+  "despreProiect.contact.title": "Contactează-ne",
+  "despreProiect.contact.intro": "Ai o întrebare, o sugestie sau informații despre o clădire istorică? Scrie-ne.",
+  "despreProiect.contact.name": "Nume",
+  "despreProiect.contact.email": "Email",
+  "despreProiect.contact.message": "Mesaj",
+  "despreProiect.contact.submit": "Trimite mesajul",
+  "despreProiect.contact.sending": "Se trimite…",
+  "despreProiect.contact.success": "Mesajul a fost trimis. Îți mulțumim!",
+  "despreProiect.contact.error": "Mesajul nu a putut fi trimis. Încearcă din nou mai târziu.",
+
   // Coming soon
   "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
 };
@@ -470,6 +485,21 @@ const EN: Dict = {
   "landing.partners.title": "Partners",
   "landing.partnersMedia.title": "Media partners",
 
+  // Despre proiect
+  "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
+  "despreProiect.org.body":
+    "Asociația Societatea Culturală ATOM Ploiești is the initiator of the Digital Historic Ploiești project, dedicated to promoting the historic and cultural heritage of the city of Ploiești.",
+  "despreProiect.org.websiteLink": "Visit the association's website",
+  "despreProiect.contact.title": "Contact us",
+  "despreProiect.contact.intro": "Have a question, a suggestion, or information about a historic building? Write to us.",
+  "despreProiect.contact.name": "Name",
+  "despreProiect.contact.email": "Email",
+  "despreProiect.contact.message": "Message",
+  "despreProiect.contact.submit": "Send message",
+  "despreProiect.contact.sending": "Sending…",
+  "despreProiect.contact.success": "Your message has been sent. Thank you!",
+  "despreProiect.contact.error": "The message couldn't be sent. Please try again later.",
+
   // Coming soon
   "comingSoon.body": "This section is coming soon. Check back later.",
 };
@@ -692,6 +722,21 @@ const FR: Dict = {
   "landing.cta": "Explorez le Ploiești d'antan",
   "landing.partners.title": "Partenaires",
   "landing.partnersMedia.title": "Partenaires médias",
+
+  // Despre proiect
+  "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
+  "despreProiect.org.body":
+    "Asociația Societatea Culturală ATOM Ploiești est l'initiatrice du projet Ploieștiul Istoric Digital, dédié à la promotion du patrimoine historique et culturel de la ville de Ploiești.",
+  "despreProiect.org.websiteLink": "Visitez le site de l'association",
+  "despreProiect.contact.title": "Contactez-nous",
+  "despreProiect.contact.intro": "Une question, une suggestion, ou des informations sur un bâtiment historique ? Écrivez-nous.",
+  "despreProiect.contact.name": "Nom",
+  "despreProiect.contact.email": "Email",
+  "despreProiect.contact.message": "Message",
+  "despreProiect.contact.submit": "Envoyer le message",
+  "despreProiect.contact.sending": "Envoi en cours…",
+  "despreProiect.contact.success": "Votre message a été envoyé. Merci !",
+  "despreProiect.contact.error": "Le message n'a pas pu être envoyé. Veuillez réessayer plus tard.",
 
   // Coming soon
   "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
