@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useEffect, useMemo } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const searchSchema = z.object({
   page: fallback(z.number().int(), 1).optional(),
@@ -66,7 +67,7 @@ export const Route = createFileRoute("/patrimoniu")({
   component: Patrimoniu,
 });
 
-const PER_PAGE_OPTIONS = [6, 12, 15];
+const PER_PAGE_OPTIONS = [6, 9, 12, 15];
 
 function pick(
   lang: string,
@@ -232,6 +233,7 @@ function PaginationControls({
   pageCount: number;
 }) {
   const { t } = useI18n();
+  const navigate = useNavigate({ from: "/patrimoniu" });
   if (total <= PER_PAGE_OPTIONS[0]) return null;
 
   const pageBase =
@@ -243,23 +245,24 @@ function PaginationControls({
     <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
       <div className="flex items-center justify-center sm:justify-start gap-2">
         <span className="text-sm text-muted-foreground">{t("home.pagination.perPage")}:</span>
-        <div className="inline-flex items-center rounded-md border border-border/70 overflow-hidden text-sm">
-          {PER_PAGE_OPTIONS.map((n) => {
-            const active = n === perPage;
-            return (
-              <Link
-                key={n}
-                to="/patrimoniu"
-                search={{ perPage: n === 6 ? undefined : n, page: undefined }}
-                className={`px-3 py-2 min-h-9 inline-flex items-center justify-center transition-colors ${
-                  active ? "bg-primary text-primary-foreground" : "hover:bg-accent/40"
-                }`}
-              >
+        <Select
+          value={String(perPage)}
+          onValueChange={(value) => {
+            const n = Number(value);
+            navigate({ search: { perPage: n === 6 ? undefined : n, page: undefined } });
+          }}
+        >
+          <SelectTrigger className="h-9 w-[4.5rem]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PER_PAGE_OPTIONS.map((n) => (
+              <SelectItem key={n} value={String(n)}>
                 {n}
-              </Link>
-            );
-          })}
-        </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex items-center justify-center gap-2">
