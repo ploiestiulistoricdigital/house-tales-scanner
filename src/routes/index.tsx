@@ -33,6 +33,37 @@ async function fetchFeaturedBuildings(): Promise<BuildingSummary[] | null> {
   return data;
 }
 
+const HERITAGE_TEASER_CATEGORIES = ["locuri_disparute", "oameni_povesti", "documente_arhiva"] as const;
+type HeritageTeaserCategory = (typeof HERITAGE_TEASER_CATEGORIES)[number];
+
+async function fetchFeaturedHeritageItems(): Promise<Record<HeritageTeaserCategory, string | null>> {
+  const featured: Record<HeritageTeaserCategory, string | null> = {
+    locuri_disparute: null,
+    oameni_povesti: null,
+    documente_arhiva: null,
+  };
+  const { data, error } = await supabase
+    .from("heritage_items")
+    .select("category, image_url")
+    .order("sort_order")
+    .order("created_at");
+  if (error) {
+    console.error(error);
+    return featured;
+  }
+  for (const row of data) {
+    if (featured[row.category as HeritageTeaserCategory] === null) {
+      featured[row.category as HeritageTeaserCategory] = row.image_url;
+    }
+  }
+  return featured;
+}
+
+async function loadHomeData() {
+  const [buildings, heritageImages] = await Promise.all([fetchFeaturedBuildings(), fetchFeaturedHeritageItems()]);
+  return { buildings, heritageImages };
+}
+
 function pick(
   lang: string,
   ro: string | null | undefined,
@@ -73,7 +104,7 @@ const MEDIA_PARTNERS = [
 ];
 
 export const Route = createFileRoute("/")({
-  loader: () => fetchFeaturedBuildings(),
+  loader: () => loadHomeData(),
   head: () => ({
     meta: [
       { title: "Ploieștiul Istoric Digital — Memoria orașului în spațiul digital" },
@@ -99,12 +130,29 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, lang } = useI18n();
-  const buildings = Route.useLoaderData();
-  const categoryBuildings = buildings?.slice(0, 3) ?? [];
+  const { buildings, heritageImages } = Route.useLoaderData();
   const categoryDefs = [
-    { titleKey: "landing.categories.card1.title", descKey: "landing.categories.card1.desc", icon: Landmark },
-    { titleKey: "landing.categories.card2.title", descKey: "landing.categories.card2.desc", icon: Users },
-    { titleKey: "landing.categories.card3.title", descKey: "landing.categories.card3.desc", icon: FileText },
+    {
+      titleKey: "landing.categories.card1.title",
+      descKey: "landing.categories.card1.desc",
+      icon: Landmark,
+      category: "locuri_disparute" as const,
+      to: "/istoria-ploiestiului" as const,
+    },
+    {
+      titleKey: "landing.categories.card2.title",
+      descKey: "landing.categories.card2.desc",
+      icon: Users,
+      category: "oameni_povesti" as const,
+      to: "/personalitati" as const,
+    },
+    {
+      titleKey: "landing.categories.card3.title",
+      descKey: "landing.categories.card3.desc",
+      icon: FileText,
+      category: "documente_arhiva" as const,
+      to: "/arhiva" as const,
+    },
   ];
   const storyBuilding = buildings?.[3] ?? buildings?.[0];
   const storyExcerpt = storyBuilding
@@ -161,67 +209,65 @@ function Home() {
         </div>
       </section>
 
-      {categoryBuildings.length > 0 && (
-        <section className="border-t border-border/70 mx-auto max-w-6xl px-4 py-16 sm:py-24 w-full">
-          <div className="ornament-divider mb-10">
-            <span className="text-xs uppercase tracking-[0.25em] text-accent whitespace-nowrap">
-              {t("landing.categories.eyebrow")}
-            </span>
+      <section className="border-t border-border/70 mx-auto max-w-6xl px-4 py-16 sm:py-24 w-full">
+        <div className="ornament-divider mb-10">
+          <span className="text-xs uppercase tracking-[0.25em] text-accent whitespace-nowrap">
+            {t("landing.categories.eyebrow")}
+          </span>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-10 items-start">
+          <div>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
+              {t("landing.categories.title.a")} {t("landing.categories.title.b")}
+            </h2>
+            <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.categories.lead")}</p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-10 items-start">
-            <div>
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
-                {t("landing.categories.title.a")} {t("landing.categories.title.b")}
-              </h2>
-              <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.categories.lead")}</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              {categoryDefs.map((def, i) => {
-                const b = categoryBuildings[i];
-                const Icon = def.icon;
-                return (
-                  <Link
-                    key={def.titleKey}
-                    to="/patrimoniu"
-                    className="group rounded-md overflow-hidden bg-card border border-border/80 hover:border-primary/70 transition-all duration-300"
-                  >
-                    <div className="aspect-[4/3] bg-muted overflow-hidden relative">
-                      {b?.cover_image_url ? (
-                        <img
-                          src={b.cover_image_url}
-                          alt=""
-                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.15] group-hover:sepia-0"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="h-full w-full flex items-center justify-center text-muted-foreground bg-secondary">
-                          <Icon className="h-10 w-10" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-display text-base font-semibold uppercase tracking-wide group-hover:text-primary transition-colors">
-                        {t(def.titleKey)}
-                      </h3>
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{t(def.descKey)}</p>
-                      <ArrowRight className="mt-3 h-4 w-4 text-primary" />
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {categoryDefs.map((def) => {
+              const imageUrl = heritageImages[def.category];
+              const Icon = def.icon;
+              return (
+                <Link
+                  key={def.category}
+                  to={def.to}
+                  className="group rounded-md overflow-hidden bg-card border border-border/80 hover:border-primary/70 transition-all duration-300"
+                >
+                  <div className="aspect-[4/3] bg-muted overflow-hidden relative">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt=""
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[0.15] group-hover:sepia-0"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-muted-foreground bg-secondary">
+                        <Icon className="h-10 w-10" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-display text-base font-semibold uppercase tracking-wide group-hover:text-primary transition-colors">
+                      {t(def.titleKey)}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{t(def.descKey)}</p>
+                    <ArrowRight className="mt-3 h-4 w-4 text-primary" />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-          <div className="mt-10 flex justify-center">
-            <Link
-              to="/patrimoniu"
-              className="inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
-            >
-              {t("landing.categories.cta")}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </section>
-      )}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <Link
+            to="/patrimoniu"
+            className="inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
+          >
+            {t("landing.categories.cta")}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
 
       <section className="border-t border-border/70 bg-secondary/40 py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-10 items-center">

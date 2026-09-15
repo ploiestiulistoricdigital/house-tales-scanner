@@ -1,12 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ComingSoonPage } from "@/components/ComingSoonPage";
+import { HeritageListPage, fetchHeritageItems } from "@/components/HeritageListPage";
 
 export const Route = createFileRoute("/personalitati")({
+  loader: () => fetchHeritageItems("oameni_povesti"),
   head: () => ({
     meta: [
       { title: "Personalități — Ploieștiul Istoric Digital" },
-      { name: "robots", content: "noindex" },
+      {
+        name: "description",
+        content: "Oameni și povești care au dat identitate orașului Ploiești.",
+      },
     ],
   }),
-  component: () => <ComingSoonPage titleKey="nav.personalitati" />,
+  component: PersonalitatiPage,
 });
+
+function PersonalitatiPage() {
+  return (
+    <HeritageListPage
+      category="oameni_povesti"
+      titleKey="nav.personalitati"
+      introKey="heritageItems.personalitati.intro"
+      items={Route.useLoaderData()}
+    />
+  );
+}
