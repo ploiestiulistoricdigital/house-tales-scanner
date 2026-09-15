@@ -8,24 +8,26 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { PartnerLogo } from "@/components/PartnerLogo";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
-type BuildingSummary = {
-  id: string;
+type StorySummary = {
   slug: string;
-  name: string;
-  name_en: string | null;
-  name_fr: string | null;
-  short_description: string | null;
-  short_description_en: string | null;
-  short_description_fr: string | null;
-  cover_image_url: string | null;
+  title: string;
+  title_en: string | null;
+  title_fr: string | null;
+  description: string | null;
+  description_en: string | null;
+  description_fr: string | null;
+  image_url: string | null;
 };
 
-async function fetchFeaturedBuildings(): Promise<BuildingSummary[] | null> {
+async function fetchFeaturedStory(): Promise<StorySummary | null> {
   const { data, error } = await supabase
-    .from("buildings")
-    .select("id, slug, name, name_en, name_fr, short_description, short_description_en, short_description_fr, cover_image_url")
-    .order("name")
-    .limit(4);
+    .from("heritage_items")
+    .select("slug, title, title_en, title_fr, description, description_en, description_fr, image_url")
+    .eq("category", "poveste_din_oras")
+    .order("sort_order")
+    .order("created_at")
+    .limit(1)
+    .maybeSingle();
   if (error) {
     console.error(error);
     return null;
@@ -60,8 +62,8 @@ async function fetchFeaturedHeritageItems(): Promise<Record<HeritageTeaserCatego
 }
 
 async function loadHomeData() {
-  const [buildings, heritageImages] = await Promise.all([fetchFeaturedBuildings(), fetchFeaturedHeritageItems()]);
-  return { buildings, heritageImages };
+  const [story, heritageImages] = await Promise.all([fetchFeaturedStory(), fetchFeaturedHeritageItems()]);
+  return { story, heritageImages };
 }
 
 function pick(
@@ -130,7 +132,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, lang } = useI18n();
-  const { buildings, heritageImages } = Route.useLoaderData();
+  const { story, heritageImages } = Route.useLoaderData();
   const categoryDefs = [
     {
       titleKey: "landing.categories.card1.title",
@@ -154,10 +156,8 @@ function Home() {
       to: "/arhiva" as const,
     },
   ];
-  const storyBuilding = buildings?.[3] ?? buildings?.[0];
-  const storyExcerpt = storyBuilding
-    ? pick(lang, storyBuilding.short_description, storyBuilding.short_description_en, storyBuilding.short_description_fr)
-    : null;
+  const storyTitle = story ? pick(lang, story.title, story.title_en, story.title_fr) ?? story.title : null;
+  const storyExcerpt = story ? pick(lang, story.description, story.description_en, story.description_fr) : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -287,27 +287,29 @@ function Home() {
         </div>
       </section>
 
-      {storyBuilding && (
-        <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24 w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-8 items-center">
-            <div className="aspect-[4/3] rounded-md overflow-hidden bg-muted border border-border/70 shadow-[var(--shadow-warm)]">
-              {storyBuilding.cover_image_url ? (
-                <img
-                  src={storyBuilding.cover_image_url}
-                  alt=""
-                  className="h-full w-full object-cover sepia-[0.15]"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="h-full w-full flex items-center justify-center text-muted-foreground bg-secondary">
-                  <ScrollText className="h-10 w-10" />
-                </div>
-              )}
+      {story && (
+        <section className="relative overflow-hidden border-t border-border/70 bg-secondary/20 py-16 sm:py-24">
+          <div className="relative mx-auto max-w-6xl px-4 grid grid-cols-1 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-10 items-center">
+            <div className="relative mx-auto w-full max-w-xs sm:max-w-none">
+              <div className="aspect-[4/3] -rotate-2 rounded-md overflow-hidden border-4 border-background bg-muted shadow-[var(--shadow-warm)]">
+                {story.image_url ? (
+                  <img
+                    src={story.image_url}
+                    alt=""
+                    className="h-full w-full object-cover sepia-[0.15]"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-muted-foreground bg-secondary">
+                    <ScrollText className="h-10 w-10" />
+                  </div>
+                )}
+              </div>
             </div>
             <div>
               <span className="text-xs uppercase tracking-[0.25em] text-accent">{t("landing.story.eyebrow")}</span>
               <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
-                {pick(lang, storyBuilding.name, storyBuilding.name_en, storyBuilding.name_fr) ?? storyBuilding.name}
+                {storyTitle}
               </h2>
               {storyExcerpt && (
                 <p className="mt-4 text-foreground/80 font-serif italic leading-relaxed line-clamp-3">
@@ -315,8 +317,8 @@ function Home() {
                 </p>
               )}
               <Link
-                to="/b/$slug"
-                params={{ slug: storyBuilding.slug }}
+                to="/poveste/$slug"
+                params={{ slug: story.slug }}
                 className="mt-6 inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
               >
                 {t("landing.story.cta")}

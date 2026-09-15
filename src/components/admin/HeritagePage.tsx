@@ -67,10 +67,11 @@ export function HeritagePage() {
     qc.invalidateQueries({ queryKey: ["admin-heritage-items"] });
   }
 
-  const detailRouteFor: Record<string, "/istoria-ploiestiului" | "/personalitati" | "/arhiva"> = {
+  const detailRouteFor: Record<string, "/istoria-ploiestiului" | "/personalitati" | "/arhiva" | "/"> = {
     locuri_disparute: "/istoria-ploiestiului",
     oameni_povesti: "/personalitati",
     documente_arhiva: "/arhiva",
+    poveste_din_oras: "/",
   };
 
   if (checkingAdmin) {

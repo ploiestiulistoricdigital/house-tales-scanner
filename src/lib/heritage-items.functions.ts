@@ -5,7 +5,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertRateLimit } from "@/lib/rate-limit";
 import type { Database } from "@/integrations/supabase/types";
 
-const HERITAGE_CATEGORIES = ["locuri_disparute", "oameni_povesti", "documente_arhiva"] as const;
+const HERITAGE_CATEGORIES = [
+  "locuri_disparute",
+  "oameni_povesti",
+  "documente_arhiva",
+  "poveste_din_oras",
+] as const;
 
 const heritageItemInput = z.object({
   category: z.enum(HERITAGE_CATEGORIES),

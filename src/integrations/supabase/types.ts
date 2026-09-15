@@ -261,7 +261,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
-      heritage_category: "locuri_disparute" | "oameni_povesti" | "documente_arhiva"
+      heritage_category: "locuri_disparute" | "oameni_povesti" | "documente_arhiva" | "poveste_din_oras"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -390,7 +390,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
-      heritage_category: ["locuri_disparute", "oameni_povesti", "documente_arhiva"],
+      heritage_category: ["locuri_disparute", "oameni_povesti", "documente_arhiva", "poveste_din_oras"],
     },
   },
 } as const
