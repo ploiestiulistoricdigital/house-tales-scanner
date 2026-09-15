@@ -307,7 +307,7 @@ const RO: Dict = {
   "heritageItems.error": "Conținutul nu a putut fi încărcat. Verifică conexiunea și încearcă din nou.",
 
   // Heritage items (admin)
-  "heritageItems.admin.title": "Conținut patrimoniu",
+  "heritageItems.admin.title": "Povești",
   "heritageItems.admin.all": "Toate elementele",
   "heritageItems.admin.new": "Element nou",
   "heritageItems.admin.edit": "Editează elementul",
@@ -597,7 +597,7 @@ const EN: Dict = {
   "heritageItems.error": "The content could not be loaded. Check your connection and try again.",
 
   // Heritage items (admin)
-  "heritageItems.admin.title": "Heritage content",
+  "heritageItems.admin.title": "Stories",
   "heritageItems.admin.all": "All items",
   "heritageItems.admin.new": "New item",
   "heritageItems.admin.edit": "Edit item",
@@ -887,7 +887,7 @@ const FR: Dict = {
   "heritageItems.error": "Impossible de charger le contenu. Vérifiez votre connexion et réessayez.",
 
   // Heritage items (admin)
-  "heritageItems.admin.title": "Contenu patrimoine",
+  "heritageItems.admin.title": "Histoires",
   "heritageItems.admin.all": "Tous les éléments",
   "heritageItems.admin.new": "Nouvel élément",
   "heritageItems.admin.edit": "Modifier l'élément",
