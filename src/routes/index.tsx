@@ -202,7 +202,7 @@ function Home() {
 
       <section className="border-t border-border/70 py-10">
         <div className="mx-auto max-w-4xl px-4 flex flex-col items-center gap-2 text-center">
-          <AtomLogo size="md" alt="ATOM Ploiești" className="drop-shadow-sm" />
+          <AtomLogo size="hero" alt="ATOM Ploiești" className="drop-shadow-sm" />
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             {t("landing.atomCaption")}
           </span>
