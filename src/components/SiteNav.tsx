@@ -20,7 +20,8 @@ export function SiteNav() {
     <header className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-40">
       <div className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2.5 min-w-0 shrink-0">
+          <Link to="/" className="flex items-center gap-3 min-w-0 shrink-0">
+            <img src="/sigla.jpeg" alt="" className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-full object-cover" />
             <div className="flex flex-col leading-none min-w-0">
               <span className="font-display text-lg sm:text-xl font-semibold uppercase tracking-wide truncate">
                 {t("brand.title")}
