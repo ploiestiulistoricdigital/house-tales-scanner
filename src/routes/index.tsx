@@ -341,7 +341,11 @@ function Home() {
           aria-hidden="true"
         >
           <span className="mb-1 font-display text-xs tracking-widest">N</span>
-          <Compass className="h-40 w-40 lg:h-56 lg:w-56" strokeWidth={0.6} />
+          <img
+            src="/sigla.jpeg"
+            alt=""
+            className="h-40 w-40 lg:h-56 lg:w-56 rounded-full object-cover opacity-25"
+          />
         </div>
 
         <div className="relative mx-auto max-w-2xl px-4 text-center">
