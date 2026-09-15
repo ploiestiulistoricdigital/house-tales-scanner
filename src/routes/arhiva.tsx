@@ -1,12 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ComingSoonPage } from "@/components/ComingSoonPage";
+import { HeritageListPage, fetchHeritageItems } from "@/components/HeritageListPage";
 
 export const Route = createFileRoute("/arhiva")({
+  loader: () => fetchHeritageItems("documente_arhiva"),
   head: () => ({
     meta: [
       { title: "Arhivă — Ploieștiul Istoric Digital" },
-      { name: "robots", content: "noindex" },
+      {
+        name: "description",
+        content: "Fotografii, hărți și documente originale din arhiva Ploieștiului.",
+      },
     ],
   }),
-  component: () => <ComingSoonPage titleKey="nav.arhiva" />,
+  component: ArhivaPage,
 });
+
+function ArhivaPage() {
+  return (
+    <HeritageListPage
+      category="documente_arhiva"
+      titleKey="nav.arhiva"
+      introKey="heritageItems.arhiva.intro"
+      items={Route.useLoaderData()}
+    />
+  );
+}

@@ -294,6 +294,27 @@ const RO: Dict = {
 
   // Coming soon
   "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Locuri care au dispărut",
+  "heritageItems.category.oameni_povesti": "Oameni și povești",
+  "heritageItems.category.documente_arhiva": "Documente din arhivă",
+  "heritageItems.istoriaPloiestiului.intro": "Fotografii și povești ale unor locuri și clădiri care nu mai există în Ploiești.",
+  "heritageItems.personalitati.intro": "Oameni și povești care au dat identitate orașului Ploiești.",
+  "heritageItems.arhiva.intro": "Fotografii, hărți și documente originale din arhiva Ploieștiului.",
+  "heritageItems.empty": "Nu există încă niciun conținut publicat în această categorie.",
+  "heritageItems.error": "Conținutul nu a putut fi încărcat. Verifică conexiunea și încearcă din nou.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Conținut patrimoniu",
+  "heritageItems.admin.all": "Toate elementele",
+  "heritageItems.admin.new": "Element nou",
+  "heritageItems.admin.edit": "Editează elementul",
+  "heritageItems.admin.empty": "Niciun element încă. Creează primul.",
+  "heritageItems.field.category": "Categorie",
+  "heritageItems.field.description": "Descriere",
+  "heritageItems.field.sortOrder": "Ordine afișare",
+  "heritageItems.field.sortOrder.hint": "Valoarea mai mică apare prima; elementul cu cea mai mică valoare per categorie apare pe pagina principală.",
 };
 
 const EN: Dict = {
@@ -562,6 +583,27 @@ const EN: Dict = {
 
   // Coming soon
   "comingSoon.body": "This section is coming soon. Check back later.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Places that vanished",
+  "heritageItems.category.oameni_povesti": "People and stories",
+  "heritageItems.category.documente_arhiva": "Archive documents",
+  "heritageItems.istoriaPloiestiului.intro": "Photos and stories of places and buildings that no longer exist in Ploiești.",
+  "heritageItems.personalitati.intro": "People and stories who shaped the identity of Ploiești.",
+  "heritageItems.arhiva.intro": "Original photographs, maps and documents from the Ploiești archive.",
+  "heritageItems.empty": "No content has been published in this category yet.",
+  "heritageItems.error": "The content could not be loaded. Check your connection and try again.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Heritage content",
+  "heritageItems.admin.all": "All items",
+  "heritageItems.admin.new": "New item",
+  "heritageItems.admin.edit": "Edit item",
+  "heritageItems.admin.empty": "No items yet. Create the first one.",
+  "heritageItems.field.category": "Category",
+  "heritageItems.field.description": "Description",
+  "heritageItems.field.sortOrder": "Display order",
+  "heritageItems.field.sortOrder.hint": "Lower values show first; the lowest-value item per category is featured on the homepage.",
 };
 
 const FR: Dict = {
@@ -830,6 +872,27 @@ const FR: Dict = {
 
   // Coming soon
   "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Lieux disparus",
+  "heritageItems.category.oameni_povesti": "Gens et histoires",
+  "heritageItems.category.documente_arhiva": "Documents d'archive",
+  "heritageItems.istoriaPloiestiului.intro": "Photos et histoires de lieux et bâtiments qui n'existent plus à Ploiești.",
+  "heritageItems.personalitati.intro": "Des gens et des histoires qui ont donné son identité à la ville de Ploiești.",
+  "heritageItems.arhiva.intro": "Photographies, cartes et documents originaux de l'archive de Ploiești.",
+  "heritageItems.empty": "Aucun contenu publié dans cette catégorie pour l'instant.",
+  "heritageItems.error": "Impossible de charger le contenu. Vérifiez votre connexion et réessayez.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Contenu patrimoine",
+  "heritageItems.admin.all": "Tous les éléments",
+  "heritageItems.admin.new": "Nouvel élément",
+  "heritageItems.admin.edit": "Modifier l'élément",
+  "heritageItems.admin.empty": "Aucun élément pour l'instant. Créez le premier.",
+  "heritageItems.field.category": "Catégorie",
+  "heritageItems.field.description": "Description",
+  "heritageItems.field.sortOrder": "Ordre d'affichage",
+  "heritageItems.field.sortOrder.hint": "Une valeur plus basse apparaît en premier ; l'élément avec la valeur la plus basse par catégorie est mis en avant sur la page d'accueil.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };
