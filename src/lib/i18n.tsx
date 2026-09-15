@@ -244,10 +244,38 @@ const RO: Dict = {
   // Landing page
   "landing.description": "Descoperă istoria Ploieștiului prin clădiri, oameni, hărți și documente, într-o călătorie digitală prin trecutul unui oraș cu o moștenire remarcabilă.",
   "landing.atomCaption": "INIȚIATORUL PROIECTULUI",
-  "landing.heroPhotoCaption": "Ploiești, vedere generală — perioada interbelică",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explorează Ploieștiul de altădată",
   "landing.partners.title": "Parteneri",
   "landing.partnersMedia.title": "Parteneri media",
+
+  "landing.categories.eyebrow": "Descoperă Ploieștiul de altădată",
+  "landing.categories.title.a": "Clădiri care nu mai există.",
+  "landing.categories.title.b": "Oameni care au schimbat orașul.",
+  "landing.categories.lead": "Fotografii, documente și povești păstrate în timp, pentru ca memoria Ploieștiului să rămână vie.",
+  "landing.categories.cta": "Explorează patrimoniul",
+  "landing.categories.card1.title": "Locuri care au dispărut",
+  "landing.categories.card1.desc": "Fotografii și povești ale unor locuri pierdute.",
+  "landing.categories.card2.title": "Oameni și povești",
+  "landing.categories.card2.desc": "Personaje care au dat identitate orașului.",
+  "landing.categories.card3.title": "Documente din arhivă",
+  "landing.categories.card3.desc": "Fotografii, hărți și documente originale.",
+
+  "landing.compare.eyebrow": "Ploieștiul atunci și acum",
+  "landing.compare.title.a": "Același oraș,",
+  "landing.compare.title.b": "alte vremuri.",
+  "landing.compare.lead": "Compară fotografiile de epocă cu imaginile actuale și descoperă cum s-a schimbat Ploieștiul de-a lungul timpului.",
+  "landing.compare.then": "Ploiești, perioada interbelică",
+  "landing.compare.now": "Astăzi",
+  "landing.compare.now.comingSoon": "Fotografie modernă în curând",
+
+  "landing.story.eyebrow": "O poveste din oraș",
+  "landing.story.cta": "Citește povestea",
+
+  "landing.map.eyebrow": "Explorează harta",
+  "landing.map.title": "Ploieștiul, pas cu pas",
+  "landing.map.lead": "Descoperă clădirile, monumentele și locurile importante din istoria orașului, pe o hartă interactivă.",
+  "landing.map.cta": "Vezi harta interactivă",
 
   // Despre proiect
   "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
@@ -266,6 +294,27 @@ const RO: Dict = {
 
   // Coming soon
   "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Locuri care au dispărut",
+  "heritageItems.category.oameni_povesti": "Oameni și povești",
+  "heritageItems.category.documente_arhiva": "Documente din arhivă",
+  "heritageItems.istoriaPloiestiului.intro": "Fotografii și povești ale unor locuri și clădiri care nu mai există în Ploiești.",
+  "heritageItems.personalitati.intro": "Oameni și povești care au dat identitate orașului Ploiești.",
+  "heritageItems.arhiva.intro": "Fotografii, hărți și documente originale din arhiva Ploieștiului.",
+  "heritageItems.empty": "Nu există încă niciun conținut publicat în această categorie.",
+  "heritageItems.error": "Conținutul nu a putut fi încărcat. Verifică conexiunea și încearcă din nou.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Conținut patrimoniu",
+  "heritageItems.admin.all": "Toate elementele",
+  "heritageItems.admin.new": "Element nou",
+  "heritageItems.admin.edit": "Editează elementul",
+  "heritageItems.admin.empty": "Niciun element încă. Creează primul.",
+  "heritageItems.field.category": "Categorie",
+  "heritageItems.field.description": "Descriere",
+  "heritageItems.field.sortOrder": "Ordine afișare",
+  "heritageItems.field.sortOrder.hint": "Valoarea mai mică apare prima; elementul cu cea mai mică valoare per categorie apare pe pagina principală.",
 };
 
 const EN: Dict = {
@@ -484,10 +533,38 @@ const EN: Dict = {
   // Landing page
   "landing.description": "Discover the history of Ploiești through buildings, people, maps and documents, in a digital journey through the past of a city with a remarkable heritage.",
   "landing.atomCaption": "PROJECT INITIATOR",
-  "landing.heroPhotoCaption": "Ploiești, general view — interwar period",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explore Ploiești of old",
   "landing.partners.title": "Partners",
   "landing.partnersMedia.title": "Media partners",
+
+  "landing.categories.eyebrow": "Discover the Ploiești of yesteryear",
+  "landing.categories.title.a": "Buildings that no longer exist.",
+  "landing.categories.title.b": "People who shaped the city.",
+  "landing.categories.lead": "Photographs, documents and stories preserved through time, so that Ploiești's memory stays alive.",
+  "landing.categories.cta": "Explore the heritage catalogue",
+  "landing.categories.card1.title": "Places that vanished",
+  "landing.categories.card1.desc": "Photos and stories of places that were lost.",
+  "landing.categories.card2.title": "People and stories",
+  "landing.categories.card2.desc": "The figures who gave the city its identity.",
+  "landing.categories.card3.title": "Archive documents",
+  "landing.categories.card3.desc": "Original photographs, maps and documents.",
+
+  "landing.compare.eyebrow": "Ploiești then and now",
+  "landing.compare.title.a": "The same city,",
+  "landing.compare.title.b": "different times.",
+  "landing.compare.lead": "Compare vintage photographs with present-day images and discover how Ploiești has changed over time.",
+  "landing.compare.then": "Ploiești, interwar period",
+  "landing.compare.now": "Today",
+  "landing.compare.now.comingSoon": "Modern photo coming soon",
+
+  "landing.story.eyebrow": "A story from the city",
+  "landing.story.cta": "Read the story",
+
+  "landing.map.eyebrow": "Explore the map",
+  "landing.map.title": "Ploiești, step by step",
+  "landing.map.lead": "Discover the buildings, monuments and landmarks from the city's history on an interactive map.",
+  "landing.map.cta": "View the interactive map",
 
   // Despre proiect
   "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
@@ -506,6 +583,27 @@ const EN: Dict = {
 
   // Coming soon
   "comingSoon.body": "This section is coming soon. Check back later.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Places that vanished",
+  "heritageItems.category.oameni_povesti": "People and stories",
+  "heritageItems.category.documente_arhiva": "Archive documents",
+  "heritageItems.istoriaPloiestiului.intro": "Photos and stories of places and buildings that no longer exist in Ploiești.",
+  "heritageItems.personalitati.intro": "People and stories who shaped the identity of Ploiești.",
+  "heritageItems.arhiva.intro": "Original photographs, maps and documents from the Ploiești archive.",
+  "heritageItems.empty": "No content has been published in this category yet.",
+  "heritageItems.error": "The content could not be loaded. Check your connection and try again.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Heritage content",
+  "heritageItems.admin.all": "All items",
+  "heritageItems.admin.new": "New item",
+  "heritageItems.admin.edit": "Edit item",
+  "heritageItems.admin.empty": "No items yet. Create the first one.",
+  "heritageItems.field.category": "Category",
+  "heritageItems.field.description": "Description",
+  "heritageItems.field.sortOrder": "Display order",
+  "heritageItems.field.sortOrder.hint": "Lower values show first; the lowest-value item per category is featured on the homepage.",
 };
 
 const FR: Dict = {
@@ -724,10 +822,38 @@ const FR: Dict = {
   // Landing page
   "landing.description": "Découvrez l'histoire de Ploiești à travers ses bâtiments, ses habitants, ses cartes et ses documents, dans un voyage numérique à travers le passé d'une ville au patrimoine remarquable.",
   "landing.atomCaption": "INITIATEUR DU PROJET",
-  "landing.heroPhotoCaption": "Ploiești, vue générale — période de l'entre-deux-guerres",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explorez le Ploiești d'antan",
   "landing.partners.title": "Partenaires",
   "landing.partnersMedia.title": "Partenaires médias",
+
+  "landing.categories.eyebrow": "Découvrez le Ploiești d'antan",
+  "landing.categories.title.a": "Des bâtiments qui n'existent plus.",
+  "landing.categories.title.b": "Des gens qui ont changé la ville.",
+  "landing.categories.lead": "Photographies, documents et récits préservés dans le temps, pour que la mémoire de Ploiești reste vivante.",
+  "landing.categories.cta": "Explorer le patrimoine",
+  "landing.categories.card1.title": "Des lieux disparus",
+  "landing.categories.card1.desc": "Photos et récits de lieux perdus.",
+  "landing.categories.card2.title": "Des gens et des histoires",
+  "landing.categories.card2.desc": "Les personnages qui ont donné son identité à la ville.",
+  "landing.categories.card3.title": "Documents d'archive",
+  "landing.categories.card3.desc": "Photographies, cartes et documents originaux.",
+
+  "landing.compare.eyebrow": "Ploiești, hier et aujourd'hui",
+  "landing.compare.title.a": "La même ville,",
+  "landing.compare.title.b": "une autre époque.",
+  "landing.compare.lead": "Comparez les photographies d'époque avec les images actuelles et découvrez comment Ploiești a changé au fil du temps.",
+  "landing.compare.then": "Ploiești, période de l'entre-deux-guerres",
+  "landing.compare.now": "Aujourd'hui",
+  "landing.compare.now.comingSoon": "Photo actuelle bientôt disponible",
+
+  "landing.story.eyebrow": "Une histoire de la ville",
+  "landing.story.cta": "Lire l'histoire",
+
+  "landing.map.eyebrow": "Explorer la carte",
+  "landing.map.title": "Ploiești, pas à pas",
+  "landing.map.lead": "Découvrez les bâtiments, monuments et lieux importants de l'histoire de la ville sur une carte interactive.",
+  "landing.map.cta": "Voir la carte interactive",
 
   // Despre proiect
   "despreProiect.org.title": "Asociația Societatea Culturală ATOM Ploiești",
@@ -746,6 +872,27 @@ const FR: Dict = {
 
   // Coming soon
   "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
+
+  // Heritage items (public listing/detail pages)
+  "heritageItems.category.locuri_disparute": "Lieux disparus",
+  "heritageItems.category.oameni_povesti": "Gens et histoires",
+  "heritageItems.category.documente_arhiva": "Documents d'archive",
+  "heritageItems.istoriaPloiestiului.intro": "Photos et histoires de lieux et bâtiments qui n'existent plus à Ploiești.",
+  "heritageItems.personalitati.intro": "Des gens et des histoires qui ont donné son identité à la ville de Ploiești.",
+  "heritageItems.arhiva.intro": "Photographies, cartes et documents originaux de l'archive de Ploiești.",
+  "heritageItems.empty": "Aucun contenu publié dans cette catégorie pour l'instant.",
+  "heritageItems.error": "Impossible de charger le contenu. Vérifiez votre connexion et réessayez.",
+
+  // Heritage items (admin)
+  "heritageItems.admin.title": "Contenu patrimoine",
+  "heritageItems.admin.all": "Tous les éléments",
+  "heritageItems.admin.new": "Nouvel élément",
+  "heritageItems.admin.edit": "Modifier l'élément",
+  "heritageItems.admin.empty": "Aucun élément pour l'instant. Créez le premier.",
+  "heritageItems.field.category": "Catégorie",
+  "heritageItems.field.description": "Description",
+  "heritageItems.field.sortOrder": "Ordre d'affichage",
+  "heritageItems.field.sortOrder.hint": "Une valeur plus basse apparaît en premier ; l'élément avec la valeur la plus basse par catégorie est mis en avant sur la page d'accueil.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };

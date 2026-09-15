@@ -17,9 +17,11 @@ function formatBytes(n: number) {
 export function ImageUploader({
   onUploaded,
   label,
+  bucket = "building-images",
 }: {
   onUploaded: (url: string) => void;
   label?: string;
+  bucket?: string;
 }) {
   const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,10 +56,10 @@ export function ImageUploader({
       const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
       const path = `${crypto.randomUUID()}.${ext}`;
       const { error: upErr } = await supabase.storage
-        .from("building-images")
+        .from(bucket)
         .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
       if (upErr) throw upErr;
-      const { data } = supabase.storage.from("building-images").getPublicUrl(path);
+      const { data } = supabase.storage.from(bucket).getPublicUrl(path);
       onUploaded(data.publicUrl);
     } catch (e: any) {
       setError(e?.message ?? t("upload.err.generic"));

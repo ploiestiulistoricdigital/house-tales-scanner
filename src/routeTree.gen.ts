@@ -22,13 +22,17 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ArhivaRouteImport } from './routes/arhiva'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PovesteSlugRouteImport } from './routes/poveste.$slug'
 import { Route as BSlugRouteImport } from './routes/b.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as AuthenticatedAdminHeritageRouteImport } from './routes/_authenticated/admin_.heritage'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_authenticated/admin_.heritage.new'
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
+import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage.$id.edit'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
 
 const TraseeRoute = TraseeRouteImport.update({
@@ -95,6 +99,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PovesteSlugRoute = PovesteSlugRouteImport.update({
+  id: '/poveste/$slug',
+  path: '/poveste/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BSlugRoute = BSlugRouteImport.update({
   id: '/b/$slug',
   path: '/b/$slug',
@@ -117,6 +126,12 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAdminHeritageRoute =
+  AuthenticatedAdminHeritageRouteImport.update({
+    id: '/admin_/heritage',
+    path: '/admin/heritage',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -128,11 +143,23 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminHeritageNewRoute =
+  AuthenticatedAdminHeritageNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminHeritageRoute,
+  } as any)
 const AuthenticatedAdminBuildingsNewRoute =
   AuthenticatedAdminBuildingsNewRouteImport.update({
     id: '/admin_/buildings/new',
     path: '/admin/buildings/new',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminHeritageIdEditRoute =
+  AuthenticatedAdminHeritageIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAdminHeritageRoute,
   } as any)
 const AuthenticatedAdminBuildingsIdEditRoute =
   AuthenticatedAdminBuildingsIdEditRouteImport.update({
@@ -158,10 +185,14 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
+  '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
+  '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -180,10 +211,14 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
+  '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
+  '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -204,10 +239,14 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/b/$slug': typeof BSlugRoute
+  '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
   '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
+  '/_authenticated/admin_/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/_authenticated/admin_/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -228,10 +267,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/b/$slug'
+    | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/heritage'
     | '/admin/buildings/new'
+    | '/admin/heritage/new'
     | '/admin/buildings/$id/edit'
+    | '/admin/heritage/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -250,10 +293,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/b/$slug'
+    | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/heritage'
     | '/admin/buildings/new'
+    | '/admin/heritage/new'
     | '/admin/buildings/$id/edit'
+    | '/admin/heritage/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -273,10 +320,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/b/$slug'
+    | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/admin_/heritage'
     | '/_authenticated/admin_/buildings/new'
+    | '/_authenticated/admin_/heritage/new'
     | '/_authenticated/admin_/buildings/$id/edit'
+    | '/_authenticated/admin_/heritage/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -296,6 +347,7 @@ export interface RootRouteChildren {
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BSlugRoute: typeof BSlugRoute
+  PovesteSlugRoute: typeof PovesteSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -393,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/poveste/$slug': {
+      id: '/poveste/$slug'
+      path: '/poveste/$slug'
+      fullPath: '/poveste/$slug'
+      preLoaderRoute: typeof PovesteSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/b/$slug': {
       id: '/b/$slug'
       path: '/b/$slug'
@@ -421,6 +480,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin_/heritage': {
+      id: '/_authenticated/admin_/heritage'
+      path: '/admin/heritage'
+      fullPath: '/admin/heritage'
+      preLoaderRoute: typeof AuthenticatedAdminHeritageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -435,12 +501,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin_/heritage/new': {
+      id: '/_authenticated/admin_/heritage/new'
+      path: '/new'
+      fullPath: '/admin/heritage/new'
+      preLoaderRoute: typeof AuthenticatedAdminHeritageNewRouteImport
+      parentRoute: typeof AuthenticatedAdminHeritageRoute
+    }
     '/_authenticated/admin_/buildings/new': {
       id: '/_authenticated/admin_/buildings/new'
       path: '/admin/buildings/new'
       fullPath: '/admin/buildings/new'
       preLoaderRoute: typeof AuthenticatedAdminBuildingsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin_/heritage/$id/edit': {
+      id: '/_authenticated/admin_/heritage/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/admin/heritage/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminHeritageIdEditRouteImport
+      parentRoute: typeof AuthenticatedAdminHeritageRoute
     }
     '/_authenticated/admin_/buildings/$id/edit': {
       id: '/_authenticated/admin_/buildings/$id/edit'
@@ -452,14 +532,33 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminHeritageRouteChildren {
+  AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
+  AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
+}
+
+const AuthenticatedAdminHeritageRouteChildren: AuthenticatedAdminHeritageRouteChildren =
+  {
+    AuthenticatedAdminHeritageNewRoute: AuthenticatedAdminHeritageNewRoute,
+    AuthenticatedAdminHeritageIdEditRoute:
+      AuthenticatedAdminHeritageIdEditRoute,
+  }
+
+const AuthenticatedAdminHeritageRouteWithChildren =
+  AuthenticatedAdminHeritageRoute._addFileChildren(
+    AuthenticatedAdminHeritageRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRouteWithChildren
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRouteWithChildren,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
@@ -486,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BSlugRoute: BSlugRoute,
+  PovesteSlugRoute: PovesteSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
@@ -494,9 +594,7 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-
 import type { startInstance } from './start.ts'
-
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

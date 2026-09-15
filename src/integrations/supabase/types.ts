@@ -124,6 +124,54 @@ export type Database = {
         }
         Relationships: []
       }
+      heritage_items: {
+        Row: {
+          category: Database["public"]["Enums"]["heritage_category"]
+          created_at: string
+          description: string | null
+          description_en: string | null
+          description_fr: string | null
+          id: string
+          image_url: string | null
+          slug: string
+          sort_order: number
+          title: string
+          title_en: string | null
+          title_fr: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["heritage_category"]
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          id?: string
+          image_url?: string | null
+          slug: string
+          sort_order?: number
+          title: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["heritage_category"]
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          id?: string
+          image_url?: string | null
+          slug?: string
+          sort_order?: number
+          title?: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       qr_code_exports: {
         Row: {
           building_id: string
@@ -213,6 +261,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      heritage_category: "locuri_disparute" | "oameni_povesti" | "documente_arhiva"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -341,6 +390,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      heritage_category: ["locuri_disparute", "oameni_povesti", "documente_arhiva"],
     },
   },
 } as const
