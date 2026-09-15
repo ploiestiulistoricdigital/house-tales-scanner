@@ -330,24 +330,6 @@ function Home() {
       )}
 
       <section className="relative overflow-hidden border-t border-border/70 bg-secondary/30 py-16 sm:py-24">
-        <div
-          className="hidden md:block absolute -left-6 bottom-6 w-40 lg:w-48 -rotate-6 border-4 border-background bg-background shadow-[var(--shadow-warm)]"
-          aria-hidden="true"
-        >
-          <img src="/ploiesti-1902.jpg" alt="" className="h-28 w-full object-cover sepia-[0.2] lg:h-32" />
-        </div>
-        <div
-          className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 flex-col items-center text-accent/25"
-          aria-hidden="true"
-        >
-          <span className="mb-1 font-display text-xs tracking-widest">N</span>
-          <img
-            src="/sigla.jpeg"
-            alt=""
-            className="h-40 w-40 lg:h-56 lg:w-56 rounded-full object-cover opacity-25"
-          />
-        </div>
-
         <div className="relative mx-auto max-w-2xl px-4 text-center">
           <Compass className="mx-auto mb-3 h-5 w-5 text-accent" />
           <span className="text-xs uppercase tracking-[0.25em] text-accent">{t("landing.map.eyebrow")}</span>
