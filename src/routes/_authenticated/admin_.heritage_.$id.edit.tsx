@@ -12,7 +12,7 @@ function EditHeritageItemFallback() {
   return <div className="p-8 text-muted-foreground">{t("admin.loading")}</div>;
 }
 
-export const Route = createFileRoute("/_authenticated/admin_/heritage/$id/edit")({
+export const Route = createFileRoute("/_authenticated/admin_/heritage_/$id/edit")({
   beforeLoad: () => requireAdminRoute(),
   head: () => ({ meta: [{ title: "Edit heritage item — Admin" }] }),
   component: RouteComponent,
