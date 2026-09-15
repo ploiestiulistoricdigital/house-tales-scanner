@@ -30,9 +30,9 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as AuthenticatedAdminHeritageRouteImport } from './routes/_authenticated/admin_.heritage'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
-import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_authenticated/admin_.heritage.new'
+import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_authenticated/admin_.heritage_.new'
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
-import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage.$id.edit'
+import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage_.$id.edit'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
 
 const TraseeRoute = TraseeRouteImport.update({
@@ -145,9 +145,9 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 } as any)
 const AuthenticatedAdminHeritageNewRoute =
   AuthenticatedAdminHeritageNewRouteImport.update({
-    id: '/new',
-    path: '/new',
-    getParentRoute: () => AuthenticatedAdminHeritageRoute,
+    id: '/admin_/heritage_/new',
+    path: '/admin/heritage/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminBuildingsNewRoute =
   AuthenticatedAdminBuildingsNewRouteImport.update({
@@ -157,9 +157,9 @@ const AuthenticatedAdminBuildingsNewRoute =
   } as any)
 const AuthenticatedAdminHeritageIdEditRoute =
   AuthenticatedAdminHeritageIdEditRouteImport.update({
-    id: '/$id/edit',
-    path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminHeritageRoute,
+    id: '/admin_/heritage_/$id/edit',
+    path: '/admin/heritage/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminBuildingsIdEditRoute =
   AuthenticatedAdminBuildingsIdEditRouteImport.update({
@@ -188,7 +188,7 @@ export interface FileRoutesByFullPath {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/admin/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
+  '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
@@ -214,7 +214,7 @@ export interface FileRoutesByTo {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/admin/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
+  '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
@@ -242,11 +242,11 @@ export interface FileRoutesById {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRouteWithChildren
+  '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRoute
   '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
-  '/_authenticated/admin_/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/_authenticated/admin_/heritage_/new': typeof AuthenticatedAdminHeritageNewRoute
   '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
-  '/_authenticated/admin_/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/_authenticated/admin_/heritage_/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -325,9 +325,9 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin_/heritage'
     | '/_authenticated/admin_/buildings/new'
-    | '/_authenticated/admin_/heritage/new'
+    | '/_authenticated/admin_/heritage_/new'
     | '/_authenticated/admin_/buildings/$id/edit'
-    | '/_authenticated/admin_/heritage/$id/edit'
+    | '/_authenticated/admin_/heritage_/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -501,12 +501,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin_/heritage/new': {
-      id: '/_authenticated/admin_/heritage/new'
-      path: '/new'
+    '/_authenticated/admin_/heritage_/new': {
+      id: '/_authenticated/admin_/heritage_/new'
+      path: '/admin/heritage/new'
       fullPath: '/admin/heritage/new'
       preLoaderRoute: typeof AuthenticatedAdminHeritageNewRouteImport
-      parentRoute: typeof AuthenticatedAdminHeritageRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin_/buildings/new': {
       id: '/_authenticated/admin_/buildings/new'
@@ -515,12 +515,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBuildingsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin_/heritage/$id/edit': {
-      id: '/_authenticated/admin_/heritage/$id/edit'
-      path: '/$id/edit'
+    '/_authenticated/admin_/heritage_/$id/edit': {
+      id: '/_authenticated/admin_/heritage_/$id/edit'
+      path: '/admin/heritage/$id/edit'
       fullPath: '/admin/heritage/$id/edit'
       preLoaderRoute: typeof AuthenticatedAdminHeritageIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminHeritageRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin_/buildings/$id/edit': {
       id: '/_authenticated/admin_/buildings/$id/edit'
@@ -532,36 +532,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedAdminHeritageRouteChildren {
-  AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
-  AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
-}
-
-const AuthenticatedAdminHeritageRouteChildren: AuthenticatedAdminHeritageRouteChildren =
-  {
-    AuthenticatedAdminHeritageNewRoute: AuthenticatedAdminHeritageNewRoute,
-    AuthenticatedAdminHeritageIdEditRoute:
-      AuthenticatedAdminHeritageIdEditRoute,
-  }
-
-const AuthenticatedAdminHeritageRouteWithChildren =
-  AuthenticatedAdminHeritageRoute._addFileChildren(
-    AuthenticatedAdminHeritageRouteChildren,
-  )
-
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRouteWithChildren
+  AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRoute
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
+  AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
+  AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-  AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRouteWithChildren,
+  AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRoute,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
+  AuthenticatedAdminHeritageNewRoute: AuthenticatedAdminHeritageNewRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
+  AuthenticatedAdminHeritageIdEditRoute: AuthenticatedAdminHeritageIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
