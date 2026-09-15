@@ -327,17 +327,31 @@ function Home() {
         </section>
       )}
 
-      <section className="relative overflow-hidden bg-foreground text-background py-16 sm:py-24">
-        <Compass className="absolute -right-8 -bottom-8 h-48 w-48 sm:h-64 sm:w-64 text-background/10" strokeWidth={0.75} />
-        <div className="relative mx-auto max-w-6xl px-4">
+      <section className="relative overflow-hidden border-t border-border/70 bg-secondary/30 py-16 sm:py-24">
+        <div
+          className="hidden md:block absolute -left-6 bottom-6 w-40 lg:w-48 -rotate-6 border-4 border-background bg-background shadow-[var(--shadow-warm)]"
+          aria-hidden="true"
+        >
+          <img src="/ploiesti-1902.jpg" alt="" className="h-28 w-full object-cover sepia-[0.2] lg:h-32" />
+        </div>
+        <div
+          className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 flex-col items-center text-accent/25"
+          aria-hidden="true"
+        >
+          <span className="mb-1 font-display text-xs tracking-widest">N</span>
+          <Compass className="h-40 w-40 lg:h-56 lg:w-56" strokeWidth={0.6} />
+        </div>
+
+        <div className="relative mx-auto max-w-2xl px-4 text-center">
+          <Compass className="mx-auto mb-3 h-5 w-5 text-accent" />
           <span className="text-xs uppercase tracking-[0.25em] text-accent">{t("landing.map.eyebrow")}</span>
-          <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight max-w-lg">
+          <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
             {t("landing.map.title")}
           </h2>
-          <p className="mt-4 text-background/80 font-serif leading-relaxed max-w-lg">{t("landing.map.lead")}</p>
+          <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.map.lead")}</p>
           <Link
             to="/harti"
-            className="mt-8 inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium uppercase tracking-wider hover:bg-primary/90 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
           >
             {t("landing.map.cta")}
             <ArrowRight className="h-4 w-4" />
