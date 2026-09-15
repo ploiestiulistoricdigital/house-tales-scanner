@@ -20,16 +20,18 @@ type HeritageItem = {
   image_url: string | null;
 };
 
-const CATEGORY_BACK_ROUTE: Record<HeritageCategory, "/istoria-ploiestiului" | "/personalitati" | "/arhiva"> = {
+const CATEGORY_BACK_ROUTE: Record<HeritageCategory, "/istoria-ploiestiului" | "/personalitati" | "/arhiva" | "/"> = {
   locuri_disparute: "/istoria-ploiestiului",
   oameni_povesti: "/personalitati",
   documente_arhiva: "/arhiva",
+  poveste_din_oras: "/",
 };
 
 const CATEGORY_BACK_LABEL_KEY: Record<HeritageCategory, string> = {
   locuri_disparute: "nav.istoriaPloiestiului",
   oameni_povesti: "nav.personalitati",
   documente_arhiva: "nav.arhiva",
+  poveste_din_oras: "nav.acasa",
 };
 
 async function loadHeritageItem(slug: string): Promise<HeritageItem> {

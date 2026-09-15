@@ -7,7 +7,12 @@ import { useI18n } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 import { chunkText } from "@/lib/text-chunks";
 
-export const HERITAGE_CATEGORIES = ["locuri_disparute", "oameni_povesti", "documente_arhiva"] as const;
+export const HERITAGE_CATEGORIES = [
+  "locuri_disparute",
+  "oameni_povesti",
+  "documente_arhiva",
+  "poveste_din_oras",
+] as const;
 export type HeritageCategory = (typeof HERITAGE_CATEGORIES)[number];
 
 export type HeritageItemFormValues = {
