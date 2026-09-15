@@ -118,11 +118,11 @@ function Home() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <img
-            src="/ploiesti-vedere-generala-1938.jpg"
+            src="/ploiesti-1902.jpg"
             alt=""
             width={1600}
             height={900}
-            className="h-full w-full object-cover sepia-[0.25]"
+            className="h-full w-full object-cover sepia-[0.15]"
             loading="eager"
             decoding="async"
           />
