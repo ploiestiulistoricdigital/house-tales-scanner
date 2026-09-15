@@ -244,7 +244,7 @@ const RO: Dict = {
   // Landing page
   "landing.description": "Descoperă istoria Ploieștiului prin clădiri, oameni, hărți și documente, într-o călătorie digitală prin trecutul unui oraș cu o moștenire remarcabilă.",
   "landing.atomCaption": "INIȚIATORUL PROIECTULUI",
-  "landing.heroPhotoCaption": "Ploiești, vedere generală — perioada interbelică",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explorează Ploieștiul de altădată",
   "landing.partners.title": "Parteneri",
   "landing.partnersMedia.title": "Parteneri media",
@@ -512,7 +512,7 @@ const EN: Dict = {
   // Landing page
   "landing.description": "Discover the history of Ploiești through buildings, people, maps and documents, in a digital journey through the past of a city with a remarkable heritage.",
   "landing.atomCaption": "PROJECT INITIATOR",
-  "landing.heroPhotoCaption": "Ploiești, general view — interwar period",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explore Ploiești of old",
   "landing.partners.title": "Partners",
   "landing.partnersMedia.title": "Media partners",
@@ -780,7 +780,7 @@ const FR: Dict = {
   // Landing page
   "landing.description": "Découvrez l'histoire de Ploiești à travers ses bâtiments, ses habitants, ses cartes et ses documents, dans un voyage numérique à travers le passé d'une ville au patrimoine remarquable.",
   "landing.atomCaption": "INITIATEUR DU PROJET",
-  "landing.heroPhotoCaption": "Ploiești, vue générale — période de l'entre-deux-guerres",
+  "landing.heroPhotoCaption": "Ploiești, 1902",
   "landing.cta": "Explorez le Ploiești d'antan",
   "landing.partners.title": "Partenaires",
   "landing.partnersMedia.title": "Partenaires médias",
