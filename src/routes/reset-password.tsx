@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Building2 } from "lucide-react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/reset-password")({
@@ -85,7 +84,7 @@ function ResetPasswordPage() {
       </div>
       <div className="w-full max-w-sm rounded-lg border bg-card p-6 sm:p-8">
         <div className="flex items-center gap-2 mb-4">
-          <Building2 className="h-6 w-6 text-primary" />
+          <img src="/sigla.jpeg" alt="" className="h-8 w-8 rounded-full object-cover" />
           <span className="font-semibold text-lg">{t("auth.admin")}</span>
         </div>
         <h1 className="text-xl sm:text-2xl font-semibold mb-2">

@@ -6,8 +6,9 @@ import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
 
 const searchSchema = z.object({
   page: fallback(z.number().int(), 1).optional(),
@@ -84,6 +85,17 @@ function pick(
   return r ?? e ?? f ?? null;
 }
 
+// Diacritic-insensitive matching (e.g. typing "Casa" should also match
+// "Căsuța…") — NFD-decompose accented letters into base + combining mark,
+// then strip the combining marks.
+function normalizeSearchText(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 function getPageNumbers(current: number, total: number): (number | string)[] {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
   const items: (number | string)[] = [1];
@@ -96,6 +108,49 @@ function getPageNumbers(current: number, total: number): (number | string)[] {
   else if (total - 1 > current) items.push(total - 1);
   if (!items.includes(total)) items.push(total);
   return [...new Set(items)];
+}
+
+function BuildingSearch({ buildings }: { buildings: BuildingSummary[] }) {
+  const { t, lang } = useI18n();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
+  const matches = useMemo(() => {
+    const q = normalizeSearchText(query);
+    if (!q) return [];
+    return buildings
+      .filter((b) => normalizeSearchText(pick(lang, b.name, b.name_en, b.name_fr) ?? b.name).includes(q))
+      .slice(0, 8);
+  }, [buildings, lang, query]);
+
+  return (
+    <Command
+      shouldFilter={false}
+      className="relative w-full sm:max-w-xs overflow-visible rounded-md border border-border/70 bg-background"
+    >
+      <CommandInput value={query} onValueChange={setQuery} placeholder={t("patrimoniu.search.placeholder")} />
+      {query.trim() && (
+        <CommandList className="absolute top-full left-0 right-0 z-20 mt-1 rounded-md border border-border/70 bg-popover shadow-md">
+          <CommandEmpty>{t("patrimoniu.search.empty")}</CommandEmpty>
+          {matches.map((b) => {
+            const name = pick(lang, b.name, b.name_en, b.name_fr) ?? b.name;
+            return (
+              <CommandItem
+                key={b.id}
+                value={b.id}
+                onSelect={() => {
+                  setQuery("");
+                  navigate({ to: "/b/$slug", params: { slug: b.slug } });
+                }}
+              >
+                {name}
+              </CommandItem>
+            );
+          })}
+        </CommandList>
+      )}
+    </Command>
+  );
 }
 
 function Patrimoniu() {
@@ -144,6 +199,12 @@ function Patrimoniu() {
             </span>
           )}
         </div>
+
+        {!isError && buildings && buildings.length > 0 && (
+          <div className="mb-8">
+            <BuildingSearch buildings={buildings} />
+          </div>
+        )}
 
         {isError ? (
           <div className="rounded-md border-2 border-destructive/50 p-16 text-center text-destructive italic bg-destructive/5 text-lg leading-relaxed">
