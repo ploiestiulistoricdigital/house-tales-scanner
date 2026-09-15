@@ -21,7 +21,7 @@ export function SiteNav() {
       <div className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2.5 min-w-0 shrink-0">
-            <img src="/atom.jpg" alt="" className="h-8 w-auto shrink-0 object-contain" />
+            <img src="/atom-header-logo.png" alt="" className="h-8 w-auto shrink-0 object-contain" />
             <div className="flex flex-col leading-none min-w-0">
               <span className="font-display text-lg sm:text-xl font-semibold tracking-wide truncate">
                 {t("brand.title")}
