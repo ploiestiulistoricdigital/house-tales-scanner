@@ -1,3 +1,9 @@
+-- Applied directly via the Supabase SQL Editor against production
+-- (gxpiixyldoqxvluogziy) on 2026-09-15 -- CLI access was unavailable at
+-- the time, so `supabase_migrations.schema_migrations` doesn't know this
+-- ran. Before the next `supabase db push` against that project, run
+-- `supabase migration repair --status applied 20260915065524` first, or
+-- this will fail trying to recreate an already-existing table.
 CREATE TYPE public.heritage_category AS ENUM (
   'locuri_disparute', 'oameni_povesti', 'documente_arhiva'
 );
@@ -30,14 +36,18 @@ ALTER TABLE public.heritage_items ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can view heritage items" ON public.heritage_items
 FOR SELECT TO anon, authenticated USING (true);
 
+-- has_role lives in the `private` schema (not `public`, despite the
+-- original buildings migration creating it there) -- verified directly
+-- against production, where every other admin-gated policy already calls
+-- private.has_role. Match that, not the original migration file.
 CREATE POLICY "Admins can insert heritage items" ON public.heritage_items
-FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(), 'admin'));
+FOR INSERT TO authenticated WITH CHECK (private.has_role(auth.uid(), 'admin'::app_role));
 
 CREATE POLICY "Admins can update heritage items" ON public.heritage_items
-FOR UPDATE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+FOR UPDATE TO authenticated USING (private.has_role(auth.uid(), 'admin'::app_role));
 
 CREATE POLICY "Admins can delete heritage items" ON public.heritage_items
-FOR DELETE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+FOR DELETE TO authenticated USING (private.has_role(auth.uid(), 'admin'::app_role));
 
 CREATE TRIGGER heritage_items_updated_at BEFORE UPDATE ON public.heritage_items
 FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
