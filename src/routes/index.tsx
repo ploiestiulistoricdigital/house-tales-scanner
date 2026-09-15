@@ -97,14 +97,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-function Divider() {
-  return (
-    <div className="ornament-divider max-w-md mx-auto my-10">
-      <span className="font-display text-accent text-xl">✦</span>
-    </div>
-  );
-}
-
 function Home() {
   const { t, lang } = useI18n();
   const buildings = Route.useLoaderData();
@@ -123,55 +115,49 @@ function Home() {
     <div className="min-h-screen flex flex-col">
       <SiteNav />
 
-      <section className="relative overflow-hidden flex-1">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.13_72/0.18),transparent_60%)]" />
-        <div className="mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center">
-          <Divider />
-
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.08] tracking-tight text-readable">
-            {t("brand.title")}
-          </h1>
-          <p className="mt-3 font-display italic text-2xl sm:text-3xl text-primary">{t("brand.tagline")}</p>
-          <p className="mt-6 text-lg sm:text-xl text-foreground/80 max-w-2xl mx-auto font-serif leading-relaxed">
-            {t("landing.description")}
-          </p>
-
-          <Divider />
-
-          <div className="flex flex-col items-center gap-2">
-            <AtomLogo size="hero" alt="ATOM Ploiești" className="drop-shadow-sm" />
-            <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              {t("landing.atomCaption")}
-            </span>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="/ploiesti-vedere-generala-1938.jpg"
+            alt=""
+            width={1600}
+            height={900}
+            className="h-full w-full object-cover sepia-[0.25]"
+            loading="eager"
+            decoding="async"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/45 to-foreground/20" />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28 md:py-36">
+          <div className="max-w-2xl">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.08] tracking-tight text-background text-readable-strong">
+              {t("brand.title")}
+            </h1>
+            <p className="mt-3 font-display italic text-2xl sm:text-3xl text-background/95 text-readable-strong">
+              {t("brand.tagline")}
+            </p>
+            <p className="mt-6 text-lg sm:text-xl text-background/90 max-w-xl font-serif leading-relaxed text-readable-strong">
+              {t("landing.description")}
+            </p>
+            <Link
+              to="/patrimoniu"
+              className="mt-10 inline-flex items-center gap-2 justify-center min-h-11 px-6 py-3 rounded-sm bg-primary text-primary-foreground text-base font-display italic hover:bg-primary/90 transition-colors"
+            >
+              {t("landing.cta")} →
+            </Link>
           </div>
+        </div>
+        <span className="absolute bottom-4 right-4 text-sm italic text-background/85 text-readable-strong">
+          {t("landing.heroPhotoCaption")}
+        </span>
+      </section>
 
-          <Divider />
-
-          <figure>
-            <div className="aspect-video w-full rounded-md border border-border/70 overflow-hidden bg-card/40">
-              <img
-                src="/ploiesti-vedere-generala-1938.jpg"
-                alt={t("landing.heroPhotoCaption")}
-                width={1600}
-                height={900}
-                className="h-full w-full object-cover sepia-[0.1]"
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-            <figcaption className="mt-3 text-sm italic text-muted-foreground">
-              {t("landing.heroPhotoCaption")}
-            </figcaption>
-          </figure>
-
-          <Divider />
-
-          <Link
-            to="/patrimoniu"
-            className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary/60 bg-primary/5 px-8 py-4 text-base sm:text-lg font-display italic text-primary hover:bg-primary/10 transition-colors"
-          >
-            {t("landing.cta")} →
-          </Link>
+      <section className="border-t border-border/70 py-10">
+        <div className="mx-auto max-w-4xl px-4 flex flex-col items-center gap-2 text-center">
+          <AtomLogo size="md" alt="ATOM Ploiești" className="drop-shadow-sm" />
+          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            {t("landing.atomCaption")}
+          </span>
         </div>
       </section>
 
