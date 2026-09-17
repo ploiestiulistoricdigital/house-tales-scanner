@@ -21,6 +21,14 @@ export function RichTextEditor({
     }
   }, [value]);
 
+  function handleFocus() {
+    // Some browsers default to wrapping each new line in a <div> on Enter,
+    // which isn't in the sanitizer's allowed-tag list and would silently
+    // merge paragraphs together (no separator at all) once saved. Force <p>
+    // so every Enter press produces a tag the sanitizer keeps.
+    document.execCommand("defaultParagraphSeparator", false, "p");
+  }
+
   function emitChange() {
     if (ref.current) onChange(sanitizeRichText(ref.current.innerHTML));
   }
@@ -54,6 +62,7 @@ export function RichTextEditor({
         ref={ref}
         contentEditable
         suppressContentEditableWarning
+        onFocus={handleFocus}
         onInput={emitChange}
         onPaste={handlePaste}
         className="w-full px-3 py-3 text-base focus:outline-none [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-0 [&_blockquote]:ml-6 [&_blockquote]:pl-0"
