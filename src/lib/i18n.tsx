@@ -268,6 +268,7 @@ const RO: Dict = {
   "landing.compare.then": "Ploiești, perioada interbelică",
   "landing.compare.now": "Astăzi",
   "landing.compare.now.comingSoon": "Fotografie modernă în curând",
+  "landing.compare.switch": "Vezi o altă clădire",
 
   "landing.story.eyebrow": "O poveste din oraș",
   "landing.story.cta": "Citește povestea",
@@ -558,6 +559,7 @@ const EN: Dict = {
   "landing.compare.then": "Ploiești, interwar period",
   "landing.compare.now": "Today",
   "landing.compare.now.comingSoon": "Modern photo coming soon",
+  "landing.compare.switch": "See another building",
 
   "landing.story.eyebrow": "A story from the city",
   "landing.story.cta": "Read the story",
@@ -848,6 +850,7 @@ const FR: Dict = {
   "landing.compare.then": "Ploiești, période de l'entre-deux-guerres",
   "landing.compare.now": "Aujourd'hui",
   "landing.compare.now.comingSoon": "Photo actuelle bientôt disponible",
+  "landing.compare.switch": "Voir un autre bâtiment",
 
   "landing.story.eyebrow": "Une histoire de la ville",
   "landing.story.cta": "Lire l'histoire",
