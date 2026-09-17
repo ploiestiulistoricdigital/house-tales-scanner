@@ -25,6 +25,18 @@ const buildingInput = z.object({
   cover_image_url: z.string().url().max(2000).optional().nullable().or(z.literal("")),
 });
 
+function sanitizeHistory<T extends { history?: string | null; history_en?: string | null; history_fr?: string | null }>(
+  data: T,
+  sanitize: (html: string) => string,
+): T {
+  return {
+    ...data,
+    history: data.history != null ? sanitize(data.history) : data.history,
+    history_en: data.history_en != null ? sanitize(data.history_en) : data.history_en,
+    history_fr: data.history_fr != null ? sanitize(data.history_fr) : data.history_fr,
+  };
+}
+
 async function assertAdmin(ctx: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await ctx.supabase
     .from("user_roles")
@@ -50,8 +62,9 @@ export const createBuilding = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sanitizeRichText } = await import("@/lib/rich-text");
     const payload = {
-      ...data,
+      ...sanitizeHistory(data, sanitizeRichText),
       cover_image_url: data.cover_image_url || null,
       qr_code_url: qrUrlFor(data.slug),
     };
@@ -73,9 +86,10 @@ export const updateBuilding = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "buildings:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sanitizeRichText } = await import("@/lib/rich-text");
     const { id, ...rest } = data;
     const payload = {
-      ...rest,
+      ...sanitizeHistory(rest, sanitizeRichText),
       cover_image_url: rest.cover_image_url || null,
       qr_code_url: qrUrlFor(rest.slug),
     };

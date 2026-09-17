@@ -4,9 +4,11 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
 import { QrCodePreview } from "@/components/QrCodePreview";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 import { chunkText } from "@/lib/text-chunks";
+import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
 export type BuildingFormValues = {
   slug: string;
@@ -42,6 +44,7 @@ const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 type TranslatableField = "name" | "address" | "short_description" | "history";
 type FormLang = "ro" | "en" | "fr";
 const FORM_LANGS: FormLang[] = ["ro", "en", "fr"];
+const RICH_TEXT_FIELDS: TranslatableField[] = ["history"];
 
 function fieldKey(field: TranslatableField, lang: FormLang): keyof BuildingFormValues {
   if (lang === "ro") return field as keyof BuildingFormValues;
@@ -101,11 +104,11 @@ export function BuildingForm({
   // translated as separate requests, since a single request covering the
   // whole field can run long enough to exceed Netlify's function execution
   // time limit, regardless of streaming the Anthropic response internally.
-  async function translateLong(text: string, target: FormLang): Promise<string> {
-    const chunks = chunkText(text);
+  async function translateLong(text: string, target: FormLang, rich: boolean): Promise<string> {
+    const chunks = rich ? chunkRichText(text) : chunkText(text);
     if (chunks.length <= 1) {
       const res = await translate({ data: { text, target } });
-      return res.text;
+      return rich ? sanitizeRichText(res.text) : res.text;
     }
     const results: string[] = new Array(chunks.length);
     let next = 0;
@@ -117,7 +120,8 @@ export function BuildingForm({
       }
     }
     await Promise.all(Array.from({ length: Math.min(3, chunks.length) }, worker));
-    return results.join("\n\n");
+    const joined = results.join("\n\n");
+    return rich ? sanitizeRichText(joined) : joined;
   }
 
   async function handleFillLang(target: "fr" | "en") {
@@ -138,7 +142,7 @@ export function BuildingForm({
         }
         const text = source === "ro" ? ro : other;
         try {
-          const translated = await translateLong(text, target);
+          const translated = await translateLong(text, target, RICH_TEXT_FIELDS.includes(field));
           setV((p) => ({ ...p, [fieldKey(field, target)]: translated }));
           filled++;
         } catch (e: any) {
@@ -166,7 +170,7 @@ export function BuildingForm({
     }
     setTranslating({ field, source, target });
     try {
-      const translated = await translateLong(text, target);
+      const translated = await translateLong(text, target, RICH_TEXT_FIELDS.includes(field));
       setV((p) => ({ ...p, [destKey]: translated }));
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
@@ -339,12 +343,7 @@ export function BuildingForm({
         onTranslate={handleTranslate}
         t={t}
         renderInput={(_lang, value, onChange) => (
-          <textarea
-            rows={12}
-            className={inputCls}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-          />
+          <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={12} />
         )}
         onChange={(lang, val) => set(fieldKey("history", lang), val)}
       />
