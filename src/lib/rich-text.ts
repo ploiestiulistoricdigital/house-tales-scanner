@@ -1,9 +1,23 @@
-import DOMPurify from "isomorphic-dompurify";
-
 export const RICH_TEXT_ALLOWED_TAGS = ["p", "br", "strong", "b", "em", "i", "u", "ul", "ol", "li"];
+const ALLOWED_TAG_SET = new Set(RICH_TEXT_ALLOWED_TAGS);
 
+// Dependency-free allowlist sanitizer, tailored to the fixed, tiny tag set a
+// heritage-item description or building history can ever contain: no
+// attributes are ever allowed to survive (so no href/on*/style injection
+// vectors), and any tag not on the allowlist is stripped entirely, taking its
+// attributes with it. Works identically in the browser and in Node (server
+// functions, SSR) with no DOM dependency — dompurify/isomorphic-dompurify
+// pull in jsdom, which breaks under Netlify's ESM server runtime
+// ("__dirname is not defined in ES module scope").
 export function sanitizeRichText(html: string): string {
-  return DOMPurify.sanitize(html, { ALLOWED_TAGS: RICH_TEXT_ALLOWED_TAGS, ALLOWED_ATTR: [] });
+  let out = html.replace(/<!--[\s\S]*?-->/g, "");
+  out = out.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "");
+  out = out.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g, (match, tagName: string) => {
+    const name = tagName.toLowerCase();
+    if (!ALLOWED_TAG_SET.has(name)) return "";
+    return match.startsWith("</") ? `</${name}>` : `<${name}>`;
+  });
+  return out;
 }
 
 export function looksLikeHtml(text: string): boolean {
