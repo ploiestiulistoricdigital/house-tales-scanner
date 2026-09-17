@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, FileText, Landmark, ScrollText, Users, Compass } from "lucide-react";
@@ -138,6 +138,13 @@ function Home() {
   const { story, heritageImages } = Route.useLoaderData();
   const [antitezaIndex, setAntitezaIndex] = useState(0);
   const antitezaPair = ANTITEZA_PAIRS[antitezaIndex];
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setAntitezaIndex((i) => (i + 1) % ANTITEZA_PAIRS.length);
+    }, 10000);
+    return () => clearInterval(id);
+  }, []);
   const categoryDefs = [
     {
       titleKey: "landing.categories.card1.title",
@@ -289,8 +296,6 @@ function Home() {
             beforeLabel={t("landing.compare.then")}
             afterSrc={`/images/antiteza/${antitezaPair}-prezent.jpg`}
             afterLabel={t("landing.compare.now")}
-            switchLabel={t("landing.compare.switch")}
-            onHandleClick={() => setAntitezaIndex((i) => (i + 1) % ANTITEZA_PAIRS.length)}
           />
         </div>
       </section>
