@@ -939,14 +939,14 @@ const FR: Dict = {
   "antiteza.admin.empty": "Aucune paire pour l'instant. Créez la première.",
   "antiteza.admin.confirmDelete.title": "Supprimer cette paire ?",
   "antiteza.admin.confirmDelete": "Supprimer cette paire d'images ? Cette action est irréversible.",
-  "antiteza.field.beforeImage": "Photo «avant»",
-  "antiteza.field.afterImage": "Photo «après»",
-  "antiteza.field.beforeCaption": "Légende «avant»",
-  "antiteza.field.afterCaption": "Légende «après»",
+  "antiteza.field.beforeImage": "Photo « avant »",
+  "antiteza.field.afterImage": "Photo « après »",
+  "antiteza.field.beforeCaption": "Légende « avant »",
+  "antiteza.field.afterCaption": "Légende « après »",
   "antiteza.field.sortOrder": "Ordre d'affichage",
   "antiteza.field.sortOrder.hint": "Une valeur plus basse apparaît en premier dans la rotation de la page d'accueil.",
-  "antiteza.err.beforeImage.required": "La photo «avant» est obligatoire.",
-  "antiteza.err.afterImage.required": "La photo «après» est obligatoire.",
+  "antiteza.err.beforeImage.required": "La photo « avant » est obligatoire.",
+  "antiteza.err.afterImage.required": "La photo « après » est obligatoire.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };
