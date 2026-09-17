@@ -3,9 +3,11 @@ import { Languages, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { useI18n } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 import { chunkText } from "@/lib/text-chunks";
+import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
 export const HERITAGE_CATEGORIES = [
   "locuri_disparute",
@@ -43,6 +45,7 @@ const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 type TranslatableField = "title" | "description";
 type FormLang = "ro" | "en" | "fr";
 const FORM_LANGS: FormLang[] = ["ro", "en", "fr"];
+const RICH_TEXT_FIELDS: TranslatableField[] = ["description"];
 
 function fieldKey(field: TranslatableField, lang: FormLang): keyof HeritageItemFormValues {
   if (lang === "ro") return field;
@@ -95,11 +98,11 @@ export function HeritageItemForm({
   const [fillingEn, setFillingEn] = useState(false);
   const translate = useServerFn(translateText);
 
-  async function translateLong(text: string, target: FormLang): Promise<string> {
-    const chunks = chunkText(text);
+  async function translateLong(text: string, target: FormLang, rich: boolean): Promise<string> {
+    const chunks = rich ? chunkRichText(text) : chunkText(text);
     if (chunks.length <= 1) {
       const res = await translate({ data: { text, target } });
-      return res.text;
+      return rich ? sanitizeRichText(res.text) : res.text;
     }
     const results: string[] = new Array(chunks.length);
     let next = 0;
@@ -111,7 +114,8 @@ export function HeritageItemForm({
       }
     }
     await Promise.all(Array.from({ length: Math.min(3, chunks.length) }, worker));
-    return results.join("\n\n");
+    const joined = results.join("\n\n");
+    return rich ? sanitizeRichText(joined) : joined;
   }
 
   async function handleFillLang(target: "fr" | "en") {
@@ -132,7 +136,7 @@ export function HeritageItemForm({
         }
         const text = source === "ro" ? ro : other;
         try {
-          const translated = await translateLong(text, target);
+          const translated = await translateLong(text, target, RICH_TEXT_FIELDS.includes(field));
           setV((p) => ({ ...p, [fieldKey(field, target)]: translated }));
           filled++;
         } catch (e: any) {
@@ -160,7 +164,7 @@ export function HeritageItemForm({
     }
     setTranslating({ field, source, target });
     try {
-      const translated = await translateLong(text, target);
+      const translated = await translateLong(text, target, RICH_TEXT_FIELDS.includes(field));
       setV((p) => ({ ...p, [destKey]: translated }));
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
@@ -291,7 +295,7 @@ export function HeritageItemForm({
         onTranslate={handleTranslate}
         t={t}
         renderInput={(_lang, value, onChange) => (
-          <textarea rows={6} className={inputCls} value={value} onChange={(e) => onChange(e.target.value)} />
+          <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={6} />
         )}
         onChange={(lang, val) => set(fieldKey("description", lang), val)}
       />

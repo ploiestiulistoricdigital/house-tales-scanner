@@ -211,3 +211,32 @@
   background-clip: text;
   color: transparent;
 }
+
+@utility rich-text-content {
+  & p {
+    text-align: justify;
+    text-indent: 2.5rem;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 640px) {
+      text-indent: 3rem;
+    }
+  }
+
+  & ul,
+  & ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li {
+    margin-bottom: 0.25rem;
+  }
+}

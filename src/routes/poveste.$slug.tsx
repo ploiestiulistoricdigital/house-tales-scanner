@@ -6,6 +6,7 @@ import { AtomLogo } from "@/components/AtomLogo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { pick } from "@/components/HeritageListPage";
 import type { HeritageCategory } from "@/components/HeritageItemForm";
+import { looksLikeHtml, sanitizeRichText } from "@/lib/rich-text";
 
 type HeritageItem = {
   id: string;
@@ -160,18 +161,24 @@ function HeritageItemPage() {
       )}
 
       <article className="flex-1 mx-auto max-w-3xl px-4 py-10 sm:py-12 w-full">
-        {description && (
-          <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
-            {description
-              .split(/\n\s*\n/)
-              .filter(Boolean)
-              .map((paragraph, i) => (
-                <p key={i} className="text-justify indent-10 sm:indent-12 mb-2">
-                  {paragraph}
-                </p>
-              ))}
-          </div>
-        )}
+        {description &&
+          (looksLikeHtml(description) ? (
+            <div
+              className="rich-text-content max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
+              dangerouslySetInnerHTML={{ __html: sanitizeRichText(description) }}
+            />
+          ) : (
+            <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+              {description
+                .split(/\n\s*\n/)
+                .filter(Boolean)
+                .map((paragraph, i) => (
+                  <p key={i} className="text-justify indent-10 sm:indent-12 mb-2">
+                    {paragraph}
+                  </p>
+                ))}
+            </div>
+          ))}
       </article>
 
       <SiteFooter />

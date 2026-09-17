@@ -25,6 +25,18 @@ const heritageItemInput = z.object({
   sort_order: z.number().int().min(0).max(9999).default(0),
 });
 
+function sanitizeDescriptions<T extends { description?: string | null; description_en?: string | null; description_fr?: string | null }>(
+  data: T,
+  sanitize: (html: string) => string,
+): T {
+  return {
+    ...data,
+    description: data.description != null ? sanitize(data.description) : data.description,
+    description_en: data.description_en != null ? sanitize(data.description_en) : data.description_en,
+    description_fr: data.description_fr != null ? sanitize(data.description_fr) : data.description_fr,
+  };
+}
+
 async function assertAdmin(ctx: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await ctx.supabase
     .from("user_roles")
@@ -43,7 +55,8 @@ export const createHeritageItem = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "heritage:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const payload = { ...data, image_url: data.image_url || null };
+    const { sanitizeRichText } = await import("@/lib/rich-text");
+    const payload = { ...sanitizeDescriptions(data, sanitizeRichText), image_url: data.image_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("heritage_items")
       .insert(payload)
@@ -62,8 +75,9 @@ export const updateHeritageItem = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "heritage:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sanitizeRichText } = await import("@/lib/rich-text");
     const { id, ...rest } = data;
-    const payload = { ...rest, image_url: rest.image_url || null };
+    const payload = { ...sanitizeDescriptions(rest, sanitizeRichText), image_url: rest.image_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("heritage_items")
       .update(payload)
