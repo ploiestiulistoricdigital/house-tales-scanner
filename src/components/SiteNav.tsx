@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 const NAV_ITEMS = [
   { to: "/", labelKey: "nav.acasa" },
@@ -15,6 +17,8 @@ const NAV_ITEMS = [
 export function SiteNav() {
   const { t } = useI18n();
   const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const [logoPreviewOpen, setLogoPreviewOpen] = useState(false);
 
   return (
     <header className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-40">
@@ -24,7 +28,16 @@ export function SiteNav() {
             <img
               src="/sigla.jpeg"
               alt=""
-              className="h-20 w-20 sm:h-24 sm:w-24 -my-4 shrink-0 rounded-full object-cover"
+              onClick={
+                isHome
+                  ? (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setLogoPreviewOpen(true);
+                    }
+                  : undefined
+              }
+              className={`h-20 w-20 sm:h-24 sm:w-24 -my-4 shrink-0 rounded-full object-cover ${isHome ? "cursor-zoom-in" : ""}`}
             />
             <div className="flex flex-col leading-none min-w-0">
               <span className="font-display text-lg sm:text-xl font-semibold uppercase tracking-wide truncate">
@@ -57,6 +70,15 @@ export function SiteNav() {
           })}
         </nav>
       </div>
+
+      {isHome && (
+        <Dialog open={logoPreviewOpen} onOpenChange={setLogoPreviewOpen}>
+          <DialogContent className="max-w-md p-2 bg-transparent border-none shadow-none">
+            <DialogTitle className="sr-only">{t("brand.title")}</DialogTitle>
+            <img src="/sigla.jpeg" alt={t("brand.title")} className="w-full h-auto rounded-full" />
+          </DialogContent>
+        </Dialog>
+      )}
     </header>
   );
 }
