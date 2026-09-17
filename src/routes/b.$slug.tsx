@@ -5,6 +5,7 @@ import { useState } from "react";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
 import { SiteFooter } from "@/components/SiteFooter";
+import { looksLikeHtml, sanitizeRichText } from "@/lib/rich-text";
 
 type Building = {
   id: string;
@@ -216,21 +217,24 @@ function BuildingPage() {
           <span className="font-display text-accent text-xl">✦</span>
         </div>
 
-        {history && (
-          <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
-            {history
-              .split(/\n\s*\n/)
-              .filter(Boolean)
-              .map((paragraph, i) => (
-                <p
-                  key={i}
-                  className="text-justify indent-10 sm:indent-12 mb-2"
-                >
-                  {paragraph}
-                </p>
-              ))}
-          </div>
-        )}
+        {history &&
+          (looksLikeHtml(history) ? (
+            <div
+              className="rich-text-content max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
+              dangerouslySetInnerHTML={{ __html: sanitizeRichText(history) }}
+            />
+          ) : (
+            <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+              {history
+                .split(/\n\s*\n/)
+                .filter(Boolean)
+                .map((paragraph, i) => (
+                  <p key={i} className="text-justify indent-10 sm:indent-12 mb-2">
+                    {paragraph}
+                  </p>
+                ))}
+            </div>
+          ))}
 
         {images.length > 0 && (
           <section className="mt-16">

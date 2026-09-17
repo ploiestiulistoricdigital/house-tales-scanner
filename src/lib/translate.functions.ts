@@ -52,7 +52,7 @@ export const translateText = createServerFn({ method: "POST" })
         model: "claude-sonnet-5",
         max_tokens: 8192,
         stream: true,
-        system: `You are a professional translator specialized in Romanian historical and architectural content. Translate the user's text into ${targetName}. Preserve tone, proper nouns, dates, and formatting (paragraph breaks). Return ONLY the translated text, no preamble, no quotes.`,
+        system: `You are a professional translator specialized in Romanian historical and architectural content. Translate the user's text into ${targetName}. Preserve tone, proper nouns, dates, and formatting (paragraph breaks). The text may contain simple HTML tags (p, br, strong, b, em, i, u, ul, ol, li) — preserve every tag exactly as-is and translate only the visible text content between them. Return ONLY the translated text, no preamble, no quotes.`,
         messages: [{ role: "user", content: data.text }],
       }),
     });
