@@ -1,4 +1,4 @@
-export const RICH_TEXT_ALLOWED_TAGS = ["p", "br", "strong", "b", "em", "i", "u", "ul", "ol", "li"];
+export const RICH_TEXT_ALLOWED_TAGS = ["p", "br", "strong", "b", "em", "i", "u", "ul", "ol", "li", "blockquote"];
 const ALLOWED_TAG_SET = new Set(RICH_TEXT_ALLOWED_TAGS);
 
 // Dependency-free allowlist sanitizer, tailored to the fixed, tiny tag set a
@@ -46,7 +46,7 @@ export function toEditableHtml(value: string): string {
 // </ol>) instead of blank lines, so a chunk boundary never lands inside a
 // tag and corrupts the markup sent for translation.
 export function chunkRichText(html: string, maxChars = 1500): string[] {
-  const blocks = html.match(/[\s\S]*?<\/(?:p|ul|ol)>|[\s\S]+$/gi)?.filter(Boolean) ?? [html];
+  const blocks = html.match(/[\s\S]*?<\/(?:p|ul|ol|blockquote)>|[\s\S]+$/gi)?.filter(Boolean) ?? [html];
   const chunks: string[] = [];
   let current = "";
   for (const block of blocks) {

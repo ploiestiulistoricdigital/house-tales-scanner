@@ -239,4 +239,10 @@
   & li {
     margin-bottom: 0.25rem;
   }
+
+  & blockquote {
+    margin-left: 1.5rem;
+    border: none;
+    padding: 0;
+  }
 }
