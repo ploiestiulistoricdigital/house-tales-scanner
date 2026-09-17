@@ -4,14 +4,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export function BeforeAfterSlider({
   beforeSrc,
   beforeLabel,
+  beforeCaption,
   afterSrc,
   afterLabel,
+  afterCaption,
   afterPlaceholder,
 }: {
   beforeSrc: string;
   beforeLabel: string;
+  beforeCaption?: string | null;
   afterSrc?: string;
   afterLabel: string;
+  afterCaption?: string | null;
   afterPlaceholder?: string;
 }) {
   const [position, setPosition] = useState(50);
@@ -58,9 +62,10 @@ export function BeforeAfterSlider({
             {afterPlaceholder}
           </div>
         )}
-        <span className="absolute bottom-3 right-3 rounded-sm bg-background/90 backdrop-blur px-2.5 py-1 text-xs font-semibold uppercase tracking-widest text-foreground border border-border/60">
-          {afterLabel}
-        </span>
+        <div className="absolute bottom-3 right-3 max-w-[70%] rounded-sm bg-background/90 backdrop-blur px-2.5 py-1 text-right text-foreground border border-border/60">
+          <span className="block text-xs font-semibold uppercase tracking-widest">{afterLabel}</span>
+          {afterCaption && <span className="block text-xs italic mt-0.5">{afterCaption}</span>}
+        </div>
       </div>
 
       <div
@@ -68,9 +73,10 @@ export function BeforeAfterSlider({
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       >
         <img src={beforeSrc} alt={beforeLabel} className="h-full w-full object-cover sepia-[0.15]" draggable={false} />
-        <span className="absolute bottom-3 left-3 rounded-sm bg-background/90 backdrop-blur px-2.5 py-1 text-xs font-semibold uppercase tracking-widest text-foreground border border-border/60">
-          {beforeLabel}
-        </span>
+        <div className="absolute bottom-3 left-3 max-w-[70%] rounded-sm bg-background/90 backdrop-blur px-2.5 py-1 text-foreground border border-border/60">
+          <span className="block text-xs font-semibold uppercase tracking-widest">{beforeLabel}</span>
+          {beforeCaption && <span className="block text-xs italic mt-0.5">{beforeCaption}</span>}
+        </div>
       </div>
 
       <div

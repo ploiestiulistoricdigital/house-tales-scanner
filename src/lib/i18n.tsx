@@ -316,6 +316,23 @@ const RO: Dict = {
   "heritageItems.field.description": "Descriere",
   "heritageItems.field.sortOrder": "Ordine afișare",
   "heritageItems.field.sortOrder.hint": "Valoarea mai mică apare prima; elementul cu cea mai mică valoare per categorie apare pe pagina principală.",
+
+  // Antiteza (before/after photo pairs)
+  "antiteza.admin.title": "Atunci și acum",
+  "antiteza.admin.all": "Toate perechile",
+  "antiteza.admin.new": "Pereche nouă",
+  "antiteza.admin.edit": "Editează perechea",
+  "antiteza.admin.empty": "Nicio pereche încă. Creează prima.",
+  "antiteza.admin.confirmDelete.title": "Ștergi perechea?",
+  "antiteza.admin.confirmDelete": "Ștergi această pereche de imagini? Această acțiune este ireversibilă.",
+  "antiteza.field.beforeImage": "Fotografie „atunci”",
+  "antiteza.field.afterImage": "Fotografie „acum”",
+  "antiteza.field.beforeCaption": "Descriere „atunci”",
+  "antiteza.field.afterCaption": "Descriere „acum”",
+  "antiteza.field.sortOrder": "Ordine afișare",
+  "antiteza.field.sortOrder.hint": "Valoarea mai mică apare prima în rotația de pe pagina principală.",
+  "antiteza.err.beforeImage.required": "Fotografia „atunci” este obligatorie.",
+  "antiteza.err.afterImage.required": "Fotografia „acum” este obligatorie.",
 };
 
 const EN: Dict = {
@@ -606,6 +623,23 @@ const EN: Dict = {
   "heritageItems.field.description": "Description",
   "heritageItems.field.sortOrder": "Display order",
   "heritageItems.field.sortOrder.hint": "Lower values show first; the lowest-value item per category is featured on the homepage.",
+
+  // Antiteza (before/after photo pairs)
+  "antiteza.admin.title": "Then & now",
+  "antiteza.admin.all": "All pairs",
+  "antiteza.admin.new": "New pair",
+  "antiteza.admin.edit": "Edit pair",
+  "antiteza.admin.empty": "No pairs yet. Create the first one.",
+  "antiteza.admin.confirmDelete.title": "Delete this pair?",
+  "antiteza.admin.confirmDelete": "Delete this image pair? This action is irreversible.",
+  "antiteza.field.beforeImage": "\"Then\" photo",
+  "antiteza.field.afterImage": "\"Now\" photo",
+  "antiteza.field.beforeCaption": "\"Then\" caption",
+  "antiteza.field.afterCaption": "\"Now\" caption",
+  "antiteza.field.sortOrder": "Display order",
+  "antiteza.field.sortOrder.hint": "Lower values show first in the homepage rotation.",
+  "antiteza.err.beforeImage.required": "The \"then\" photo is required.",
+  "antiteza.err.afterImage.required": "The \"now\" photo is required.",
 };
 
 const FR: Dict = {
@@ -896,6 +930,23 @@ const FR: Dict = {
   "heritageItems.field.description": "Description",
   "heritageItems.field.sortOrder": "Ordre d'affichage",
   "heritageItems.field.sortOrder.hint": "Une valeur plus basse apparaît en premier ; l'élément avec la valeur la plus basse par catégorie est mis en avant sur la page d'accueil.",
+
+  // Antiteza (before/after photo pairs)
+  "antiteza.admin.title": "Avant/Après",
+  "antiteza.admin.all": "Toutes les paires",
+  "antiteza.admin.new": "Nouvelle paire",
+  "antiteza.admin.edit": "Modifier la paire",
+  "antiteza.admin.empty": "Aucune paire pour l'instant. Créez la première.",
+  "antiteza.admin.confirmDelete.title": "Supprimer cette paire ?",
+  "antiteza.admin.confirmDelete": "Supprimer cette paire d'images ? Cette action est irréversible.",
+  "antiteza.field.beforeImage": "Photo « avant »",
+  "antiteza.field.afterImage": "Photo « après »",
+  "antiteza.field.beforeCaption": "Légende « avant »",
+  "antiteza.field.afterCaption": "Légende « après »",
+  "antiteza.field.sortOrder": "Ordre d'affichage",
+  "antiteza.field.sortOrder.hint": "Une valeur plus basse apparaît en premier dans la rotation de la page d'accueil.",
+  "antiteza.err.beforeImage.required": "La photo « avant » est obligatoire.",
+  "antiteza.err.afterImage.required": "La photo « après » est obligatoire.",
 };
 
 const DICTS: Record<Lang, Dict> = { ro: RO, en: EN, fr: FR };
