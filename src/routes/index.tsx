@@ -9,7 +9,32 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { PartnerLogo } from "@/components/PartnerLogo";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
-const ANTITEZA_PAIRS = ["Casa_Socolescu", "Corp_Didactic", "Gara", "Scoala_baieti"] as const;
+type AntitezaPair = {
+  id: string;
+  before_image_url: string;
+  after_image_url: string;
+  before_caption: string | null;
+  before_caption_en: string | null;
+  before_caption_fr: string | null;
+  after_caption: string | null;
+  after_caption_en: string | null;
+  after_caption_fr: string | null;
+};
+
+async function fetchAntitezaPairs(): Promise<AntitezaPair[]> {
+  const { data, error } = await supabase
+    .from("antiteza_pairs")
+    .select(
+      "id, before_image_url, after_image_url, before_caption, before_caption_en, before_caption_fr, after_caption, after_caption_en, after_caption_fr",
+    )
+    .order("sort_order")
+    .order("created_at");
+  if (error) {
+    console.error(error);
+    return [];
+  }
+  return data;
+}
 
 type StorySummary = {
   slug: string;
@@ -65,8 +90,12 @@ async function fetchFeaturedHeritageItems(): Promise<Record<HeritageTeaserCatego
 }
 
 async function loadHomeData() {
-  const [story, heritageImages] = await Promise.all([fetchFeaturedStory(), fetchFeaturedHeritageItems()]);
-  return { story, heritageImages };
+  const [story, heritageImages, antitezaPairs] = await Promise.all([
+    fetchFeaturedStory(),
+    fetchFeaturedHeritageItems(),
+    fetchAntitezaPairs(),
+  ]);
+  return { story, heritageImages, antitezaPairs };
 }
 
 function pick(
@@ -135,16 +164,17 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, lang } = useI18n();
-  const { story, heritageImages } = Route.useLoaderData();
+  const { story, heritageImages, antitezaPairs } = Route.useLoaderData();
   const [antitezaIndex, setAntitezaIndex] = useState(0);
-  const antitezaPair = ANTITEZA_PAIRS[antitezaIndex];
+  const antitezaPair = antitezaPairs.length > 0 ? antitezaPairs[antitezaIndex % antitezaPairs.length] : null;
 
   useEffect(() => {
+    if (antitezaPairs.length <= 1) return;
     const id = setInterval(() => {
-      setAntitezaIndex((i) => (i + 1) % ANTITEZA_PAIRS.length);
+      setAntitezaIndex((i) => (i + 1) % antitezaPairs.length);
     }, 10000);
     return () => clearInterval(id);
-  }, []);
+  }, [antitezaPairs.length]);
   const categoryDefs = [
     {
       titleKey: "landing.categories.card1.title",
@@ -281,24 +311,28 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-t border-border/70 bg-secondary/40 py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-10 items-center">
-          <div>
-            <span className="text-xs uppercase tracking-[0.25em] text-accent">{t("landing.compare.eyebrow")}</span>
-            <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
-              {t("landing.compare.title.a")} <br className="hidden sm:block" /> {t("landing.compare.title.b")}
-            </h2>
-            <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.compare.lead")}</p>
+      {antitezaPair && (
+        <section className="border-t border-border/70 bg-secondary/40 py-16 sm:py-24">
+          <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-10 items-center">
+            <div>
+              <span className="text-xs uppercase tracking-[0.25em] text-accent">{t("landing.compare.eyebrow")}</span>
+              <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
+                {t("landing.compare.title.a")} <br className="hidden sm:block" /> {t("landing.compare.title.b")}
+              </h2>
+              <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.compare.lead")}</p>
+            </div>
+            <BeforeAfterSlider
+              key={antitezaPair.id}
+              beforeSrc={antitezaPair.before_image_url}
+              beforeLabel={t("landing.compare.then")}
+              beforeCaption={pick(lang, antitezaPair.before_caption, antitezaPair.before_caption_en, antitezaPair.before_caption_fr)}
+              afterSrc={antitezaPair.after_image_url}
+              afterLabel={t("landing.compare.now")}
+              afterCaption={pick(lang, antitezaPair.after_caption, antitezaPair.after_caption_en, antitezaPair.after_caption_fr)}
+            />
           </div>
-          <BeforeAfterSlider
-            key={antitezaPair}
-            beforeSrc={`/images/antiteza/${antitezaPair}-trecut.jpg`}
-            beforeLabel={t("landing.compare.then")}
-            afterSrc={`/images/antiteza/${antitezaPair}-prezent.jpg`}
-            afterLabel={t("landing.compare.now")}
-          />
-        </div>
-      </section>
+        </section>
+      )}
 
       {story && (
         <section className="relative overflow-hidden border-t border-border/70 bg-secondary/20 py-16 sm:py-24">

@@ -28,12 +28,15 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AuthenticatedAdminHeritageRouteImport } from './routes/_authenticated/admin_.heritage'
+import { Route as AuthenticatedAdminAntitezaRouteImport } from './routes/_authenticated/admin_.antiteza'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_authenticated/admin_.heritage_.new'
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
+import { Route as AuthenticatedAdminAntitezaNewRouteImport } from './routes/_authenticated/admin_.antiteza_.new'
 import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage_.$id.edit'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
+import { Route as AuthenticatedAdminAntitezaIdEditRouteImport } from './routes/_authenticated/admin_.antiteza_.$id.edit'
 
 const TraseeRoute = TraseeRouteImport.update({
   id: '/trasee',
@@ -132,6 +135,12 @@ const AuthenticatedAdminHeritageRoute =
     path: '/admin/heritage',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminAntitezaRoute =
+  AuthenticatedAdminAntitezaRouteImport.update({
+    id: '/admin_/antiteza',
+    path: '/admin/antiteza',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -155,6 +164,12 @@ const AuthenticatedAdminBuildingsNewRoute =
     path: '/admin/buildings/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminAntitezaNewRoute =
+  AuthenticatedAdminAntitezaNewRouteImport.update({
+    id: '/admin_/antiteza_/new',
+    path: '/admin/antiteza/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminHeritageIdEditRoute =
   AuthenticatedAdminHeritageIdEditRouteImport.update({
     id: '/admin_/heritage_/$id/edit',
@@ -165,6 +180,12 @@ const AuthenticatedAdminBuildingsIdEditRoute =
   AuthenticatedAdminBuildingsIdEditRouteImport.update({
     id: '/admin_/buildings/$id/edit',
     path: '/admin/buildings/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminAntitezaIdEditRoute =
+  AuthenticatedAdminAntitezaIdEditRouteImport.update({
+    id: '/admin_/antiteza_/$id/edit',
+    path: '/admin/antiteza/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -188,9 +209,12 @@ export interface FileRoutesByFullPath {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
@@ -214,9 +238,12 @@ export interface FileRoutesByTo {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
@@ -242,9 +269,12 @@ export interface FileRoutesById {
   '/poveste/$slug': typeof PovesteSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/_authenticated/admin_/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/_authenticated/admin_/antiteza_/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/_authenticated/admin_/heritage_/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/_authenticated/admin_/antiteza_/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/_authenticated/admin_/heritage_/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
 }
@@ -270,9 +300,12 @@ export interface FileRouteTypes {
     | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/antiteza'
     | '/admin/heritage'
+    | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
+    | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
     | '/admin/heritage/$id/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -296,9 +329,12 @@ export interface FileRouteTypes {
     | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/antiteza'
     | '/admin/heritage'
+    | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
+    | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
     | '/admin/heritage/$id/edit'
   id:
@@ -323,9 +359,12 @@ export interface FileRouteTypes {
     | '/poveste/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/admin_/antiteza'
     | '/_authenticated/admin_/heritage'
+    | '/_authenticated/admin_/antiteza_/new'
     | '/_authenticated/admin_/buildings/new'
     | '/_authenticated/admin_/heritage_/new'
+    | '/_authenticated/admin_/antiteza_/$id/edit'
     | '/_authenticated/admin_/buildings/$id/edit'
     | '/_authenticated/admin_/heritage_/$id/edit'
   fileRoutesById: FileRoutesById
@@ -487,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHeritageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/antiteza': {
+      id: '/_authenticated/admin_/antiteza'
+      path: '/admin/antiteza'
+      fullPath: '/admin/antiteza'
+      preLoaderRoute: typeof AuthenticatedAdminAntitezaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -515,6 +561,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBuildingsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/antiteza_/new': {
+      id: '/_authenticated/admin_/antiteza_/new'
+      path: '/admin/antiteza/new'
+      fullPath: '/admin/antiteza/new'
+      preLoaderRoute: typeof AuthenticatedAdminAntitezaNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin_/heritage_/$id/edit': {
       id: '/_authenticated/admin_/heritage_/$id/edit'
       path: '/admin/heritage/$id/edit'
@@ -529,23 +582,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBuildingsIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/antiteza_/$id/edit': {
+      id: '/_authenticated/admin_/antiteza_/$id/edit'
+      path: '/admin/antiteza/$id/edit'
+      fullPath: '/admin/antiteza/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminAntitezaIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminAntitezaRoute: typeof AuthenticatedAdminAntitezaRoute
   AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRoute
+  AuthenticatedAdminAntitezaNewRoute: typeof AuthenticatedAdminAntitezaNewRoute
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
   AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
+  AuthenticatedAdminAntitezaIdEditRoute: typeof AuthenticatedAdminAntitezaIdEditRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
   AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminAntitezaRoute: AuthenticatedAdminAntitezaRoute,
   AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRoute,
+  AuthenticatedAdminAntitezaNewRoute: AuthenticatedAdminAntitezaNewRoute,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
   AuthenticatedAdminHeritageNewRoute: AuthenticatedAdminHeritageNewRoute,
+  AuthenticatedAdminAntitezaIdEditRoute: AuthenticatedAdminAntitezaIdEditRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
   AuthenticatedAdminHeritageIdEditRoute: AuthenticatedAdminHeritageIdEditRoute,
