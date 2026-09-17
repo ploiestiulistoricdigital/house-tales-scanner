@@ -265,8 +265,8 @@ const RO: Dict = {
   "landing.compare.title.a": "Același oraș,",
   "landing.compare.title.b": "alte vremuri.",
   "landing.compare.lead": "Compară fotografiile de epocă cu imaginile actuale și descoperă cum s-a schimbat Ploieștiul de-a lungul timpului.",
-  "landing.compare.then": "Ploiești, perioada interbelică",
-  "landing.compare.now": "Astăzi",
+  "landing.compare.then": "Atunci",
+  "landing.compare.now": "Acum",
   "landing.compare.now.comingSoon": "Fotografie modernă în curând",
 
   "landing.story.eyebrow": "O poveste din oraș",
