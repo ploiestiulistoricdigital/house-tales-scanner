@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, FileText, Landmark, ScrollText, Users, Compass } from "lucide-react";
@@ -7,6 +8,8 @@ import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { PartnerLogo } from "@/components/PartnerLogo";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
+
+const ANTITEZA_PAIRS = ["Casa_Socolescu", "Corp_Didactic", "Gara", "Scoala_baieti"] as const;
 
 type StorySummary = {
   slug: string;
@@ -133,6 +136,8 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { t, lang } = useI18n();
   const { story, heritageImages } = Route.useLoaderData();
+  const [antitezaIndex, setAntitezaIndex] = useState(0);
+  const antitezaPair = ANTITEZA_PAIRS[antitezaIndex];
   const categoryDefs = [
     {
       titleKey: "landing.categories.card1.title",
@@ -279,10 +284,13 @@ function Home() {
             <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.compare.lead")}</p>
           </div>
           <BeforeAfterSlider
-            beforeSrc="/ploiesti-vedere-generala-1938.jpg"
+            key={antitezaPair}
+            beforeSrc={`/images/antiteza/${antitezaPair}-trecut.jpg`}
             beforeLabel={t("landing.compare.then")}
+            afterSrc={`/images/antiteza/${antitezaPair}-prezent.jpg`}
             afterLabel={t("landing.compare.now")}
-            afterPlaceholder={t("landing.compare.now.comingSoon")}
+            switchLabel={t("landing.compare.switch")}
+            onHandleClick={() => setAntitezaIndex((i) => (i + 1) % ANTITEZA_PAIRS.length)}
           />
         </div>
       </section>
