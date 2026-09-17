@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Bold, Italic, Underline, List, ListOrdered } from "lucide-react";
+import { Bold, Italic, Underline, List, ListOrdered, Indent, Outdent } from "lucide-react";
 import { sanitizeRichText } from "@/lib/rich-text";
 
 export function RichTextEditor({
@@ -46,6 +46,9 @@ export function RichTextEditor({
         <span className="mx-1 h-4 w-px bg-border" aria-hidden="true" />
         <ToolbarButton icon={List} label="Bullet list" onClick={() => exec("insertUnorderedList")} />
         <ToolbarButton icon={ListOrdered} label="Numbered list" onClick={() => exec("insertOrderedList")} />
+        <span className="mx-1 h-4 w-px bg-border" aria-hidden="true" />
+        <ToolbarButton icon={Outdent} label="Decrease indent" onClick={() => exec("outdent")} />
+        <ToolbarButton icon={Indent} label="Increase indent" onClick={() => exec("indent")} />
       </div>
       <div
         ref={ref}
@@ -53,7 +56,7 @@ export function RichTextEditor({
         suppressContentEditableWarning
         onInput={emitChange}
         onPaste={handlePaste}
-        className="w-full px-3 py-3 text-base focus:outline-none [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
+        className="w-full px-3 py-3 text-base focus:outline-none [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-0 [&_blockquote]:ml-6 [&_blockquote]:pl-0"
         style={{ minHeight: `${rows * 1.6}em` }}
       />
     </div>
