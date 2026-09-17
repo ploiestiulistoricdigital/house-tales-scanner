@@ -131,7 +131,7 @@ export function AntitezaPairForm({
           max={9999}
           className={inputCls}
           value={v.sort_order}
-          onChange={(e) => set("sort_order", Number(e.target.value) || 0)}
+          onChange={(e) => set("sort_order", Math.min(9999, Math.max(0, Number(e.target.value) || 0)))}
         />
         <span className="mt-1 block text-sm text-muted-foreground">{t("antiteza.field.sortOrder.hint")}</span>
       </label>
@@ -235,6 +235,7 @@ function CaptionRow({
       <input
         className="flex-1 rounded-md border border-border/70 px-3 py-3 text-base bg-background"
         value={value}
+        maxLength={300}
         onChange={(e) => onChange(e.target.value)}
       />
       {onTranslate && (

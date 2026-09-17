@@ -44,7 +44,8 @@ export function AntitezaPage() {
       const { data, error } = await supabase
         .from("antiteza_pairs")
         .select("id, before_image_url, after_image_url, before_caption, after_caption, sort_order")
-        .order("sort_order");
+        .order("sort_order")
+        .order("created_at");
       if (error) throw error;
       return data;
     },

@@ -1,3 +1,10 @@
+-- Applied directly via the Supabase SQL Editor against production
+-- (gxpiixyldoqxvluogziy) on 2026-09-17 -- CLI access was unavailable at
+-- the time, so `supabase_migrations.schema_migrations` doesn't know this
+-- ran. Before the next `supabase db push` against that project, run
+-- `supabase migration repair --status applied 20260917120000` first, or
+-- this will fail trying to recreate an already-existing table/policies.
+
 -- Admin-managed before/after ("antiteza") image pairs shown in the
 -- homepage's "Ploieștiul atunci și acum" section, replacing the previously
 -- hardcoded ANTITEZA_PAIRS array + static /images/antiteza/*.jpg files.
