@@ -7,16 +7,21 @@ export function BeforeAfterSlider({
   afterSrc,
   afterLabel,
   afterPlaceholder,
+  onHandleClick,
+  switchLabel,
 }: {
   beforeSrc: string;
   beforeLabel: string;
   afterSrc?: string;
   afterLabel: string;
   afterPlaceholder?: string;
+  onHandleClick?: () => void;
+  switchLabel: string;
 }) {
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
+  const movedRef = useRef(false);
 
   const updateFromClientX = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -28,17 +33,25 @@ export function BeforeAfterSlider({
 
   const handlePointerDown = (e: React.PointerEvent) => {
     draggingRef.current = true;
+    movedRef.current = false;
     (e.target as Element).setPointerCapture(e.pointerId);
     updateFromClientX(e.clientX);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!draggingRef.current) return;
+    movedRef.current = true;
     updateFromClientX(e.clientX);
   };
 
   const handlePointerUp = () => {
     draggingRef.current = false;
+  };
+
+  const handleHandleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (movedRef.current) return;
+    onHandleClick?.();
   };
 
   return (
@@ -77,10 +90,15 @@ export function BeforeAfterSlider({
         className="absolute inset-y-0 w-0.5 bg-background/90"
         style={{ left: `${position}%` }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background border border-border shadow-[var(--shadow-warm)] flex items-center justify-center text-foreground">
+        <button
+          type="button"
+          onClick={handleHandleClick}
+          aria-label={switchLabel}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background border border-border shadow-[var(--shadow-warm)] flex items-center justify-center text-foreground"
+        >
           <ChevronLeft className="h-3.5 w-3.5 -mr-1" />
           <ChevronRight className="h-3.5 w-3.5 -ml-1" />
-        </div>
+        </button>
       </div>
     </div>
   );
