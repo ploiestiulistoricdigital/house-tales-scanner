@@ -224,14 +224,12 @@ function BuildingPage() {
               dangerouslySetInnerHTML={{ __html: sanitizeRichText(history) }}
             />
           ) : (
-            <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+            <div className="rich-text-content max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
               {history
                 .split(/\n\s*\n/)
                 .filter(Boolean)
                 .map((paragraph, i) => (
-                  <p key={i} className="text-justify indent-10 sm:indent-12 mb-2">
-                    {paragraph}
-                  </p>
+                  <p key={i}>{paragraph}</p>
                 ))}
             </div>
           ))}

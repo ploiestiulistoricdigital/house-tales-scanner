@@ -223,6 +223,15 @@
     }
   }
 
+  & > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    line-height: 0.8;
+    font-size: 3.2em;
+    padding-right: 0.1em;
+    color: var(--color-primary);
+  }
+
   & ul,
   & ol {
     margin: 0.5rem 0 1rem 1.5rem;
@@ -241,8 +250,12 @@
   }
 
   & blockquote {
-    margin-left: 1.5rem;
-    border: none;
-    padding: 0;
+    margin: 1.5rem 0;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--color-accent);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15em;
+    color: var(--color-foreground);
   }
 }

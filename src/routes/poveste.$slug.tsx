@@ -160,6 +160,10 @@ function HeritageItemPage() {
         </div>
       )}
 
+      <div className="ornament-divider my-6 mx-auto max-w-3xl px-4">
+        <span className="font-display text-accent text-xl">✦</span>
+      </div>
+
       <article className="flex-1 mx-auto max-w-3xl px-4 py-10 sm:py-12 w-full">
         {description &&
           (looksLikeHtml(description) ? (
@@ -168,14 +172,12 @@ function HeritageItemPage() {
               dangerouslySetInnerHTML={{ __html: sanitizeRichText(description) }}
             />
           ) : (
-            <div className="max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+            <div className="rich-text-content max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
               {description
                 .split(/\n\s*\n/)
                 .filter(Boolean)
                 .map((paragraph, i) => (
-                  <p key={i} className="text-justify indent-10 sm:indent-12 mb-2">
-                    {paragraph}
-                  </p>
+                  <p key={i}>{paragraph}</p>
                 ))}
             </div>
           ))}
