@@ -396,28 +396,24 @@ function Home() {
 
       <section className="border-t border-border/70 bg-secondary/30 py-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-8 items-start">
-            <div>
-              <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-4 text-center sm:text-left">
-                {t("landing.partners.title")}
-              </h2>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3">
-                {PARTNERS.map((partner) => (
-                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
-                ))}
-              </div>
-            </div>
-            <div className="hidden sm:block w-px bg-border/70 self-stretch" />
-            <div>
-              <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-4 text-center sm:text-left">
-                {t("landing.partnersMedia.title")}
-              </h2>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3">
-                {MEDIA_PARTNERS.map((partner) => (
-                  <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
-                ))}
-              </div>
-            </div>
+          <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-6 text-center">
+            {t("landing.partners.title")}
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8 justify-items-center">
+            {PARTNERS.map((partner) => (
+              <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
+            ))}
+          </div>
+
+          <div className="my-8 h-px bg-border/70" />
+
+          <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-6 text-center">
+            {t("landing.partnersMedia.title")}
+          </h2>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-8">
+            {MEDIA_PARTNERS.map((partner) => (
+              <PartnerLogo key={partner.name} name={partner.name} src={partner.src} href={partner.href} />
+            ))}
           </div>
         </div>
       </section>
