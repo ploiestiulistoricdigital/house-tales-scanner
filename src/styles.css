@@ -213,6 +213,31 @@
 }
 
 @utility rich-text-content {
+  /*
+   * Base justify/indent/drop-cap live on the container itself, not just
+   * "& p", so legacy records saved before this site had real paragraph
+   * tags (plain text + literal "&nbsp;" indent hacks + "<br>" line breaks,
+   * no <p> at all) still get sensible typography instead of unstyled text.
+   * ::first-letter on a block container still finds the first letter of
+   * properly-<p>-wrapped content too, so this isn't a fallback that only
+   * fires for old content — it's the one rule that covers both cases.
+   */
+  text-align: justify;
+  text-indent: 2.5rem;
+
+  @media (min-width: 640px) {
+    text-indent: 3rem;
+  }
+
+  &::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    line-height: 0.8;
+    font-size: 3.2em;
+    padding-right: 0.1em;
+    color: var(--color-primary);
+  }
+
   & p {
     text-align: justify;
     text-indent: 2.5rem;
@@ -221,15 +246,6 @@
     @media (min-width: 640px) {
       text-indent: 3rem;
     }
-  }
-
-  & > p:first-of-type::first-letter {
-    font-family: var(--font-display);
-    float: left;
-    line-height: 0.8;
-    font-size: 3.2em;
-    padding-right: 0.1em;
-    color: var(--color-primary);
   }
 
   & ul,
@@ -257,5 +273,7 @@
     font-style: italic;
     font-size: 1.15em;
     color: var(--color-foreground);
+    text-align: left;
+    text-indent: 0;
   }
 }
