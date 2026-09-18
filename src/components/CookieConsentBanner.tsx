@@ -9,7 +9,9 @@ export function CookieConsentBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(getConsent() === null);
+    const consent = getConsent();
+    setVisible(consent === null);
+    if (consent === "accepted" && import.meta.env.PROD) loadGoogleAnalytics();
   }, []);
 
   if (!visible) return null;
