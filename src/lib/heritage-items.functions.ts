@@ -88,6 +88,25 @@ export const updateHeritageItem = createServerFn({ method: "POST" })
     return row;
   });
 
+export const reorderHeritageItems = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { ids: string[] }) =>
+    z.object({ ids: z.array(z.string().uuid()).min(1).max(200) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    await assertRateLimit(context.userId, "heritage:mutate", 60, 300);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const results = await Promise.all(
+      data.ids.map((id, index) =>
+        supabaseAdmin.from("heritage_items").update({ sort_order: index }).eq("id", id),
+      ),
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
+    return { ok: true };
+  });
+
 export const deleteHeritageItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
