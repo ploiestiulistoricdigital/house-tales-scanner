@@ -151,7 +151,7 @@ export function HeritagePage() {
                   if (rows.length === 0) return [];
                   return [
                     <tr key={`h-${category}`} className="border-t border-border/70 bg-muted/30">
-                      <td colSpan={3} className="px-4 py-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                      <td colSpan={4} className="px-4 py-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                         {t(`heritageItems.category.${category}`)}
                       </td>
                     </tr>,
@@ -160,6 +160,9 @@ export function HeritagePage() {
                         <td className="px-4 py-3 font-medium">{item.title}</td>
                         <td className="px-4 py-3">
                           <code className="text-sm bg-muted px-2 py-1 rounded">{item.slug}</code>
+                        </td>
+                        <td className="px-4 py-3 text-center text-muted-foreground" title={t("heritageItems.field.sortOrder")}>
+                          {item.sort_order}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex gap-1">
