@@ -78,7 +78,7 @@ export function SiteNav() {
                 <span className="font-display text-lg sm:text-xl font-semibold uppercase tracking-wide truncate">
                   {t("brand.title")}
                 </span>
-                <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-0.5">
+                <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-0.5 truncate">
                   {t("brand.tagline")}
                 </span>
               </div>

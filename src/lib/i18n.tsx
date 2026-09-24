@@ -1095,7 +1095,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
     <div
       role="group"
       aria-label={t("lang.label")}
-      className={`inline-flex items-center rounded-md border border-border/70 bg-background overflow-hidden text-xs uppercase tracking-widest ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-md border border-border/70 bg-background overflow-hidden text-xs uppercase tracking-widest ${className}`}
     >
       {LANGS.map((l) => {
         const active = l === lang;
