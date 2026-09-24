@@ -3,8 +3,10 @@ import { Languages, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { useI18n } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
+import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
 export type TeamMemberFormValues = {
   name: string;
@@ -24,9 +26,13 @@ function roleKey(lang: FormLang): keyof TeamMemberFormValues {
 
 type FieldErrors = Partial<Record<"name", string>>;
 
+function isBlankHtml(html: string): boolean {
+  return html.replace(/<[^>]*>/g, "").trim().length === 0;
+}
+
 function validate(v: TeamMemberFormValues, t: (k: string) => string): FieldErrors {
   const errs: FieldErrors = {};
-  if (!v.name.trim()) errs.name = t("about.err.memberName.required");
+  if (isBlankHtml(v.name)) errs.name = t("about.err.memberName.required");
   return errs;
 }
 
@@ -70,8 +76,10 @@ export function TeamMemberForm({
     }
     setTranslating(target);
     try {
-      const res = await translate({ data: { text: source, target } });
-      set(roleKey(target), res.text);
+      const chunks = chunkRichText(source);
+      const results = await Promise.all(chunks.map((chunk) => translate({ data: { text: chunk, target } })));
+      const translated = sanitizeRichText(results.map((r) => r.text).join("\n\n"));
+      set(roleKey(target), translated);
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
     } finally {
@@ -90,16 +98,11 @@ export function TeamMemberForm({
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-      <label className="block" data-field-error={fieldErrors.name ? "true" : undefined}>
+      <div data-field-error={fieldErrors.name ? "true" : undefined}>
         <span className="mb-1.5 block text-base font-medium">{t("about.field.memberName")}</span>
-        <input
-          className={inputCls}
-          value={v.name}
-          aria-invalid={!!fieldErrors.name}
-          onChange={(e) => set("name", e.target.value)}
-        />
+        <RichTextEditor value={toEditableHtml(v.name)} onChange={(val) => set("name", val)} rows={2} />
         {fieldErrors.name && <span className="mt-1 block text-sm font-medium text-destructive">{fieldErrors.name}</span>}
-      </label>
+      </div>
 
       <div>
         <span className="mb-1.5 block text-base font-medium">{t("about.field.memberPhoto")}</span>
@@ -181,11 +184,9 @@ function RoleRow({
   return (
     <div className="flex items-start gap-2">
       <span className="text-xs uppercase tracking-widest text-muted-foreground w-6 shrink-0 mt-3">{lang}</span>
-      <textarea
-        className="flex-1 rounded-md border border-border/70 px-3 py-3 text-base bg-background min-h-24"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <div className="flex-1">
+        <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={4} />
+      </div>
       {onTranslate && (
         <button
           type="button"

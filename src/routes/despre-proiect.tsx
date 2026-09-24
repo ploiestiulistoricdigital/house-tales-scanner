@@ -26,6 +26,17 @@ type TeamMember = {
   photo_url: string | null;
 };
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "").trim();
+}
+
+function RichBlock({ value, className }: { value: string; className?: string }) {
+  if (looksLikeHtml(value)) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: sanitizeRichText(value) }} />;
+  }
+  return <div className={`${className ?? ""} whitespace-pre-line`}>{value}</div>;
+}
+
 function pick(
   lang: string,
   ro: string | null | undefined,
@@ -126,7 +137,10 @@ function DespreProiect() {
                       <User className="h-10 w-10" />
                     </div>
                   )}
-                  <span className="mt-3 font-display text-base font-semibold">{member.name}</span>
+                  <RichBlock
+                    value={member.name}
+                    className="mt-3 font-display text-base font-semibold [&_p]:m-0"
+                  />
                 </button>
               ))}
             </div>
@@ -138,7 +152,7 @@ function DespreProiect() {
         <DialogContent className="max-w-md">
           {selectedMember && (
             <div className="flex flex-col items-center text-center">
-              <DialogTitle className="sr-only">{selectedMember.name}</DialogTitle>
+              <DialogTitle className="sr-only">{stripHtml(selectedMember.name)}</DialogTitle>
               {selectedMember.photo_url ? (
                 <img
                   src={selectedMember.photo_url}
@@ -150,11 +164,12 @@ function DespreProiect() {
                   <User className="h-16 w-16" />
                 </div>
               )}
-              <span className="mt-4 font-display text-xl font-semibold">{selectedMember.name}</span>
+              <RichBlock value={selectedMember.name} className="mt-4 font-display text-xl font-semibold [&_p]:m-0" />
               {selectedRole && (
-                <p className="mt-3 text-base text-muted-foreground leading-relaxed whitespace-pre-line text-left">
-                  {selectedRole}
-                </p>
+                <RichBlock
+                  value={selectedRole}
+                  className="mt-3 text-base text-muted-foreground leading-relaxed text-left [&_p]:mb-2 last:[&_p]:mb-0"
+                />
               )}
             </div>
           )}
