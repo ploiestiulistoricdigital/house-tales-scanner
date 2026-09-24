@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Menu } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
   { to: "/", labelKey: "nav.acasa" },
@@ -20,6 +22,7 @@ export function SiteNav() {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const [logoPreviewOpen, setLogoPreviewOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <header className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-40">
@@ -50,10 +53,41 @@ export function SiteNav() {
             </div>
           </Link>
 
-          <LanguageSwitcher />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(true)}
+                className="md:hidden inline-flex items-center justify-center h-11 w-11 text-muted-foreground hover:text-primary"
+                aria-label={t("nav.openMenu")}
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+              <SheetContent side="right" className="w-3/4 sm:max-w-sm flex flex-col gap-1 pt-10">
+                <SheetTitle className="sr-only">{t("brand.title")}</SheetTitle>
+                {NAV_ITEMS.map((item) => {
+                  const active = pathname === item.to;
+                  return (
+                    <SheetClose asChild key={item.to}>
+                      <Link
+                        to={item.to}
+                        aria-current={active ? "page" : undefined}
+                        className={`px-3 py-3 min-h-11 inline-flex items-center text-sm uppercase tracking-wider transition-colors ${
+                          active ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"
+                        }`}
+                      >
+                        {t(item.labelKey)}
+                      </Link>
+                    </SheetClose>
+                  );
+                })}
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
 
-        <nav className="flex items-center gap-1 flex-wrap">
+        <nav className="hidden md:flex items-center gap-1 flex-wrap">
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.to;
             return (
