@@ -293,6 +293,9 @@ const RO: Dict = {
   "despreProiect.contact.sending": "Se trimite…",
   "despreProiect.contact.success": "Mesajul a fost trimis. Îți mulțumim!",
   "despreProiect.contact.error": "Mesajul nu a putut fi trimis. Încearcă din nou mai târziu.",
+  "despreProiect.contact.file": "Atașează un fișier (opțional)",
+  "despreProiect.contact.file.hint": "Maxim {mb} MB.",
+  "despreProiect.contact.file.tooLarge": "Fișierul este prea mare (maxim {mb} MB).",
 
   // Coming soon
   "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
@@ -602,6 +605,9 @@ const EN: Dict = {
   "despreProiect.contact.sending": "Sending…",
   "despreProiect.contact.success": "Your message has been sent. Thank you!",
   "despreProiect.contact.error": "The message couldn't be sent. Please try again later.",
+  "despreProiect.contact.file": "Attach a file (optional)",
+  "despreProiect.contact.file.hint": "Max {mb} MB.",
+  "despreProiect.contact.file.tooLarge": "The file is too large (max {mb} MB).",
 
   // Coming soon
   "comingSoon.body": "This section is coming soon. Check back later.",
@@ -911,6 +917,9 @@ const FR: Dict = {
   "despreProiect.contact.sending": "Envoi en cours…",
   "despreProiect.contact.success": "Votre message a été envoyé. Merci !",
   "despreProiect.contact.error": "Le message n'a pas pu être envoyé. Veuillez réessayer plus tard.",
+  "despreProiect.contact.file": "Joindre un fichier (facultatif)",
+  "despreProiect.contact.file.hint": "Maximum {mb} Mo.",
+  "despreProiect.contact.file.tooLarge": "Le fichier est trop volumineux (maximum {mb} Mo).",
 
   // Coming soon
   "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
