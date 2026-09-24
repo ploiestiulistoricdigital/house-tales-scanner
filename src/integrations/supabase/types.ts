@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      about_content: {
+        Row: {
+          description: string
+          description_en: string | null
+          description_fr: string | null
+          id: number
+          title: string
+          title_en: string | null
+          title_fr: string | null
+          updated_at: string
+        }
+        Insert: {
+          description?: string
+          description_en?: string | null
+          description_fr?: string | null
+          id?: number
+          title?: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          description_en?: string | null
+          description_fr?: string | null
+          id?: number
+          title?: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       antiteza_pairs: {
         Row: {
           after_caption: string | null
@@ -267,6 +300,39 @@ export type Database = {
           count?: number
           key?: string
           window_start?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          photo_url: string | null
+          role: string | null
+          role_en: string | null
+          role_fr: string | null
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          role?: string | null
+          role_en?: string | null
+          role_fr?: string | null
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          role?: string | null
+          role_en?: string | null
+          role_fr?: string | null
+          sort_order?: number
         }
         Relationships: []
       }
