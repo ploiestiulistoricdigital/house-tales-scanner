@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin } from "@/lib/buildings.functions";
 import { updateAboutContent, deleteTeamMember, reorderTeamMembers } from "@/lib/about.functions";
@@ -114,6 +115,7 @@ export function AboutPage() {
     setContentError(null);
     try {
       await updateContent({ data: v });
+      toast.success(t("about.admin.saved"));
       qc.invalidateQueries({ queryKey: ["admin-about-content"] });
     } catch (e: any) {
       setContentError(e.message ?? t("form.saveFailed"));
