@@ -5,6 +5,7 @@ import { ExternalLink, Mail } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AtomLogo } from "@/components/AtomLogo";
 import { sendContactMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/contact")({
@@ -38,23 +39,36 @@ function Contact() {
           {t("nav.contact")}
         </h1>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-12">
-          <a
-            href="https://atomploiesti.ro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4 hover:text-primary transition-colors"
-          >
-            <ExternalLink className="h-4 w-4" />
-            {t("despreProiect.org.websiteLink")}
-          </a>
-          <a
-            href="mailto:contact@atomploiesti.ro"
-            className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4 hover:text-primary transition-colors"
-          >
-            <Mail className="h-4 w-4" />
-            contact@atomploiesti.ro
-          </a>
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-2">
+            <AtomLogo size="sm" />
+            <h2 className="font-display text-lg sm:text-xl font-semibold text-foreground">
+              {t("despreProiect.org.title")}
+            </h2>
+          </div>
+          <p className="text-foreground/85 leading-relaxed mb-4">{t("despreProiect.org.body")}</p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://atomploiesti.ro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4 hover:text-primary transition-colors"
+            >
+              <ExternalLink className="h-4 w-4" />
+              {t("despreProiect.org.websiteLink")}
+            </a>
+            <a
+              href="mailto:contact@atomploiesti.ro"
+              className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4 hover:text-primary transition-colors"
+            >
+              <Mail className="h-4 w-4" />
+              contact@atomploiesti.ro
+            </a>
+          </div>
+        </div>
+
+        <div className="ornament-divider mb-8">
+          <span className="font-display text-accent text-xl">✦</span>
         </div>
 
         <ContactForm />
