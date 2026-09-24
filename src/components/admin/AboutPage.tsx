@@ -28,6 +28,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 type TeamMemberRow = {
   id: string;
   name: string;
@@ -246,7 +250,7 @@ export function AboutPage() {
                         <SortableTeamRow
                           key={member.id}
                           member={member}
-                          onDelete={() => setPendingDelete({ id: member.id, name: member.name })}
+                          onDelete={() => setPendingDelete({ id: member.id, name: stripHtml(member.name) })}
                           t={t}
                         />
                       ))}
@@ -310,8 +314,8 @@ function SortableTeamRow({
           </div>
         )}
       </td>
-      <td className="px-4 py-3 font-medium">{member.name}</td>
-      <td className="px-4 py-3 text-muted-foreground">{member.role || "—"}</td>
+      <td className="px-4 py-3 font-medium">{stripHtml(member.name)}</td>
+      <td className="px-4 py-3 text-muted-foreground">{member.role ? stripHtml(member.role) : "—"}</td>
       <td className="px-4 py-3">
         <div className="flex gap-1">
           <Link

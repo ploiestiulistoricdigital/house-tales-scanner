@@ -15,7 +15,7 @@ const aboutContentInput = z.object({
 });
 
 const teamMemberInput = z.object({
-  name: z.string().trim().min(1).max(200),
+  name: z.string().trim().min(1).max(2000),
   role: z.string().max(3000).optional().nullable(),
   role_en: z.string().max(3000).optional().nullable(),
   role_fr: z.string().max(3000).optional().nullable(),
@@ -32,6 +32,19 @@ function sanitizeAboutContent<T extends { description: string; description_en?: 
     description: sanitize(data.description),
     description_en: data.description_en != null ? sanitize(data.description_en) : data.description_en,
     description_fr: data.description_fr != null ? sanitize(data.description_fr) : data.description_fr,
+  };
+}
+
+function sanitizeTeamMember<T extends { name: string; role?: string | null; role_en?: string | null; role_fr?: string | null }>(
+  data: T,
+  sanitize: (html: string) => string,
+): T {
+  return {
+    ...data,
+    name: sanitize(data.name),
+    role: data.role != null ? sanitize(data.role) : data.role,
+    role_en: data.role_en != null ? sanitize(data.role_en) : data.role_en,
+    role_fr: data.role_fr != null ? sanitize(data.role_fr) : data.role_fr,
   };
 }
 
@@ -72,7 +85,8 @@ export const createTeamMember = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "about:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const payload = { ...data, photo_url: data.photo_url || null };
+    const { sanitizeRichText } = await import("@/lib/rich-text");
+    const payload = { ...sanitizeTeamMember(data, sanitizeRichText), photo_url: data.photo_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("team_members")
       .insert(payload)
@@ -91,8 +105,9 @@ export const updateTeamMember = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "about:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sanitizeRichText } = await import("@/lib/rich-text");
     const { id, ...rest } = data;
-    const payload = { ...rest, photo_url: rest.photo_url || null };
+    const payload = { ...sanitizeTeamMember(rest, sanitizeRichText), photo_url: rest.photo_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("team_members")
       .update(payload)
