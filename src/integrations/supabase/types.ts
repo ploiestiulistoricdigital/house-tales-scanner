@@ -308,6 +308,8 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string | null
+          name_fr: string | null
           photo_url: string | null
           role: string | null
           role_en: string | null
@@ -318,6 +320,8 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          name_en?: string | null
+          name_fr?: string | null
           photo_url?: string | null
           role?: string | null
           role_en?: string | null
@@ -328,6 +332,8 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string | null
+          name_fr?: string | null
           photo_url?: string | null
           role?: string | null
           role_en?: string | null

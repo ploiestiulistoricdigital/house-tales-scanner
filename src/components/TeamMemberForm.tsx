@@ -10,6 +10,8 @@ import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text
 
 export type TeamMemberFormValues = {
   name: string;
+  name_en: string;
+  name_fr: string;
   role: string;
   role_en: string;
   role_fr: string;
@@ -18,10 +20,12 @@ export type TeamMemberFormValues = {
 };
 
 type FormLang = "ro" | "en" | "fr";
+type TranslatableField = "name" | "role";
+type StringFieldKey = "name" | "name_en" | "name_fr" | "role" | "role_en" | "role_fr";
 
-function roleKey(lang: FormLang): keyof TeamMemberFormValues {
-  if (lang === "ro") return "role";
-  return `role_${lang}` as keyof TeamMemberFormValues;
+function fieldKey(field: TranslatableField, lang: FormLang): StringFieldKey {
+  if (lang === "ro") return field;
+  return `${field}_${lang}` as StringFieldKey;
 }
 
 type FieldErrors = Partial<Record<"name", string>>;
@@ -55,7 +59,7 @@ export function TeamMemberForm({
   const [v, setV] = useState<TeamMemberFormValues>(initial);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [attempted, setAttempted] = useState(false);
-  const [translating, setTranslating] = useState<FormLang | null>(null);
+  const [translating, setTranslating] = useState<null | { field: TranslatableField; target: "en" | "fr" }>(null);
   const translate = useServerFn(translateText);
 
   function set<K extends keyof TeamMemberFormValues>(k: K, val: TeamMemberFormValues[K]) {
@@ -66,20 +70,21 @@ export function TeamMemberForm({
     });
   }
 
-  async function translateRole(target: "en" | "fr") {
-    const ro = v.role.trim();
-    const other = (target === "en" ? v.role_fr : v.role_en).trim();
+  async function translateField(field: TranslatableField, target: "en" | "fr") {
+    const ro = v[fieldKey(field, "ro")].trim();
+    const otherLang: FormLang = target === "en" ? "fr" : "en";
+    const other = v[fieldKey(field, otherLang)].trim();
     const source = ro || other;
     if (!source) {
       toast.error(t("translate.empty"));
       return;
     }
-    setTranslating(target);
+    setTranslating({ field, target });
     try {
       const chunks = chunkRichText(source);
       const results = await Promise.all(chunks.map((chunk) => translate({ data: { text: chunk, target } })));
       const translated = sanitizeRichText(results.map((r) => r.text).join("\n\n"));
-      set(roleKey(target), translated);
+      set(fieldKey(field, target), translated);
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
     } finally {
@@ -93,16 +98,37 @@ export function TeamMemberForm({
     const errs = validate(v, t);
     setFieldErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    onSubmit({ ...v, name: v.name.trim() });
+    onSubmit({ ...v, name: v.name.trim(), name_en: v.name_en.trim(), name_fr: v.name_fr.trim() });
   }
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-      <div data-field-error={fieldErrors.name ? "true" : undefined}>
-        <span className="mb-1.5 block text-base font-medium">{t("about.field.memberName")}</span>
-        <RichTextEditor value={toEditableHtml(v.name)} onChange={(val) => set("name", val)} rows={2} />
+      <fieldset
+        className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4 space-y-2"
+        data-field-error={fieldErrors.name ? "true" : undefined}
+      >
+        <legend className="px-1 text-base font-medium">{t("about.field.memberName")}</legend>
+        <Row lang="RO" value={v.name} onChange={(val) => set("name", val)} rows={2} />
+        <Row
+          lang="EN"
+          value={v.name_en}
+          onChange={(val) => set("name_en", val)}
+          rows={2}
+          onTranslate={() => translateField("name", "en")}
+          translating={translating?.field === "name" && translating.target === "en"}
+          disabled={translating !== null}
+        />
+        <Row
+          lang="FR"
+          value={v.name_fr}
+          onChange={(val) => set("name_fr", val)}
+          rows={2}
+          onTranslate={() => translateField("name", "fr")}
+          translating={translating?.field === "name" && translating.target === "fr"}
+          disabled={translating !== null}
+        />
         {fieldErrors.name && <span className="mt-1 block text-sm font-medium text-destructive">{fieldErrors.name}</span>}
-      </div>
+      </fieldset>
 
       <div>
         <span className="mb-1.5 block text-base font-medium">{t("about.field.memberPhoto")}</span>
@@ -119,21 +145,21 @@ export function TeamMemberForm({
 
       <fieldset className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4 space-y-2">
         <legend className="px-1 text-base font-medium">{t("about.field.memberRole")}</legend>
-        <RoleRow lang="RO" value={v.role} onChange={(val) => set("role", val)} />
-        <RoleRow
+        <Row lang="RO" value={v.role} onChange={(val) => set("role", val)} />
+        <Row
           lang="EN"
           value={v.role_en}
           onChange={(val) => set("role_en", val)}
-          onTranslate={() => translateRole("en")}
-          translating={translating === "en"}
+          onTranslate={() => translateField("role", "en")}
+          translating={translating?.field === "role" && translating.target === "en"}
           disabled={translating !== null}
         />
-        <RoleRow
+        <Row
           lang="FR"
           value={v.role_fr}
           onChange={(val) => set("role_fr", val)}
-          onTranslate={() => translateRole("fr")}
-          translating={translating === "fr"}
+          onTranslate={() => translateField("role", "fr")}
+          translating={translating?.field === "role" && translating.target === "fr"}
           disabled={translating !== null}
         />
       </fieldset>
@@ -166,13 +192,14 @@ export function TeamMemberForm({
   );
 }
 
-function RoleRow({
+function Row({
   lang,
   value,
   onChange,
   onTranslate,
   translating,
   disabled,
+  rows = 4,
 }: {
   lang: "RO" | "EN" | "FR";
   value: string;
@@ -180,12 +207,13 @@ function RoleRow({
   onTranslate?: () => void;
   translating?: boolean;
   disabled?: boolean;
+  rows?: number;
 }) {
   return (
     <div className="flex items-start gap-2">
       <span className="text-xs uppercase tracking-widest text-muted-foreground w-6 shrink-0 mt-3">{lang}</span>
       <div className="flex-1">
-        <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={4} />
+        <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={rows} />
       </div>
       {onTranslate && (
         <button

@@ -33,6 +33,8 @@ export function EditTeamMemberPage({ id }: { id: string }) {
         data: {
           id,
           name: v.name,
+          name_en: v.name_en || null,
+          name_fr: v.name_fr || null,
           role: v.role || null,
           role_en: v.role_en || null,
           role_fr: v.role_fr || null,
@@ -70,6 +72,8 @@ export function EditTeamMemberPage({ id }: { id: string }) {
         <TeamMemberForm
           initial={{
             name: member.name,
+            name_en: member.name_en ?? "",
+            name_fr: member.name_fr ?? "",
             role: member.role ?? "",
             role_en: member.role_en ?? "",
             role_fr: member.role_fr ?? "",

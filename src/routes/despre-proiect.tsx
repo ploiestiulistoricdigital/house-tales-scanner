@@ -20,6 +20,8 @@ type AboutContent = {
 type TeamMember = {
   id: string;
   name: string;
+  name_en: string | null;
+  name_fr: string | null;
   role: string | null;
   role_en: string | null;
   role_fr: string | null;
@@ -57,7 +59,7 @@ async function loadAboutPage(): Promise<{ content: AboutContent | null; team: Te
     supabase.from("about_content").select("*").eq("id", 1).maybeSingle(),
     supabase
       .from("team_members")
-      .select("id, name, role, role_en, role_fr, photo_url")
+      .select("id, name, name_en, name_fr, role, role_en, role_fr, photo_url")
       .order("sort_order")
       .order("created_at"),
   ]);
@@ -82,6 +84,9 @@ function DespreProiect() {
   const { t, lang } = useI18n();
   const { content, team } = Route.useLoaderData();
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const selectedName = selectedMember
+    ? (pick(lang, selectedMember.name, selectedMember.name_en, selectedMember.name_fr) ?? selectedMember.name)
+    : null;
   const selectedRole = selectedMember ? pick(lang, selectedMember.role, selectedMember.role_en, selectedMember.role_fr) : null;
 
   const title = content ? pick(lang, content.title, content.title_en, content.title_fr) : null;
@@ -119,30 +124,30 @@ function DespreProiect() {
               <span className="font-display text-accent text-xl">✦</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
-              {team.map((member) => (
-                <button
-                  key={member.id}
-                  type="button"
-                  onClick={() => setSelectedMember(member)}
-                  className="flex flex-col items-center text-center cursor-zoom-in group"
-                >
-                  {member.photo_url ? (
-                    <img
-                      src={member.photo_url}
-                      alt=""
-                      className="h-24 w-24 rounded-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
-                      <User className="h-10 w-10" />
-                    </div>
-                  )}
-                  <RichBlock
-                    value={member.name}
-                    className="mt-3 font-display text-base font-semibold [&_p]:m-0"
-                  />
-                </button>
-              ))}
+              {team.map((member) => {
+                const name = pick(lang, member.name, member.name_en, member.name_fr) ?? member.name;
+                return (
+                  <button
+                    key={member.id}
+                    type="button"
+                    onClick={() => setSelectedMember(member)}
+                    className="flex flex-col items-center text-center cursor-zoom-in group"
+                  >
+                    {member.photo_url ? (
+                      <img
+                        src={member.photo_url}
+                        alt=""
+                        className="h-24 w-24 rounded-full object-cover transition-transform group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                        <User className="h-10 w-10" />
+                      </div>
+                    )}
+                    <RichBlock value={name} className="mt-3 font-display text-base font-semibold [&_p]:m-0" />
+                  </button>
+                );
+              })}
             </div>
           </>
         )}
@@ -152,7 +157,7 @@ function DespreProiect() {
         <DialogContent className="max-w-md">
           {selectedMember && (
             <div className="flex flex-col items-center text-center">
-              <DialogTitle className="sr-only">{stripHtml(selectedMember.name)}</DialogTitle>
+              <DialogTitle className="sr-only">{stripHtml(selectedName ?? selectedMember.name)}</DialogTitle>
               {selectedMember.photo_url ? (
                 <img
                   src={selectedMember.photo_url}
@@ -164,7 +169,7 @@ function DespreProiect() {
                   <User className="h-16 w-16" />
                 </div>
               )}
-              <RichBlock value={selectedMember.name} className="mt-4 font-display text-xl font-semibold [&_p]:m-0" />
+              <RichBlock value={selectedName ?? selectedMember.name} className="mt-4 font-display text-xl font-semibold [&_p]:m-0" />
               {selectedRole && (
                 <RichBlock
                   value={selectedRole}
