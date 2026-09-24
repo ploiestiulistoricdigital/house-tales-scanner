@@ -41,52 +41,62 @@ export const sendContactMessage = createServerFn({ method: "POST" })
       return { ok: true as const };
     }
 
-    const ip = getClientIp(getRequest() ?? null);
-    await assertRateLimit(ip, "sendContactMessage", 5, 600);
+    try {
+      const ip = getClientIp(getRequest() ?? null);
+      await assertRateLimit(ip, "sendContactMessage", 5, 600);
 
-    if (data.attachment) {
-      const base64Body = data.attachment.base64.replace(/^data:[^,]*,/, "");
-      const padding = base64Body.endsWith("==") ? 2 : base64Body.endsWith("=") ? 1 : 0;
-      const decodedBytes = Math.floor((base64Body.length * 3) / 4) - padding;
-      if (decodedBytes > MAX_ATTACHMENT_BYTES) {
-        throw new Error("Attachment exceeds 4 MB limit");
+      if (data.attachment) {
+        const base64Body = data.attachment.base64.replace(/^data:[^,]*,/, "");
+        const padding = base64Body.endsWith("==") ? 2 : base64Body.endsWith("=") ? 1 : 0;
+        const decodedBytes = Math.floor((base64Body.length * 3) / 4) - padding;
+        if (decodedBytes > MAX_ATTACHMENT_BYTES) {
+          throw new Error("Attachment exceeds 4 MB limit");
+        }
       }
+
+      const apiKey = process.env.RESEND_API_KEY;
+      const from = process.env.CONTACT_FROM_EMAIL;
+      if (!apiKey) throw new Error("Missing RESEND_API_KEY");
+      if (!from) throw new Error("Missing CONTACT_FROM_EMAIL");
+
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          to: "contact@atomploiesti.ro",
+          from,
+          reply_to: data.email,
+          subject: "Mesaj nou de pe ploiestiulistoricdigital.ro",
+          text: `Nume: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
+          ...(data.attachment
+            ? {
+                attachments: [
+                  {
+                    filename: data.attachment.filename,
+                    content: data.attachment.base64.replace(/^data:[^,]*,/, ""),
+                  },
+                ],
+              }
+            : {}),
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        throw new Error(`Contact email failed (${res.status}): ${body.slice(0, 200)}`);
+      }
+
+      return { ok: true as const };
+    } catch (err) {
+      console.error("[contact] sendContactMessage failed", {
+        message: err instanceof Error ? err.message : String(err),
+        hasAttachment: Boolean(data.attachment),
+        attachmentBase64Len: data.attachment?.base64.length ?? 0,
+        attachmentFilename: data.attachment?.filename,
+      });
+      throw err;
     }
-
-    const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.CONTACT_FROM_EMAIL;
-    if (!apiKey) throw new Error("Missing RESEND_API_KEY");
-    if (!from) throw new Error("Missing CONTACT_FROM_EMAIL");
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        to: "contact@atomploiesti.ro",
-        from,
-        reply_to: data.email,
-        subject: "Mesaj nou de pe ploiestiulistoricdigital.ro",
-        text: `Nume: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
-        ...(data.attachment
-          ? {
-              attachments: [
-                {
-                  filename: data.attachment.filename,
-                  content: data.attachment.base64.replace(/^data:[^,]*,/, ""),
-                },
-              ],
-            }
-          : {}),
-      }),
-    });
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`Contact email failed (${res.status}): ${body.slice(0, 200)}`);
-    }
-
-    return { ok: true as const };
   });
