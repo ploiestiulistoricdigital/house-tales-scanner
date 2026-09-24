@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { looksLikeHtml, sanitizeRichText } from "@/lib/rich-text";
 
 type AboutContent = {
   title: string;
@@ -80,16 +81,22 @@ function DespreProiect() {
           {title || t("nav.despreProiect")}
         </h1>
 
-        {description && (
-          <div className="rich-text-content max-w-none font-serif text-foreground text-lg leading-[1.7] mb-12">
-            {description
-              .split(/\n\s*\n/)
-              .filter(Boolean)
-              .map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-          </div>
-        )}
+        {description &&
+          (looksLikeHtml(description) ? (
+            <div
+              className="rich-text-content max-w-none font-serif text-foreground text-lg leading-[1.7] mb-12"
+              dangerouslySetInnerHTML={{ __html: sanitizeRichText(description) }}
+            />
+          ) : (
+            <div className="rich-text-content max-w-none font-serif text-foreground text-lg leading-[1.7] mb-12">
+              {description
+                .split(/\n\s*\n/)
+                .filter(Boolean)
+                .map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+            </div>
+          ))}
 
         {team.length > 0 && (
           <>

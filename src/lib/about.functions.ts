@@ -23,6 +23,18 @@ const teamMemberInput = z.object({
   sort_order: z.number().int().min(0).max(9999).default(0),
 });
 
+function sanitizeAboutContent<T extends { description: string; description_en?: string | null; description_fr?: string | null }>(
+  data: T,
+  sanitize: (html: string) => string,
+): T {
+  return {
+    ...data,
+    description: sanitize(data.description),
+    description_en: data.description_en != null ? sanitize(data.description_en) : data.description_en,
+    description_fr: data.description_fr != null ? sanitize(data.description_fr) : data.description_fr,
+  };
+}
+
 async function assertAdmin(ctx: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await ctx.supabase
     .from("user_roles")
@@ -41,9 +53,11 @@ export const updateAboutContent = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await assertRateLimit(context.userId, "about:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sanitizeRichText } = await import("@/lib/rich-text");
+    const payload = sanitizeAboutContent(data, sanitizeRichText);
     const { data: row, error } = await supabaseAdmin
       .from("about_content")
-      .update(data)
+      .update(payload)
       .eq("id", 1)
       .select()
       .single();
