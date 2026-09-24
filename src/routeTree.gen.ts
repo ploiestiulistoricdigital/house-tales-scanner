@@ -29,6 +29,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AuthenticatedAdminHeritageRouteImport } from './routes/_authenticated/admin_.heritage'
+import { Route as AuthenticatedAdminDespreProiectRouteImport } from './routes/_authenticated/admin_.despre-proiect'
 import { Route as AuthenticatedAdminAntitezaRouteImport } from './routes/_authenticated/admin_.antiteza'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -36,8 +37,10 @@ import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
 import { Route as AuthenticatedAdminAntitezaNewRouteImport } from './routes/_authenticated/admin_.antiteza_.new'
 import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage_.$id.edit'
+import { Route as AuthenticatedAdminDespreProiectTeamNewRouteImport } from './routes/_authenticated/admin_.despre-proiect_.team.new'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
 import { Route as AuthenticatedAdminAntitezaIdEditRouteImport } from './routes/_authenticated/admin_.antiteza_.$id.edit'
+import { Route as AuthenticatedAdminDespreProiectTeamIdEditRouteImport } from './routes/_authenticated/admin_.despre-proiect_.team.$id.edit'
 
 const TraseeRoute = TraseeRouteImport.update({
   id: '/trasee',
@@ -141,6 +144,12 @@ const AuthenticatedAdminHeritageRoute =
     path: '/admin/heritage',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminDespreProiectRoute =
+  AuthenticatedAdminDespreProiectRouteImport.update({
+    id: '/admin_/despre-proiect',
+    path: '/admin/despre-proiect',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminAntitezaRoute =
   AuthenticatedAdminAntitezaRouteImport.update({
     id: '/admin_/antiteza',
@@ -182,6 +191,12 @@ const AuthenticatedAdminHeritageIdEditRoute =
     path: '/admin/heritage/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminDespreProiectTeamNewRoute =
+  AuthenticatedAdminDespreProiectTeamNewRouteImport.update({
+    id: '/admin_/despre-proiect_/team/new',
+    path: '/admin/despre-proiect/team/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminBuildingsIdEditRoute =
   AuthenticatedAdminBuildingsIdEditRouteImport.update({
     id: '/admin_/buildings/$id/edit',
@@ -192,6 +207,12 @@ const AuthenticatedAdminAntitezaIdEditRoute =
   AuthenticatedAdminAntitezaIdEditRouteImport.update({
     id: '/admin_/antiteza_/$id/edit',
     path: '/admin/antiteza/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminDespreProiectTeamIdEditRoute =
+  AuthenticatedAdminDespreProiectTeamIdEditRouteImport.update({
+    id: '/admin_/despre-proiect_/team/$id/edit',
+    path: '/admin/despre-proiect/team/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -217,13 +238,16 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
+  '/admin/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
   '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/admin/despre-proiect/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/admin/despre-proiect/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -247,13 +271,16 @@ export interface FileRoutesByTo {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
+  '/admin/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
   '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
   '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/admin/despre-proiect/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/admin/despre-proiect/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -279,13 +306,16 @@ export interface FileRoutesById {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin_/antiteza': typeof AuthenticatedAdminAntitezaRoute
+  '/_authenticated/admin_/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRoute
   '/_authenticated/admin_/antiteza_/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/_authenticated/admin_/heritage_/new': typeof AuthenticatedAdminHeritageNewRoute
   '/_authenticated/admin_/antiteza_/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
+  '/_authenticated/admin_/despre-proiect_/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/_authenticated/admin_/heritage_/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/_authenticated/admin_/despre-proiect_/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -311,13 +341,16 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/antiteza'
+    | '/admin/despre-proiect'
     | '/admin/heritage'
     | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
     | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
+    | '/admin/despre-proiect/team/new'
     | '/admin/heritage/$id/edit'
+    | '/admin/despre-proiect/team/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -341,13 +374,16 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/antiteza'
+    | '/admin/despre-proiect'
     | '/admin/heritage'
     | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
     | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
+    | '/admin/despre-proiect/team/new'
     | '/admin/heritage/$id/edit'
+    | '/admin/despre-proiect/team/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -372,13 +408,16 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin_/antiteza'
+    | '/_authenticated/admin_/despre-proiect'
     | '/_authenticated/admin_/heritage'
     | '/_authenticated/admin_/antiteza_/new'
     | '/_authenticated/admin_/buildings/new'
     | '/_authenticated/admin_/heritage_/new'
     | '/_authenticated/admin_/antiteza_/$id/edit'
     | '/_authenticated/admin_/buildings/$id/edit'
+    | '/_authenticated/admin_/despre-proiect_/team/new'
     | '/_authenticated/admin_/heritage_/$id/edit'
+    | '/_authenticated/admin_/despre-proiect_/team/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -546,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHeritageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/despre-proiect': {
+      id: '/_authenticated/admin_/despre-proiect'
+      path: '/admin/despre-proiect'
+      fullPath: '/admin/despre-proiect'
+      preLoaderRoute: typeof AuthenticatedAdminDespreProiectRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin_/antiteza': {
       id: '/_authenticated/admin_/antiteza'
       path: '/admin/antiteza'
@@ -595,6 +641,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHeritageIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/despre-proiect_/team/new': {
+      id: '/_authenticated/admin_/despre-proiect_/team/new'
+      path: '/admin/despre-proiect/team/new'
+      fullPath: '/admin/despre-proiect/team/new'
+      preLoaderRoute: typeof AuthenticatedAdminDespreProiectTeamNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin_/buildings/$id/edit': {
       id: '/_authenticated/admin_/buildings/$id/edit'
       path: '/admin/buildings/$id/edit'
@@ -609,24 +662,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAntitezaIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin_/despre-proiect_/team/$id/edit': {
+      id: '/_authenticated/admin_/despre-proiect_/team/$id/edit'
+      path: '/admin/despre-proiect/team/$id/edit'
+      fullPath: '/admin/despre-proiect/team/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminDespreProiectTeamIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAdminAntitezaRoute: typeof AuthenticatedAdminAntitezaRoute
+  AuthenticatedAdminDespreProiectRoute: typeof AuthenticatedAdminDespreProiectRoute
   AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRoute
   AuthenticatedAdminAntitezaNewRoute: typeof AuthenticatedAdminAntitezaNewRoute
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
   AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
   AuthenticatedAdminAntitezaIdEditRoute: typeof AuthenticatedAdminAntitezaIdEditRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
+  AuthenticatedAdminDespreProiectTeamNewRoute: typeof AuthenticatedAdminDespreProiectTeamNewRoute
   AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
+  AuthenticatedAdminDespreProiectTeamIdEditRoute: typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAdminAntitezaRoute: AuthenticatedAdminAntitezaRoute,
+  AuthenticatedAdminDespreProiectRoute: AuthenticatedAdminDespreProiectRoute,
   AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRoute,
   AuthenticatedAdminAntitezaNewRoute: AuthenticatedAdminAntitezaNewRoute,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
@@ -634,7 +698,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminAntitezaIdEditRoute: AuthenticatedAdminAntitezaIdEditRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
+  AuthenticatedAdminDespreProiectTeamNewRoute:
+    AuthenticatedAdminDespreProiectTeamNewRoute,
   AuthenticatedAdminHeritageIdEditRoute: AuthenticatedAdminHeritageIdEditRoute,
+  AuthenticatedAdminDespreProiectTeamIdEditRoute:
+    AuthenticatedAdminDespreProiectTeamIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
