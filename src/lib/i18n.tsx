@@ -31,6 +31,7 @@ const RO: Dict = {
   "nav.trasee": "Trasee",
   "nav.arhiva": "Arhivă",
   "nav.despreProiect": "Despre proiect",
+  "nav.contact": "Contact",
 
   // Home
   "home.archive": "Arhiva clădirilor",
@@ -353,6 +354,7 @@ const EN: Dict = {
   "nav.trasee": "Trails",
   "nav.arhiva": "Archive",
   "nav.despreProiect": "About the project",
+  "nav.contact": "Contact",
 
   "home.archive": "Building archive",
   "home.records.one": "record",
@@ -661,6 +663,7 @@ const FR: Dict = {
   "nav.trasee": "Itinéraires",
   "nav.arhiva": "Archives",
   "nav.despreProiect": "À propos du projet",
+  "nav.contact": "Contact",
 
   "home.archive": "Archive des bâtiments",
   "home.records.one": "fiche",
