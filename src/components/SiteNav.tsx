@@ -28,38 +28,12 @@ export function SiteNav() {
     <header className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-40">
       <div className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-3 min-w-0 shrink-0 -ml-4">
-            <img
-              src="/sigla.jpeg"
-              alt=""
-              onClick={
-                isHome
-                  ? (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setLogoPreviewOpen(true);
-                    }
-                  : undefined
-              }
-              className={`h-20 w-20 sm:h-24 sm:w-24 -my-4 shrink-0 rounded-full object-cover ${isHome ? "cursor-zoom-in" : ""}`}
-            />
-            <div className="flex flex-col leading-none min-w-0">
-              <span className="font-display text-lg sm:text-xl font-semibold uppercase tracking-wide truncate">
-                {t("brand.title")}
-              </span>
-              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-0.5">
-                {t("brand.tagline")}
-              </span>
-            </div>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
+          <div className="flex items-center gap-1 min-w-0">
             <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
               <button
                 type="button"
                 onClick={() => setMobileNavOpen(true)}
-                className="md:hidden inline-flex items-center justify-center h-11 w-11 text-muted-foreground hover:text-primary"
+                className="md:hidden -ml-2 inline-flex items-center justify-center h-11 w-11 shrink-0 text-muted-foreground hover:text-primary"
                 aria-label={t("nav.openMenu")}
               >
                 <Menu className="h-6 w-6" />
@@ -84,7 +58,34 @@ export function SiteNav() {
                 })}
               </SheetContent>
             </Sheet>
+
+            <Link to="/" className="flex items-center gap-3 min-w-0 shrink md:-ml-4">
+              <img
+                src="/sigla.jpeg"
+                alt=""
+                onClick={
+                  isHome
+                    ? (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setLogoPreviewOpen(true);
+                      }
+                    : undefined
+                }
+                className={`h-20 w-20 sm:h-24 sm:w-24 -my-4 shrink-0 rounded-full object-cover ${isHome ? "cursor-zoom-in" : ""}`}
+              />
+              <div className="flex flex-col leading-none min-w-0">
+                <span className="font-display text-lg sm:text-xl font-semibold uppercase tracking-wide truncate">
+                  {t("brand.title")}
+                </span>
+                <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-0.5">
+                  {t("brand.tagline")}
+                </span>
+              </div>
+            </Link>
           </div>
+
+          <LanguageSwitcher />
         </div>
 
         <nav className="hidden md:flex items-center gap-1 flex-wrap">
