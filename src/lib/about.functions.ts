@@ -16,9 +16,9 @@ const aboutContentInput = z.object({
 
 const teamMemberInput = z.object({
   name: z.string().trim().min(1).max(200),
-  role: z.string().max(300).optional().nullable(),
-  role_en: z.string().max(300).optional().nullable(),
-  role_fr: z.string().max(300).optional().nullable(),
+  role: z.string().max(3000).optional().nullable(),
+  role_en: z.string().max(3000).optional().nullable(),
+  role_fr: z.string().max(3000).optional().nullable(),
   photo_url: z.string().url().max(2000).optional().nullable().or(z.literal("")),
   sort_order: z.number().int().min(0).max(9999).default(0),
 });
