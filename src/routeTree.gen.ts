@@ -18,6 +18,7 @@ import { Route as IstoriaPloiestiuluiRouteImport } from './routes/istoria-ploies
 import { Route as HartiRouteImport } from './routes/harti'
 import { Route as DespreProiectRouteImport } from './routes/despre-proiect'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ArhivaRouteImport } from './routes/arhiva'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -81,6 +82,11 @@ const DespreProiectRoute = DespreProiectRouteImport.update({
 const CookiePolicyRoute = CookiePolicyRouteImport.update({
   id: '/cookie-policy',
   path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/despre-proiect': typeof DespreProiectRoute
   '/harti': typeof HartiRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/despre-proiect': typeof DespreProiectRoute
   '/harti': typeof HartiRoute
@@ -253,6 +261,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/arhiva': typeof ArhivaRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/despre-proiect': typeof DespreProiectRoute
   '/harti': typeof HartiRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/'
     | '/arhiva'
     | '/auth'
+    | '/contact'
     | '/cookie-policy'
     | '/despre-proiect'
     | '/harti'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
     | '/'
     | '/arhiva'
     | '/auth'
+    | '/contact'
     | '/cookie-policy'
     | '/despre-proiect'
     | '/harti'
@@ -343,6 +354,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/arhiva'
     | '/auth'
+    | '/contact'
     | '/cookie-policy'
     | '/despre-proiect'
     | '/harti'
@@ -374,6 +386,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ArhivaRoute: typeof ArhivaRoute
   AuthRoute: typeof AuthRoute
+  ContactRoute: typeof ContactRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   DespreProiectRoute: typeof DespreProiectRoute
   HartiRoute: typeof HartiRoute
@@ -454,6 +467,13 @@ declare module '@tanstack/react-router' {
       path: '/cookie-policy'
       fullPath: '/cookie-policy'
       preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -625,6 +645,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   ArhivaRoute: ArhivaRoute,
   AuthRoute: AuthRoute,
+  ContactRoute: ContactRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   DespreProiectRoute: DespreProiectRoute,
   HartiRoute: HartiRoute,

@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { to: "/trasee", labelKey: "nav.trasee" },
   { to: "/arhiva", labelKey: "nav.arhiva" },
   { to: "/despre-proiect", labelKey: "nav.despreProiect" },
+  { to: "/contact", labelKey: "nav.contact" },
 ] as const;
 
 export function SiteNav() {
