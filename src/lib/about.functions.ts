@@ -16,6 +16,8 @@ const aboutContentInput = z.object({
 
 const teamMemberInput = z.object({
   name: z.string().trim().min(1).max(2000),
+  name_en: z.string().trim().max(2000).optional().nullable(),
+  name_fr: z.string().trim().max(2000).optional().nullable(),
   role: z.string().max(3000).optional().nullable(),
   role_en: z.string().max(3000).optional().nullable(),
   role_fr: z.string().max(3000).optional().nullable(),
@@ -35,13 +37,21 @@ function sanitizeAboutContent<T extends { description: string; description_en?: 
   };
 }
 
-function sanitizeTeamMember<T extends { name: string; role?: string | null; role_en?: string | null; role_fr?: string | null }>(
-  data: T,
-  sanitize: (html: string) => string,
-): T {
+function sanitizeTeamMember<
+  T extends {
+    name: string;
+    name_en?: string | null;
+    name_fr?: string | null;
+    role?: string | null;
+    role_en?: string | null;
+    role_fr?: string | null;
+  },
+>(data: T, sanitize: (html: string) => string): T {
   return {
     ...data,
     name: sanitize(data.name),
+    name_en: data.name_en != null ? sanitize(data.name_en) : data.name_en,
+    name_fr: data.name_fr != null ? sanitize(data.name_fr) : data.name_fr,
     role: data.role != null ? sanitize(data.role) : data.role,
     role_en: data.role_en != null ? sanitize(data.role_en) : data.role_en,
     role_fr: data.role_fr != null ? sanitize(data.role_fr) : data.role_fr,
