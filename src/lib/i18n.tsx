@@ -32,6 +32,7 @@ const RO: Dict = {
   "nav.arhiva": "Arhivă",
   "nav.despreProiect": "Despre proiect",
   "nav.contact": "Contact",
+  "nav.openMenu": "Deschide meniul",
 
   // Home
   "home.archive": "Arhiva clădirilor",
@@ -373,6 +374,7 @@ const EN: Dict = {
   "nav.arhiva": "Archive",
   "nav.despreProiect": "About the project",
   "nav.contact": "Contact",
+  "nav.openMenu": "Open menu",
 
   "home.archive": "Building archive",
   "home.records.one": "record",
@@ -700,6 +702,7 @@ const FR: Dict = {
   "nav.arhiva": "Archives",
   "nav.despreProiect": "À propos du projet",
   "nav.contact": "Contact",
+  "nav.openMenu": "Ouvrir le menu",
 
   "home.archive": "Archive des bâtiments",
   "home.records.one": "fiche",
