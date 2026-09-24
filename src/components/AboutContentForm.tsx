@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 import { chunkText } from "@/lib/text-chunks";
+import { RichTextEditor } from "@/components/RichTextEditor";
+import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
 export type AboutContentFormValues = {
   title: string;
@@ -46,11 +48,11 @@ export function AboutContentForm({
     setV((p) => ({ ...p, [k]: val }));
   }
 
-  async function translateLong(text: string, target: FormLang): Promise<string> {
-    const chunks = chunkText(text);
+  async function translateLong(text: string, target: FormLang, rich: boolean): Promise<string> {
+    const chunks = rich ? chunkRichText(text) : chunkText(text);
     if (chunks.length <= 1) {
       const res = await translate({ data: { text, target } });
-      return res.text;
+      return rich ? sanitizeRichText(res.text) : res.text;
     }
     const results: string[] = new Array(chunks.length);
     let next = 0;
@@ -62,7 +64,8 @@ export function AboutContentForm({
       }
     }
     await Promise.all(Array.from({ length: Math.min(3, chunks.length) }, worker));
-    return results.join("\n\n");
+    const joined = results.join("\n\n");
+    return rich ? sanitizeRichText(joined) : joined;
   }
 
   async function handleTranslate(field: Field, target: FormLang) {
@@ -76,7 +79,7 @@ export function AboutContentForm({
     }
     setTranslating({ field, lang: target });
     try {
-      const translated = await translateLong(source, target);
+      const translated = await translateLong(source, target, field === "description");
       set(fieldKey(field, target), translated);
     } catch (e: any) {
       toast.error(e?.message ?? t("translate.error"));
@@ -109,13 +112,7 @@ export function AboutContentForm({
         translating={translating}
         onTranslate={handleTranslate}
         onChange={(lang, val) => set(fieldKey("description", lang), val)}
-        renderInput={(value, onChange) => (
-          <textarea
-            className={`${inputCls} min-h-32`}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-          />
-        )}
+        renderInput={(value, onChange) => <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={6} />}
       />
 
       {error && (
