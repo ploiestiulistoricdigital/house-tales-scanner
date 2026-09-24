@@ -103,24 +103,33 @@ function DespreProiect() {
             <div className="ornament-divider mb-10">
               <span className="font-display text-accent text-xl">✦</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+            <div className="flex flex-col gap-10">
               {team.map((member) => {
                 const role = pick(lang, member.role, member.role_en, member.role_fr);
                 return (
-                  <div key={member.id} className="flex flex-col items-center text-center">
+                  <div
+                    key={member.id}
+                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left"
+                  >
                     {member.photo_url ? (
                       <img
                         src={member.photo_url}
                         alt=""
-                        className="h-24 w-24 rounded-full object-cover grayscale"
+                        className="h-28 w-28 shrink-0 rounded-full object-cover grayscale"
                       />
                     ) : (
-                      <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                      <div className="h-28 w-28 shrink-0 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
                         <User className="h-10 w-10" />
                       </div>
                     )}
-                    <span className="mt-3 font-display text-base font-semibold">{member.name}</span>
-                    {role && <span className="mt-1 text-sm text-muted-foreground">{role}</span>}
+                    <div className="min-w-0">
+                      <span className="block font-display text-lg font-semibold">{member.name}</span>
+                      {role && (
+                        <p className="mt-1.5 text-base text-muted-foreground leading-relaxed whitespace-pre-line">
+                          {role}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 );
               })}
