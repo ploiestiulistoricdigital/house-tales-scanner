@@ -9,9 +9,9 @@ const aboutContentInput = z.object({
   title: z.string().trim().max(200).default(""),
   title_en: z.string().trim().max(200).optional().nullable(),
   title_fr: z.string().trim().max(200).optional().nullable(),
-  description: z.string().max(5000).default(""),
-  description_en: z.string().max(5000).optional().nullable(),
-  description_fr: z.string().max(5000).optional().nullable(),
+  description: z.string().max(50000).default(""),
+  description_en: z.string().max(50000).optional().nullable(),
+  description_fr: z.string().max(50000).optional().nullable(),
 });
 
 const teamMemberInput = z.object({
