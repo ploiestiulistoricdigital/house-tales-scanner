@@ -20,6 +20,8 @@ export function NewTeamMemberPage() {
       const row = await create({
         data: {
           name: v.name,
+          name_en: v.name_en || null,
+          name_fr: v.name_fr || null,
           role: v.role || null,
           role_en: v.role_en || null,
           role_fr: v.role_fr || null,
@@ -49,7 +51,7 @@ export function NewTeamMemberPage() {
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("about.admin.addMember")}</h1>
         <TeamMemberForm
-          initial={{ name: "", role: "", role_en: "", role_fr: "", photo_url: "", sort_order: 0 }}
+          initial={{ name: "", name_en: "", name_fr: "", role: "", role_en: "", role_fr: "", photo_url: "", sort_order: 0 }}
           submitLabel={t("form.create")}
           onSubmit={onSubmit}
           submitting={submitting}
