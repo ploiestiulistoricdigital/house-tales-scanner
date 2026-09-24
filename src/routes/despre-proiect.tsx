@@ -1,9 +1,60 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
+type AboutContent = {
+  title: string;
+  title_en: string | null;
+  title_fr: string | null;
+  description: string;
+  description_en: string | null;
+  description_fr: string | null;
+};
+
+type TeamMember = {
+  id: string;
+  name: string;
+  role: string | null;
+  role_en: string | null;
+  role_fr: string | null;
+  photo_url: string | null;
+};
+
+function pick(
+  lang: string,
+  ro: string | null | undefined,
+  en: string | null | undefined,
+  fr: string | null | undefined,
+): string | null {
+  const clean = (s: string | null | undefined) => (s && s.trim() ? s.trim() : null);
+  const r = clean(ro);
+  const e = clean(en);
+  const f = clean(fr);
+  if (lang === "en") return e ?? r ?? f ?? null;
+  if (lang === "fr") return f ?? r ?? e ?? null;
+  return r ?? e ?? f ?? null;
+}
+
+async function loadAboutPage(): Promise<{ content: AboutContent | null; team: TeamMember[] }> {
+  const [contentRes, teamRes] = await Promise.all([
+    supabase.from("about_content").select("*").eq("id", 1).maybeSingle(),
+    supabase
+      .from("team_members")
+      .select("id, name, role, role_en, role_fr, photo_url")
+      .order("sort_order")
+      .order("created_at"),
+  ]);
+  return {
+    content: contentRes.data ?? null,
+    team: teamRes.data ?? [],
+  };
+}
+
 export const Route = createFileRoute("/despre-proiect")({
+  loader: () => loadAboutPage(),
   head: () => ({
     meta: [
       { title: "Despre proiect — Ploieștiul Istoric Digital" },
@@ -14,16 +65,61 @@ export const Route = createFileRoute("/despre-proiect")({
 });
 
 function DespreProiect() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const { content, team } = Route.useLoaderData();
+
+  const title = content ? pick(lang, content.title, content.title_en, content.title_fr) : null;
+  const description = content ? pick(lang, content.description, content.description_en, content.description_fr) : null;
 
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNav />
 
-      <section className="mx-auto max-w-2xl px-4 pt-10 sm:pt-14 pb-24 flex-1 w-full">
+      <section className="mx-auto max-w-3xl px-4 pt-10 sm:pt-14 pb-24 flex-1 w-full">
         <h1 className="font-display text-2xl sm:text-3xl font-semibold border-b border-border/70 pb-3 mb-8">
-          {t("nav.despreProiect")}
+          {title || t("nav.despreProiect")}
         </h1>
+
+        {description && (
+          <div className="rich-text-content max-w-none font-serif text-foreground text-lg leading-[1.7] mb-12">
+            {description
+              .split(/\n\s*\n/)
+              .filter(Boolean)
+              .map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+          </div>
+        )}
+
+        {team.length > 0 && (
+          <>
+            <div className="ornament-divider mb-10">
+              <span className="font-display text-accent text-xl">✦</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+              {team.map((member) => {
+                const role = pick(lang, member.role, member.role_en, member.role_fr);
+                return (
+                  <div key={member.id} className="flex flex-col items-center text-center">
+                    {member.photo_url ? (
+                      <img
+                        src={member.photo_url}
+                        alt=""
+                        className="h-24 w-24 rounded-full object-cover grayscale"
+                      />
+                    ) : (
+                      <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                        <User className="h-10 w-10" />
+                      </div>
+                    )}
+                    <span className="mt-3 font-display text-base font-semibold">{member.name}</span>
+                    {role && <span className="mt-1 text-sm text-muted-foreground">{role}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </section>
 
       <SiteFooter />
