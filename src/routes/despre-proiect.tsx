@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -5,6 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { looksLikeHtml, sanitizeRichText } from "@/lib/rich-text";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 type AboutContent = {
   title: string;
@@ -68,6 +70,8 @@ export const Route = createFileRoute("/despre-proiect")({
 function DespreProiect() {
   const { t, lang } = useI18n();
   const { content, team } = Route.useLoaderData();
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const selectedRole = selectedMember ? pick(lang, selectedMember.role, selectedMember.role_en, selectedMember.role_fr) : null;
 
   const title = content ? pick(lang, content.title, content.title_en, content.title_fr) : null;
   const description = content ? pick(lang, content.description, content.description_en, content.description_fr) : null;
@@ -103,40 +107,59 @@ function DespreProiect() {
             <div className="ornament-divider mb-10">
               <span className="font-display text-accent text-xl">✦</span>
             </div>
-            <div className="flex flex-col gap-10">
-              {team.map((member) => {
-                const role = pick(lang, member.role, member.role_en, member.role_fr);
-                return (
-                  <div
-                    key={member.id}
-                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left"
-                  >
-                    {member.photo_url ? (
-                      <img
-                        src={member.photo_url}
-                        alt=""
-                        className="h-28 w-28 shrink-0 rounded-full object-cover grayscale"
-                      />
-                    ) : (
-                      <div className="h-28 w-28 shrink-0 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
-                        <User className="h-10 w-10" />
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <span className="block font-display text-lg font-semibold">{member.name}</span>
-                      {role && (
-                        <p className="mt-1.5 text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-                          {role}
-                        </p>
-                      )}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+              {team.map((member) => (
+                <button
+                  key={member.id}
+                  type="button"
+                  onClick={() => setSelectedMember(member)}
+                  className="flex flex-col items-center text-center cursor-zoom-in group"
+                >
+                  {member.photo_url ? (
+                    <img
+                      src={member.photo_url}
+                      alt=""
+                      className="h-24 w-24 rounded-full object-cover transition-transform group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                      <User className="h-10 w-10" />
                     </div>
-                  </div>
-                );
-              })}
+                  )}
+                  <span className="mt-3 font-display text-base font-semibold">{member.name}</span>
+                </button>
+              ))}
             </div>
           </>
         )}
       </section>
+
+      <Dialog open={selectedMember !== null} onOpenChange={(open) => !open && setSelectedMember(null)}>
+        <DialogContent className="max-w-md">
+          {selectedMember && (
+            <div className="flex flex-col items-center text-center">
+              <DialogTitle className="sr-only">{selectedMember.name}</DialogTitle>
+              {selectedMember.photo_url ? (
+                <img
+                  src={selectedMember.photo_url}
+                  alt=""
+                  className="h-40 w-40 rounded-full object-cover"
+                />
+              ) : (
+                <div className="h-40 w-40 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                  <User className="h-16 w-16" />
+                </div>
+              )}
+              <span className="mt-4 font-display text-xl font-semibold">{selectedMember.name}</span>
+              {selectedRole && (
+                <p className="mt-3 text-base text-muted-foreground leading-relaxed whitespace-pre-line text-left">
+                  {selectedRole}
+                </p>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <SiteFooter />
     </div>
