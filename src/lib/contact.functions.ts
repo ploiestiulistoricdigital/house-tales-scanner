@@ -54,40 +54,37 @@ export const sendContactMessage = createServerFn({ method: "POST" })
         }
       }
 
-      const apiKey = process.env.RESEND_API_KEY;
-      const from = process.env.CONTACT_FROM_EMAIL;
-      if (!apiKey) throw new Error("Missing RESEND_API_KEY");
-      if (!from) throw new Error("Missing CONTACT_FROM_EMAIL");
+      const gmailUser = process.env.CONTACT_FROM_EMAIL;
+      const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+      if (!gmailUser) throw new Error("Missing CONTACT_FROM_EMAIL");
+      if (!gmailAppPassword) throw new Error("Missing GMAIL_APP_PASSWORD");
 
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          to: "ploiestiulistoricdigital@gmail.com",
-          from,
-          reply_to: data.email,
-          subject: "Mesaj nou de pe ploiestiulistoricdigital.ro",
-          text: `Nume: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
-          ...(data.attachment
-            ? {
-                attachments: [
-                  {
-                    filename: data.attachment.filename,
-                    content: data.attachment.base64.replace(/^data:[^,]*,/, ""),
-                  },
-                ],
-              }
-            : {}),
-        }),
+      // Gmail SMTP: no domain verification needed (unlike Resend), but the
+      // From address must be the same account that authenticates, so sender
+      // and recipient are both the site's Gmail inbox.
+      const nodemailer = await import("nodemailer");
+      const transporter = nodemailer.default.createTransport({
+        service: "gmail",
+        auth: { user: gmailUser, pass: gmailAppPassword },
       });
 
-      if (!res.ok) {
-        const body = await res.text().catch(() => "");
-        throw new Error(`Contact email failed (${res.status}): ${body.slice(0, 200)}`);
-      }
+      await transporter.sendMail({
+        to: "ploiestiulistoricdigital@gmail.com",
+        from: gmailUser,
+        replyTo: data.email,
+        subject: "Mesaj nou de pe ploiestiulistoricdigital.ro",
+        text: `Nume: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
+        ...(data.attachment
+          ? {
+              attachments: [
+                {
+                  filename: data.attachment.filename,
+                  content: Buffer.from(data.attachment.base64.replace(/^data:[^,]*,/, ""), "base64"),
+                },
+              ],
+            }
+          : {}),
+      });
 
       return { ok: true as const };
     } catch (err) {
