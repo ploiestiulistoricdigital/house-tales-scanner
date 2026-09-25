@@ -135,6 +135,7 @@ const PARTNERS = [
 const MEDIA_PARTNERS = [
   { name: "DADA TV", src: "/partners/dada-tv.jpg", href: "https://dadatv.ro/" },
   { name: "Ploiestii.ro", src: "/partners/ploiestii-ro.png", href: "https://ploiestii.ro/" },
+  { name: "Observatorul Prahovean", src: "/partners/observatorul-prahovean.png", href: "https://www.observatorulph.ro/" },
 ];
 
 export const Route = createFileRoute("/")({
