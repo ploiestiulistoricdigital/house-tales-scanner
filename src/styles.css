@@ -256,8 +256,9 @@
   & > p:first-of-type::first-letter {
     font-family: var(--font-display);
     float: left;
-    line-height: 0.8;
+    line-height: 0.95;
     font-size: 4.6em;
+    margin-top: -0.12em;
     padding-right: 0.04em;
     color: var(--color-primary);
   }
