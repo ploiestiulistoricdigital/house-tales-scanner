@@ -66,7 +66,7 @@ export const sendContactMessage = createServerFn({ method: "POST" })
           authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          to: "contact@atomploiesti.ro",
+          to: "ploiestiulistoricdigital@gmail.com",
           from,
           reply_to: data.email,
           subject: "Mesaj nou de pe ploiestiulistoricdigital.ro",
