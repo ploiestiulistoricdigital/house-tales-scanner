@@ -123,7 +123,7 @@ function DespreProiect() {
             <div className="ornament-divider mb-10">
               <span className="font-display text-accent text-xl">✦</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-10">
               {team.map((member) => {
                 const name = pick(lang, member.name, member.name_en, member.name_fr) ?? member.name;
                 return (
@@ -131,7 +131,7 @@ function DespreProiect() {
                     key={member.id}
                     type="button"
                     onClick={() => setSelectedMember(member)}
-                    className="flex flex-col items-center text-center cursor-zoom-in group"
+                    className="flex w-28 sm:w-36 flex-col items-center text-center cursor-zoom-in group"
                   >
                     {member.photo_url ? (
                       <img
