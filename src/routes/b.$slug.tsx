@@ -165,7 +165,7 @@ function BuildingPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
           <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 px-5 sm:px-6 text-background">
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-2xl">
               <span className="text-xs uppercase tracking-[0.25em] opacity-90 text-readable">{t("building.chronicle")}</span>
               <h1 className="font-display mt-2 text-3xl sm:text-5xl md:text-6xl font-semibold leading-tight text-background text-readable-strong">
                 {name}
@@ -180,7 +180,7 @@ function BuildingPage() {
         </div>
       ) : (
         <div className="border-b border-border/70 px-4 pt-20 pb-10 sm:pt-24 sm:pb-12 bg-secondary/40">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-2xl">
             <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{name}</h1>
             {address && (
               <p className="mt-2 flex items-center gap-1.5 text-sm sm:text-base text-muted-foreground font-serif italic">
@@ -191,7 +191,7 @@ function BuildingPage() {
         </div>
       )}
 
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:py-12">
+      <article className="mx-auto max-w-2xl px-4 py-10 sm:py-12">
         {(building.year_built || building.architect) && (
           <div className="flex flex-wrap gap-2 mb-8">
             {building.year_built && (
@@ -273,7 +273,7 @@ function BuildingPage() {
         )}
       </article>
 
-      <div className="mx-auto max-w-3xl px-4 pb-10 flex justify-center">
+      <div className="mx-auto max-w-2xl px-4 pb-10 flex justify-center">
         <AtomLogo
           size="lg"
           alt="ATOM Ploiești"
