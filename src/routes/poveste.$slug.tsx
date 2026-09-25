@@ -145,7 +145,7 @@ function HeritageItemPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/35 to-foreground/40" />
           <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 px-5 sm:px-6 text-background">
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-2xl">
               <h1 className="font-display mt-2 text-3xl sm:text-5xl md:text-6xl font-semibold leading-tight text-background text-readable-strong">
                 {title}
               </h1>
@@ -154,17 +154,17 @@ function HeritageItemPage() {
         </div>
       ) : (
         <div className="border-b border-border/70 px-4 pt-20 pb-10 sm:pt-24 sm:pb-12 bg-secondary/40">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-2xl">
             <h1 className="font-display mt-4 text-3xl sm:text-5xl font-semibold leading-tight">{title}</h1>
           </div>
         </div>
       )}
 
-      <div className="ornament-divider my-6 mx-auto max-w-3xl px-4">
+      <div className="ornament-divider my-6 mx-auto max-w-2xl px-4">
         <span className="font-display text-accent text-xl">✦</span>
       </div>
 
-      <article className="flex-1 mx-auto max-w-3xl px-4 py-10 sm:py-12 w-full">
+      <article className="flex-1 mx-auto max-w-2xl px-4 py-10 sm:py-12 w-full">
         {description &&
           (looksLikeHtml(description) ? (
             <div
