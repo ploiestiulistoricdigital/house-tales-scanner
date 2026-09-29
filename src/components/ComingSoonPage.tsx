@@ -3,7 +3,6 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { useI18n } from "@/lib/i18n";
 
 type ComingSoonTitleKey =
-  | "nav.istoriaPloiestiului"
   | "nav.personalitati"
   | "nav.harti"
   | "nav.trasee"

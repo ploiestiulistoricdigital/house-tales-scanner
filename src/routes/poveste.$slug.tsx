@@ -29,7 +29,7 @@ const CATEGORY_BACK_ROUTE: Record<HeritageCategory, "/istoria-ploiestiului" | "/
 };
 
 const CATEGORY_BACK_LABEL_KEY: Record<HeritageCategory, string> = {
-  locuri_disparute: "nav.istoriaPloiestiului",
+  locuri_disparute: "nav.locuriDisparute",
   oameni_povesti: "nav.personalitati",
   documente_arhiva: "nav.arhiva",
   poveste_din_oras: "nav.acasa",

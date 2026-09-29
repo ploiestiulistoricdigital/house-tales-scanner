@@ -7,10 +7,9 @@ import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/she
 
 const NAV_ITEMS = [
   { to: "/", labelKey: "nav.acasa" },
-  { to: "/istoria-ploiestiului", labelKey: "nav.istoriaPloiestiului" },
   { to: "/patrimoniu", labelKey: "nav.patrimoniu" },
   { to: "/personalitati", labelKey: "nav.personalitati" },
-  { to: "/harti", labelKey: "nav.harti" },
+  { to: "/istoria-ploiestiului", labelKey: "nav.locuriDisparute" },
   { to: "/trasee", labelKey: "nav.trasee" },
   { to: "/arhiva", labelKey: "nav.arhiva" },
   { to: "/despre-proiect", labelKey: "nav.despreProiect" },
