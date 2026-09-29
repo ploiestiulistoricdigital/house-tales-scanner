@@ -9,7 +9,7 @@ import {
   type HeritageItemFormValues,
 } from "@/components/HeritageItemForm";
 import { createHeritageItem } from "@/lib/heritage-items.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function NewHeritageItemPage({ variant = "general" }: { variant?: HeritageAdminVariant }) {
   const categories = categoriesFor(variant);
@@ -57,7 +57,6 @@ export function NewHeritageItemPage({ variant = "general" }: { variant?: Heritag
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("heritageItems.admin.new")}</h1>
         <HeritageItemForm

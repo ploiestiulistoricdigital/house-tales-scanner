@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AntitezaPairForm, type AntitezaPairFormValues } from "@/components/AntitezaPairForm";
 import { updateAntitezaPair } from "@/lib/antiteza.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function EditAntitezaPairPage({ id }: { id: string }) {
   const navigate = useNavigate();
@@ -67,7 +67,6 @@ export function EditAntitezaPairPage({ id }: { id: string }) {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("antiteza.admin.edit")}</h1>
         <AntitezaPairForm

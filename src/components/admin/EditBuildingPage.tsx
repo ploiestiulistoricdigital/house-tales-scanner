@@ -13,7 +13,7 @@ import {
   deleteBuildingImage,
 } from "@/lib/buildings.functions";
 import { translateText } from "@/lib/translate.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
 
@@ -210,7 +210,6 @@ export function EditBuildingPage({ id }: { id: string }) {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("admin.editBuilding")}</h1>
         <BuildingForm

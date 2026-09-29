@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { TeamMemberForm, type TeamMemberFormValues } from "@/components/TeamMemberForm";
 import { updateTeamMember } from "@/lib/about.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function EditTeamMemberPage({ id }: { id: string }) {
   const navigate = useNavigate();
@@ -66,7 +66,6 @@ export function EditTeamMemberPage({ id }: { id: string }) {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("about.admin.editMember")}</h1>
         <TeamMemberForm

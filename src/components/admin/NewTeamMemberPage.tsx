@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { TeamMemberForm, type TeamMemberFormValues } from "@/components/TeamMemberForm";
 import { createTeamMember } from "@/lib/about.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function NewTeamMemberPage() {
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ export function NewTeamMemberPage() {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("about.admin.addMember")}</h1>
         <TeamMemberForm

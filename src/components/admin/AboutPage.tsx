@@ -180,27 +180,6 @@ export function AboutPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/70 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
-          <h1 className="text-lg sm:text-xl font-semibold">{t("about.admin.title")}</h1>
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <Link
-              to="/admin"
-              className="text-sm sm:text-base text-muted-foreground hover:text-foreground px-3 py-2 min-h-11 inline-flex items-center"
-            >
-              {t("admin.all")}
-            </Link>
-            <button
-              onClick={signOut}
-              className="inline-flex items-center gap-1 min-h-11 rounded-md border px-3 py-2 text-sm sm:text-base hover:bg-accent"
-            >
-              <LogOut className="h-4 w-4" /> {t("nav.signOut")}
-            </button>
-          </div>
-        </div>
-      </header>
-
       <div className="mx-auto max-w-4xl px-4 py-8 space-y-12">
         <section>
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">{t("about.admin.contentSection")}</h2>

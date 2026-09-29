@@ -11,7 +11,7 @@ import {
   type HeritageItemFormValues,
 } from "@/components/HeritageItemForm";
 import { updateHeritageItem } from "@/lib/heritage-items.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function EditHeritageItemPage({ id, variant = "general" }: { id: string; variant?: HeritageAdminVariant }) {
   const listPath = variant === "istoria" ? "/admin/istoria-ploiestiului" : "/admin/heritage";
@@ -82,7 +82,6 @@ export function EditHeritageItemPage({ id, variant = "general" }: { id: string; 
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("heritageItems.admin.edit")}</h1>
         <HeritageItemForm

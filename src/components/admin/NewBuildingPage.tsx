@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { BuildingForm, type BuildingFormValues } from "@/components/BuildingForm";
 import { createBuilding } from "@/lib/buildings.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function NewBuildingPage() {
   const navigate = useNavigate();
@@ -55,7 +55,6 @@ export function NewBuildingPage() {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("form.newBuilding")}</h1>
         <BuildingForm

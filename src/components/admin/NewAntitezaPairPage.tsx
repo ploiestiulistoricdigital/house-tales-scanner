@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { AntitezaPairForm, type AntitezaPairFormValues } from "@/components/AntitezaPairForm";
 import { createAntitezaPair } from "@/lib/antiteza.functions";
-import { LanguageSwitcher, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 export function NewAntitezaPairPage() {
   const navigate = useNavigate();
@@ -48,7 +48,6 @@ export function NewAntitezaPairPage() {
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
           </Link>
-          <LanguageSwitcher />
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("antiteza.admin.new")}</h1>
         <AntitezaPairForm
