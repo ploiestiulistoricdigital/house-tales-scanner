@@ -4,11 +4,17 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { HeritageItemForm, type HeritageItemFormValues } from "@/components/HeritageItemForm";
+import {
+  HeritageItemForm,
+  categoriesFor,
+  type HeritageAdminVariant,
+  type HeritageItemFormValues,
+} from "@/components/HeritageItemForm";
 import { updateHeritageItem } from "@/lib/heritage-items.functions";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
-export function EditHeritageItemPage({ id }: { id: string }) {
+export function EditHeritageItemPage({ id, variant = "general" }: { id: string; variant?: HeritageAdminVariant }) {
+  const listPath = variant === "istoria" ? "/admin/istoria-ploiestiului" : "/admin/heritage";
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useI18n();
@@ -21,7 +27,14 @@ export function EditHeritageItemPage({ id }: { id: string }) {
     queryFn: async () => {
       const { data, error } = await supabase.from("heritage_items").select("*").eq("id", id).single();
       if (error) throw error;
-      return data;
+      const { data: imgs, error: imgError } = await supabase
+        .from("heritage_item_images")
+        .select("image_url")
+        .eq("heritage_item_id", id)
+        .order("sort_order")
+        .order("created_at");
+      if (imgError) throw imgError;
+      return { ...data, images: imgs.map((i) => i.image_url) };
     },
   });
 
@@ -41,12 +54,13 @@ export function EditHeritageItemPage({ id }: { id: string }) {
           description_en: v.description_en || null,
           description_fr: v.description_fr || null,
           image_url: v.image_url || null,
+          images: v.images,
           sort_order: v.sort_order,
         },
       });
       qc.invalidateQueries({ queryKey: ["heritage-item", id] });
       qc.invalidateQueries({ queryKey: ["admin-heritage-items"] });
-      navigate({ to: "/admin/heritage" });
+      navigate({ to: listPath });
     } catch (e: any) {
       setError(e.message ?? t("form.saveFailed"));
     } finally {
@@ -63,7 +77,7 @@ export function EditHeritageItemPage({ id }: { id: string }) {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-4 flex items-center justify-between gap-2">
           <Link
-            to="/admin/heritage"
+            to={listPath}
             className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
@@ -82,8 +96,10 @@ export function EditHeritageItemPage({ id }: { id: string }) {
             description_en: item.description_en ?? "",
             description_fr: item.description_fr ?? "",
             image_url: item.image_url ?? "",
+            images: item.images,
             sort_order: item.sort_order,
           }}
+          categories={categoriesFor(variant)}
           submitLabel={t("form.save")}
           onSubmit={onSubmit}
           submitting={submitting}

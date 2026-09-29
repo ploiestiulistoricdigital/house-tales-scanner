@@ -19,6 +19,7 @@ type HeritageItem = {
   description_en: string | null;
   description_fr: string | null;
   image_url: string | null;
+  images: string[];
 };
 
 const CATEGORY_BACK_ROUTE: Record<HeritageCategory, "/istoria-ploiestiului" | "/personalitati" | "/arhiva" | "/"> = {
@@ -43,7 +44,14 @@ async function loadHeritageItem(slug: string): Promise<HeritageItem> {
     .maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) throw notFound();
-  return data;
+  const { data: imgs, error: imgError } = await supabase
+    .from("heritage_item_images")
+    .select("image_url")
+    .eq("heritage_item_id", data.id)
+    .order("sort_order")
+    .order("created_at");
+  if (imgError) throw new Error(imgError.message);
+  return { ...data, images: imgs.map((i) => i.image_url) };
 }
 
 export const Route = createFileRoute("/poveste/$slug")({
@@ -182,6 +190,24 @@ function HeritageItemPage() {
             </div>
           ))}
       </article>
+
+      {item.images.length > 0 && (
+        <section className="mx-auto max-w-4xl px-4 pb-12 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {item.images.map((url) => (
+              <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded bg-muted">
+                <img
+                  src={url}
+                  alt={title}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover sepia-[0.1]"
+                />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <SiteFooter />
     </div>

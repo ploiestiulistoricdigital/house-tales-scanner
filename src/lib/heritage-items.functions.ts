@@ -23,6 +23,7 @@ const heritageItemInput = z.object({
   description_fr: z.string().max(50000).optional().nullable(),
   image_url: z.string().url().max(2000).optional().nullable().or(z.literal("")),
   sort_order: z.number().int().min(0).max(9999).default(0),
+  images: z.array(z.string().url().max(2000)).max(50).optional(),
 });
 
 function sanitizeDescriptions<T extends { description?: string | null; description_en?: string | null; description_fr?: string | null }>(
@@ -35,6 +36,21 @@ function sanitizeDescriptions<T extends { description?: string | null; descripti
     description_en: data.description_en != null ? sanitize(data.description_en) : data.description_en,
     description_fr: data.description_fr != null ? sanitize(data.description_fr) : data.description_fr,
   };
+}
+
+async function replaceItemImages(
+  supabaseAdmin: SupabaseClient<Database>,
+  itemId: string,
+  images: string[] | undefined,
+) {
+  if (images === undefined) return;
+  const { error: delError } = await supabaseAdmin.from("heritage_item_images").delete().eq("heritage_item_id", itemId);
+  if (delError) throw new Error(delError.message);
+  if (images.length === 0) return;
+  const { error } = await supabaseAdmin
+    .from("heritage_item_images")
+    .insert(images.map((image_url, sort_order) => ({ heritage_item_id: itemId, image_url, sort_order })));
+  if (error) throw new Error(error.message);
 }
 
 async function assertAdmin(ctx: { supabase: SupabaseClient<Database>; userId: string }) {
@@ -56,13 +72,15 @@ export const createHeritageItem = createServerFn({ method: "POST" })
     await assertRateLimit(context.userId, "heritage:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { sanitizeRichText } = await import("@/lib/rich-text");
-    const payload = { ...sanitizeDescriptions(data, sanitizeRichText), image_url: data.image_url || null };
+    const { images, ...rest } = data;
+    const payload = { ...sanitizeDescriptions(rest, sanitizeRichText), image_url: rest.image_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("heritage_items")
       .insert(payload)
       .select()
       .single();
     if (error) throw new Error(error.message);
+    await replaceItemImages(supabaseAdmin, row.id, images);
     return row;
   });
 
@@ -76,7 +94,7 @@ export const updateHeritageItem = createServerFn({ method: "POST" })
     await assertRateLimit(context.userId, "heritage:mutate", 60, 300);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { sanitizeRichText } = await import("@/lib/rich-text");
-    const { id, ...rest } = data;
+    const { id, images, ...rest } = data;
     const payload = { ...sanitizeDescriptions(rest, sanitizeRichText), image_url: rest.image_url || null };
     const { data: row, error } = await supabaseAdmin
       .from("heritage_items")
@@ -85,6 +103,7 @@ export const updateHeritageItem = createServerFn({ method: "POST" })
       .select()
       .single();
     if (error) throw new Error(error.message);
+    await replaceItemImages(supabaseAdmin, id, images);
     return row;
   });
 

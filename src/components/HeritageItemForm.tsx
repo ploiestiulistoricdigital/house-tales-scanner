@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Languages, Loader2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Languages, Loader2, Trash2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
@@ -17,6 +17,17 @@ export const HERITAGE_CATEGORIES = [
 ] as const;
 export type HeritageCategory = (typeof HERITAGE_CATEGORIES)[number];
 
+// "istoria" = the dedicated Ploieștiul istoric admin section (locuri_disparute);
+// "general" = the Heritage admin section, covering every other category.
+export type HeritageAdminVariant = "istoria" | "general";
+export const ISTORIA_CATEGORIES: readonly HeritageCategory[] = ["locuri_disparute"];
+export const GENERAL_CATEGORIES: readonly HeritageCategory[] = HERITAGE_CATEGORIES.filter(
+  (c) => !ISTORIA_CATEGORIES.includes(c),
+);
+export function categoriesFor(variant: HeritageAdminVariant) {
+  return variant === "istoria" ? ISTORIA_CATEGORIES : GENERAL_CATEGORIES;
+}
+
 export type HeritageItemFormValues = {
   category: HeritageCategory;
   slug: string;
@@ -27,6 +38,7 @@ export type HeritageItemFormValues = {
   description_en: string;
   description_fr: string;
   image_url: string;
+  images: string[];
   sort_order: number;
 };
 
@@ -75,12 +87,14 @@ function validate(
 
 export function HeritageItemForm({
   initial,
+  categories = HERITAGE_CATEGORIES,
   submitLabel,
   onSubmit,
   submitting,
   error,
 }: {
   initial: HeritageItemFormValues;
+  categories?: readonly HeritageCategory[];
   submitLabel: string;
   onSubmit: (v: HeritageItemFormValues) => void;
   submitting: boolean;
@@ -181,6 +195,14 @@ export function HeritageItemForm({
     });
   }
 
+  function moveImage(index: number, delta: -1 | 1) {
+    setV((p) => {
+      const images = [...p.images];
+      [images[index], images[index + delta]] = [images[index + delta], images[index]];
+      return { ...p, images };
+    });
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttempted(true);
@@ -225,19 +247,21 @@ export function HeritageItemForm({
         </button>
       </div>
 
-      <Field label={t("heritageItems.field.category")}>
-        <select
-          className={inputCls}
-          value={v.category}
-          onChange={(e) => set("category", e.target.value as HeritageCategory)}
-        >
-          {HERITAGE_CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {t(`heritageItems.category.${c}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
+      {categories.length > 1 && (
+        <Field label={t("heritageItems.field.category")}>
+          <select
+            className={inputCls}
+            value={v.category}
+            onChange={(e) => set("category", e.target.value as HeritageCategory)}
+          >
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {t(`heritageItems.category.${c}`)}
+              </option>
+            ))}
+          </select>
+        </Field>
+      )}
 
       <MultilingualField
         label={t("field.name")}
@@ -285,6 +309,51 @@ export function HeritageItemForm({
           />
         )}
       </Field>
+
+      <fieldset className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4">
+        <legend className="px-1 text-base font-medium">{t("heritageItems.field.images")}</legend>
+        <ImageUploader
+          label={t("heritageItems.field.imagesAdd")}
+          onUploaded={(url) => setV((p) => ({ ...p, images: [...p.images, url] }))}
+        />
+        {v.images.length > 0 && (
+          <ul className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {v.images.map((url, i) => (
+              <li key={url} className="rounded border bg-background p-2">
+                <img src={url} alt="" className="h-28 w-full rounded object-cover" />
+                <div className="mt-2 flex items-center justify-between gap-1">
+                  <button
+                    type="button"
+                    disabled={i === 0}
+                    onClick={() => moveImage(i, -1)}
+                    aria-label={t("heritageItems.field.imageMoveUp")}
+                    className="p-2 rounded hover:bg-accent disabled:opacity-40"
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    disabled={i === v.images.length - 1}
+                    onClick={() => moveImage(i, 1)}
+                    aria-label={t("heritageItems.field.imageMoveDown")}
+                    className="p-2 rounded hover:bg-accent disabled:opacity-40"
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setV((p) => ({ ...p, images: p.images.filter((_, j) => j !== i) }))}
+                    aria-label={t("heritageItems.field.imageRemove")}
+                    className="p-2 rounded hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </fieldset>
 
       <MultilingualField
         label={t("heritageItems.field.description")}

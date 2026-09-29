@@ -25,7 +25,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { HERITAGE_CATEGORIES, type HeritageCategory } from "@/components/HeritageItemForm";
+import { categoriesFor, type HeritageAdminVariant, type HeritageCategory } from "@/components/HeritageItemForm";
 
 type AdminHeritageItem = {
   id: string;
@@ -36,7 +36,9 @@ type AdminHeritageItem = {
   updated_at: string;
 };
 
-export function HeritagePage() {
+export function HeritagePage({ variant = "general" }: { variant?: HeritageAdminVariant }) {
+  const categories = categoriesFor(variant);
+  const isIstoria = variant === "istoria";
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useI18n();
@@ -73,11 +75,12 @@ export function HeritagePage() {
   });
 
   const { data: items, isError: itemsError } = useQuery({
-    queryKey: ["admin-heritage-items"],
+    queryKey: ["admin-heritage-items", variant],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("heritage_items")
         .select("id, category, slug, title, sort_order, updated_at")
+        .in("category", [...categories])
         .order("category")
         .order("sort_order");
       if (error) throw error;
@@ -89,10 +92,10 @@ export function HeritagePage() {
   useEffect(() => {
     if (!items) return;
     const grouped: Record<string, AdminHeritageItem[]> = {};
-    for (const category of HERITAGE_CATEGORIES) grouped[category] = [];
-    for (const item of items) (grouped[item.category] ??= []).push(item);
+    for (const category of categories) grouped[category] = [];
+    for (const item of items) if (grouped[item.category]) grouped[item.category].push(item);
     setCategorized(grouped);
-  }, [items]);
+  }, [items, variant]);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -167,7 +170,7 @@ export function HeritagePage() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/70 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
-          <h1 className="text-lg sm:text-xl font-semibold">{t("heritageItems.admin.title")}</h1>
+          <h1 className="text-lg sm:text-xl font-semibold">{t(isIstoria ? "heritageItems.admin.istoriaTitle" : "heritageItems.admin.title")}</h1>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <Link
@@ -190,7 +193,7 @@ export function HeritagePage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold">{t("heritageItems.admin.all")}</h2>
           <Link
-            to="/admin/heritage/new"
+            to={isIstoria ? "/admin/istoria-ploiestiului/new" : "/admin/heritage/new"}
             className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" /> {t("heritageItems.admin.new")}
@@ -209,7 +212,7 @@ export function HeritagePage() {
           <div className="rounded-lg border border-border/70 overflow-x-auto">
             <table className="w-full min-w-[640px] text-base">
               <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                {HERITAGE_CATEGORIES.map((category) => {
+                {categories.map((category) => {
                   const rows = categorized[category] ?? [];
                   if (rows.length === 0) return null;
                   return (
@@ -226,6 +229,7 @@ export function HeritagePage() {
                             item={item}
                             displayOrder={index}
                             detailRoute={detailRouteFor[item.category as HeritageCategory]}
+                            isIstoria={isIstoria}
                             onDelete={() => setPendingDelete({ id: item.id, title: item.title })}
                             t={t}
                           />
@@ -256,12 +260,14 @@ function SortableHeritageRow({
   item,
   displayOrder,
   detailRoute,
+  isIstoria,
   onDelete,
   t,
 }: {
   item: AdminHeritageItem;
   displayOrder: number;
   detailRoute: "/istoria-ploiestiului" | "/personalitati" | "/arhiva" | "/";
+  isIstoria: boolean;
   onDelete: () => void;
   t: (key: string) => string;
 }) {
@@ -304,7 +310,7 @@ function SortableHeritageRow({
             <ExternalLink className="h-4 w-4" />
           </Link>
           <Link
-            to="/admin/heritage/$id/edit"
+            to={isIstoria ? "/admin/istoria-ploiestiului/$id/edit" : "/admin/heritage/$id/edit"}
             params={{ id: item.id }}
             className="p-2 hover:bg-accent rounded inline-flex items-center justify-center"
             aria-label={t("admin.edit")}

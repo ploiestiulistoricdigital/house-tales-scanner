@@ -2,11 +2,17 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { HeritageItemForm, type HeritageItemFormValues } from "@/components/HeritageItemForm";
+import {
+  HeritageItemForm,
+  categoriesFor,
+  type HeritageAdminVariant,
+  type HeritageItemFormValues,
+} from "@/components/HeritageItemForm";
 import { createHeritageItem } from "@/lib/heritage-items.functions";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 
-export function NewHeritageItemPage() {
+export function NewHeritageItemPage({ variant = "general" }: { variant?: HeritageAdminVariant }) {
+  const categories = categoriesFor(variant);
   const navigate = useNavigate();
   const create = useServerFn(createHeritageItem);
   const { t } = useI18n();
@@ -28,10 +34,12 @@ export function NewHeritageItemPage() {
           description_en: v.description_en || null,
           description_fr: v.description_fr || null,
           image_url: v.image_url || null,
+          images: v.images,
           sort_order: v.sort_order,
         },
       });
-      navigate({ to: "/admin/heritage/$id/edit", params: { id: row.id } });
+      if (variant === "istoria") navigate({ to: "/admin/istoria-ploiestiului/$id/edit", params: { id: row.id } });
+      else navigate({ to: "/admin/heritage/$id/edit", params: { id: row.id } });
     } catch (e: any) {
       setError(e.message ?? t("form.createFailed"));
     } finally {
@@ -44,7 +52,7 @@ export function NewHeritageItemPage() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-4 flex items-center justify-between gap-2">
           <Link
-            to="/admin/heritage"
+            to={variant === "istoria" ? "/admin/istoria-ploiestiului" : "/admin/heritage"}
             className="inline-flex items-center gap-1 min-h-11 text-base text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" /> {t("nav.back")}
@@ -54,7 +62,7 @@ export function NewHeritageItemPage() {
         <h1 className="text-2xl sm:text-3xl font-semibold mb-6">{t("heritageItems.admin.new")}</h1>
         <HeritageItemForm
           initial={{
-            category: "locuri_disparute",
+            category: categories[0],
             slug: "",
             title: "",
             title_en: "",
@@ -63,8 +71,10 @@ export function NewHeritageItemPage() {
             description_en: "",
             description_fr: "",
             image_url: "",
+            images: [],
             sort_order: 0,
           }}
+          categories={categories}
           submitLabel={t("form.create")}
           onSubmit={onSubmit}
           submitting={submitting}

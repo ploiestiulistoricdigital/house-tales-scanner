@@ -199,6 +199,38 @@ export type Database = {
         }
         Relationships: []
       }
+      heritage_item_images: {
+        Row: {
+          created_at: string
+          heritage_item_id: string
+          id: string
+          image_url: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          heritage_item_id: string
+          id?: string
+          image_url: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          heritage_item_id?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "heritage_item_images_heritage_item_id_fkey"
+            columns: ["heritage_item_id"]
+            isOneToOne: false
+            referencedRelation: "heritage_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       heritage_items: {
         Row: {
           category: Database["public"]["Enums"]["heritage_category"]

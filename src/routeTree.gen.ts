@@ -28,14 +28,17 @@ import { Route as BSlugRouteImport } from './routes/b.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as AuthenticatedAdminIstoriaPloiestiuluiRouteImport } from './routes/_authenticated/admin_.istoria-ploiestiului'
 import { Route as AuthenticatedAdminHeritageRouteImport } from './routes/_authenticated/admin_.heritage'
 import { Route as AuthenticatedAdminDespreProiectRouteImport } from './routes/_authenticated/admin_.despre-proiect'
 import { Route as AuthenticatedAdminAntitezaRouteImport } from './routes/_authenticated/admin_.antiteza'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as AuthenticatedAdminIstoriaPloiestiuluiNewRouteImport } from './routes/_authenticated/admin_.istoria-ploiestiului_.new'
 import { Route as AuthenticatedAdminHeritageNewRouteImport } from './routes/_authenticated/admin_.heritage_.new'
 import { Route as AuthenticatedAdminBuildingsNewRouteImport } from './routes/_authenticated/admin_.buildings.new'
 import { Route as AuthenticatedAdminAntitezaNewRouteImport } from './routes/_authenticated/admin_.antiteza_.new'
+import { Route as AuthenticatedAdminIstoriaPloiestiuluiIdEditRouteImport } from './routes/_authenticated/admin_.istoria-ploiestiului_.$id.edit'
 import { Route as AuthenticatedAdminHeritageIdEditRouteImport } from './routes/_authenticated/admin_.heritage_.$id.edit'
 import { Route as AuthenticatedAdminDespreProiectTeamNewRouteImport } from './routes/_authenticated/admin_.despre-proiect_.team.new'
 import { Route as AuthenticatedAdminBuildingsIdEditRouteImport } from './routes/_authenticated/admin_.buildings.$id.edit'
@@ -138,6 +141,12 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAdminIstoriaPloiestiuluiRoute =
+  AuthenticatedAdminIstoriaPloiestiuluiRouteImport.update({
+    id: '/admin_/istoria-ploiestiului',
+    path: '/admin/istoria-ploiestiului',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminHeritageRoute =
   AuthenticatedAdminHeritageRouteImport.update({
     id: '/admin_/heritage',
@@ -167,6 +176,12 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIstoriaPloiestiuluiNewRoute =
+  AuthenticatedAdminIstoriaPloiestiuluiNewRouteImport.update({
+    id: '/admin_/istoria-ploiestiului_/new',
+    path: '/admin/istoria-ploiestiului/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminHeritageNewRoute =
   AuthenticatedAdminHeritageNewRouteImport.update({
     id: '/admin_/heritage_/new',
@@ -183,6 +198,12 @@ const AuthenticatedAdminAntitezaNewRoute =
   AuthenticatedAdminAntitezaNewRouteImport.update({
     id: '/admin_/antiteza_/new',
     path: '/admin/antiteza/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute =
+  AuthenticatedAdminIstoriaPloiestiuluiIdEditRouteImport.update({
+    id: '/admin_/istoria-ploiestiului_/$id/edit',
+    path: '/admin/istoria-ploiestiului/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminHeritageIdEditRoute =
@@ -240,13 +261,16 @@ export interface FileRoutesByFullPath {
   '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/admin/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/admin/istoria-ploiestiului': typeof AuthenticatedAdminIstoriaPloiestiuluiRoute
   '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/admin/istoria-ploiestiului/new': typeof AuthenticatedAdminIstoriaPloiestiuluiNewRoute
   '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/admin/despre-proiect/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/admin/istoria-ploiestiului/$id/edit': typeof AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute
   '/admin/despre-proiect/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -273,13 +297,16 @@ export interface FileRoutesByTo {
   '/admin/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/admin/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/admin/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/admin/istoria-ploiestiului': typeof AuthenticatedAdminIstoriaPloiestiuluiRoute
   '/admin/antiteza/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/admin/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/admin/heritage/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/admin/istoria-ploiestiului/new': typeof AuthenticatedAdminIstoriaPloiestiuluiNewRoute
   '/admin/antiteza/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/admin/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/admin/despre-proiect/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/admin/heritage/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/admin/istoria-ploiestiului/$id/edit': typeof AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute
   '/admin/despre-proiect/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRoutesById {
@@ -308,13 +335,16 @@ export interface FileRoutesById {
   '/_authenticated/admin_/antiteza': typeof AuthenticatedAdminAntitezaRoute
   '/_authenticated/admin_/despre-proiect': typeof AuthenticatedAdminDespreProiectRoute
   '/_authenticated/admin_/heritage': typeof AuthenticatedAdminHeritageRoute
+  '/_authenticated/admin_/istoria-ploiestiului': typeof AuthenticatedAdminIstoriaPloiestiuluiRoute
   '/_authenticated/admin_/antiteza_/new': typeof AuthenticatedAdminAntitezaNewRoute
   '/_authenticated/admin_/buildings/new': typeof AuthenticatedAdminBuildingsNewRoute
   '/_authenticated/admin_/heritage_/new': typeof AuthenticatedAdminHeritageNewRoute
+  '/_authenticated/admin_/istoria-ploiestiului_/new': typeof AuthenticatedAdminIstoriaPloiestiuluiNewRoute
   '/_authenticated/admin_/antiteza_/$id/edit': typeof AuthenticatedAdminAntitezaIdEditRoute
   '/_authenticated/admin_/buildings/$id/edit': typeof AuthenticatedAdminBuildingsIdEditRoute
   '/_authenticated/admin_/despre-proiect_/team/new': typeof AuthenticatedAdminDespreProiectTeamNewRoute
   '/_authenticated/admin_/heritage_/$id/edit': typeof AuthenticatedAdminHeritageIdEditRoute
+  '/_authenticated/admin_/istoria-ploiestiului_/$id/edit': typeof AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute
   '/_authenticated/admin_/despre-proiect_/team/$id/edit': typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 export interface FileRouteTypes {
@@ -343,13 +373,16 @@ export interface FileRouteTypes {
     | '/admin/antiteza'
     | '/admin/despre-proiect'
     | '/admin/heritage'
+    | '/admin/istoria-ploiestiului'
     | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
+    | '/admin/istoria-ploiestiului/new'
     | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
     | '/admin/despre-proiect/team/new'
     | '/admin/heritage/$id/edit'
+    | '/admin/istoria-ploiestiului/$id/edit'
     | '/admin/despre-proiect/team/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -376,13 +409,16 @@ export interface FileRouteTypes {
     | '/admin/antiteza'
     | '/admin/despre-proiect'
     | '/admin/heritage'
+    | '/admin/istoria-ploiestiului'
     | '/admin/antiteza/new'
     | '/admin/buildings/new'
     | '/admin/heritage/new'
+    | '/admin/istoria-ploiestiului/new'
     | '/admin/antiteza/$id/edit'
     | '/admin/buildings/$id/edit'
     | '/admin/despre-proiect/team/new'
     | '/admin/heritage/$id/edit'
+    | '/admin/istoria-ploiestiului/$id/edit'
     | '/admin/despre-proiect/team/$id/edit'
   id:
     | '__root__'
@@ -410,13 +446,16 @@ export interface FileRouteTypes {
     | '/_authenticated/admin_/antiteza'
     | '/_authenticated/admin_/despre-proiect'
     | '/_authenticated/admin_/heritage'
+    | '/_authenticated/admin_/istoria-ploiestiului'
     | '/_authenticated/admin_/antiteza_/new'
     | '/_authenticated/admin_/buildings/new'
     | '/_authenticated/admin_/heritage_/new'
+    | '/_authenticated/admin_/istoria-ploiestiului_/new'
     | '/_authenticated/admin_/antiteza_/$id/edit'
     | '/_authenticated/admin_/buildings/$id/edit'
     | '/_authenticated/admin_/despre-proiect_/team/new'
     | '/_authenticated/admin_/heritage_/$id/edit'
+    | '/_authenticated/admin_/istoria-ploiestiului_/$id/edit'
     | '/_authenticated/admin_/despre-proiect_/team/$id/edit'
   fileRoutesById: FileRoutesById
 }
@@ -578,6 +617,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin_/istoria-ploiestiului': {
+      id: '/_authenticated/admin_/istoria-ploiestiului'
+      path: '/admin/istoria-ploiestiului'
+      fullPath: '/admin/istoria-ploiestiului'
+      preLoaderRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin_/heritage': {
       id: '/_authenticated/admin_/heritage'
       path: '/admin/heritage'
@@ -613,6 +659,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin_/istoria-ploiestiului_/new': {
+      id: '/_authenticated/admin_/istoria-ploiestiului_/new'
+      path: '/admin/istoria-ploiestiului/new'
+      fullPath: '/admin/istoria-ploiestiului/new'
+      preLoaderRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin_/heritage_/new': {
       id: '/_authenticated/admin_/heritage_/new'
       path: '/admin/heritage/new'
@@ -632,6 +685,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/antiteza/new'
       fullPath: '/admin/antiteza/new'
       preLoaderRoute: typeof AuthenticatedAdminAntitezaNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin_/istoria-ploiestiului_/$id/edit': {
+      id: '/_authenticated/admin_/istoria-ploiestiului_/$id/edit'
+      path: '/admin/istoria-ploiestiului/$id/edit'
+      fullPath: '/admin/istoria-ploiestiului/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin_/heritage_/$id/edit': {
@@ -677,13 +737,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminAntitezaRoute: typeof AuthenticatedAdminAntitezaRoute
   AuthenticatedAdminDespreProiectRoute: typeof AuthenticatedAdminDespreProiectRoute
   AuthenticatedAdminHeritageRoute: typeof AuthenticatedAdminHeritageRoute
+  AuthenticatedAdminIstoriaPloiestiuluiRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiRoute
   AuthenticatedAdminAntitezaNewRoute: typeof AuthenticatedAdminAntitezaNewRoute
   AuthenticatedAdminBuildingsNewRoute: typeof AuthenticatedAdminBuildingsNewRoute
   AuthenticatedAdminHeritageNewRoute: typeof AuthenticatedAdminHeritageNewRoute
+  AuthenticatedAdminIstoriaPloiestiuluiNewRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiNewRoute
   AuthenticatedAdminAntitezaIdEditRoute: typeof AuthenticatedAdminAntitezaIdEditRoute
   AuthenticatedAdminBuildingsIdEditRoute: typeof AuthenticatedAdminBuildingsIdEditRoute
   AuthenticatedAdminDespreProiectTeamNewRoute: typeof AuthenticatedAdminDespreProiectTeamNewRoute
   AuthenticatedAdminHeritageIdEditRoute: typeof AuthenticatedAdminHeritageIdEditRoute
+  AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute: typeof AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute
   AuthenticatedAdminDespreProiectTeamIdEditRoute: typeof AuthenticatedAdminDespreProiectTeamIdEditRoute
 }
 
@@ -692,15 +755,21 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminAntitezaRoute: AuthenticatedAdminAntitezaRoute,
   AuthenticatedAdminDespreProiectRoute: AuthenticatedAdminDespreProiectRoute,
   AuthenticatedAdminHeritageRoute: AuthenticatedAdminHeritageRoute,
+  AuthenticatedAdminIstoriaPloiestiuluiRoute:
+    AuthenticatedAdminIstoriaPloiestiuluiRoute,
   AuthenticatedAdminAntitezaNewRoute: AuthenticatedAdminAntitezaNewRoute,
   AuthenticatedAdminBuildingsNewRoute: AuthenticatedAdminBuildingsNewRoute,
   AuthenticatedAdminHeritageNewRoute: AuthenticatedAdminHeritageNewRoute,
+  AuthenticatedAdminIstoriaPloiestiuluiNewRoute:
+    AuthenticatedAdminIstoriaPloiestiuluiNewRoute,
   AuthenticatedAdminAntitezaIdEditRoute: AuthenticatedAdminAntitezaIdEditRoute,
   AuthenticatedAdminBuildingsIdEditRoute:
     AuthenticatedAdminBuildingsIdEditRoute,
   AuthenticatedAdminDespreProiectTeamNewRoute:
     AuthenticatedAdminDespreProiectTeamNewRoute,
   AuthenticatedAdminHeritageIdEditRoute: AuthenticatedAdminHeritageIdEditRoute,
+  AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute:
+    AuthenticatedAdminIstoriaPloiestiuluiIdEditRoute,
   AuthenticatedAdminDespreProiectTeamIdEditRoute:
     AuthenticatedAdminDespreProiectTeamIdEditRoute,
 }
