@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ScrollText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,11 +53,13 @@ export function HeritageListPage({
   titleKey,
   introKey,
   items,
+  header,
 }: {
   category: HeritageCategory;
   titleKey: string;
   introKey: string;
   items: HeritageItemSummary[] | null;
+  header?: ReactNode;
 }) {
   const { t, lang } = useI18n();
   const isError = items === null;
@@ -65,7 +68,12 @@ export function HeritageListPage({
     <div className="min-h-screen flex flex-col">
       <SiteNav />
       <main className="flex-1 mx-auto max-w-6xl px-4 py-14 sm:py-20 w-full">
-        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">{t(titleKey)}</h1>
+        {header}
+        {header ? (
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">{t(titleKey)}</h2>
+        ) : (
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">{t(titleKey)}</h1>
+        )}
         <p className="mt-4 text-lg text-foreground/80 font-serif leading-relaxed max-w-2xl">{t(introKey)}</p>
 
         <div className="mt-10">

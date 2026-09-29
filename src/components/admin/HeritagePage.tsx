@@ -25,6 +25,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { LanguageSwitcher, useI18n } from "@/lib/i18n";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { IstoriaContentSection } from "@/components/admin/IstoriaContentSection";
 import { categoriesFor, type HeritageAdminVariant, type HeritageCategory } from "@/components/HeritageItemForm";
 
 type AdminHeritageItem = {
@@ -169,8 +170,9 @@ export function HeritagePage({ variant = "general" }: { variant?: HeritageAdminV
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-6xl px-4 py-8">
+        {isIstoria && <IstoriaContentSection />}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 className="text-xl sm:text-2xl font-semibold">{t("heritageItems.admin.all")}</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold">{t(isIstoria ? "heritageItems.category.locuri_disparute" : "heritageItems.admin.all")}</h2>
           <Link
             to={isIstoria ? "/admin/istoria-ploiestiului/new" : "/admin/heritage/new"}
             className="inline-flex items-center justify-center gap-1 min-h-11 rounded-md bg-primary text-primary-foreground px-4 py-2 text-base font-medium hover:bg-primary/90"

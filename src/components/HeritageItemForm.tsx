@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ArrowDown, ArrowUp, Languages, Loader2, Trash2 } from "lucide-react";
+import { Languages, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
+import { ImageGalleryField } from "@/components/ImageGalleryField";
 import { ImageUploader } from "@/components/ImageUploader";
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { useI18n } from "@/lib/i18n";
@@ -195,14 +196,6 @@ export function HeritageItemForm({
     });
   }
 
-  function moveImage(index: number, delta: -1 | 1) {
-    setV((p) => {
-      const images = [...p.images];
-      [images[index], images[index + delta]] = [images[index + delta], images[index]];
-      return { ...p, images };
-    });
-  }
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttempted(true);
@@ -310,50 +303,7 @@ export function HeritageItemForm({
         )}
       </Field>
 
-      <fieldset className="rounded-md border border-border/70 bg-muted/20 p-3 sm:p-4">
-        <legend className="px-1 text-base font-medium">{t("heritageItems.field.images")}</legend>
-        <ImageUploader
-          label={t("heritageItems.field.imagesAdd")}
-          onUploaded={(url) => setV((p) => ({ ...p, images: [...p.images, url] }))}
-        />
-        {v.images.length > 0 && (
-          <ul className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {v.images.map((url, i) => (
-              <li key={url} className="rounded border bg-background p-2">
-                <img src={url} alt="" className="h-28 w-full rounded object-cover" />
-                <div className="mt-2 flex items-center justify-between gap-1">
-                  <button
-                    type="button"
-                    disabled={i === 0}
-                    onClick={() => moveImage(i, -1)}
-                    aria-label={t("heritageItems.field.imageMoveUp")}
-                    className="p-2 rounded hover:bg-accent disabled:opacity-40"
-                  >
-                    <ArrowUp className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    disabled={i === v.images.length - 1}
-                    onClick={() => moveImage(i, 1)}
-                    aria-label={t("heritageItems.field.imageMoveDown")}
-                    className="p-2 rounded hover:bg-accent disabled:opacity-40"
-                  >
-                    <ArrowDown className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setV((p) => ({ ...p, images: p.images.filter((_, j) => j !== i) }))}
-                    aria-label={t("heritageItems.field.imageRemove")}
-                    className="p-2 rounded hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </fieldset>
+      <ImageGalleryField images={v.images} onChange={(images) => set("images", images)} />
 
       <MultilingualField
         label={t("heritageItems.field.description")}

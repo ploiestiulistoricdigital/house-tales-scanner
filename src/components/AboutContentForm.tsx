@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { translateText } from "@/lib/translate.functions";
 import { chunkText } from "@/lib/text-chunks";
+import { ImageGalleryField } from "@/components/ImageGalleryField";
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
@@ -15,26 +16,31 @@ export type AboutContentFormValues = {
   description: string;
   description_en: string;
   description_fr: string;
+  images?: string[];
 };
 
 type Field = "title" | "description";
 type FormLang = "ro" | "en" | "fr";
 const FORM_LANGS: FormLang[] = ["ro", "en", "fr"];
 
-function fieldKey(field: Field, lang: FormLang): keyof AboutContentFormValues {
+type TextKey = Exclude<keyof AboutContentFormValues, "images">;
+
+function fieldKey(field: Field, lang: FormLang): TextKey {
   if (lang === "ro") return field;
-  return `${field}_${lang}` as keyof AboutContentFormValues;
+  return `${field}_${lang}` as TextKey;
 }
 
 const inputCls = "w-full rounded-md border border-border/70 px-3 py-3 text-base bg-background";
 
 export function AboutContentForm({
   initial,
+  withImages = false,
   onSubmit,
   submitting,
   error,
 }: {
   initial: AboutContentFormValues;
+  withImages?: boolean;
   onSubmit: (v: AboutContentFormValues) => void;
   submitting: boolean;
   error: string | null;
@@ -70,8 +76,8 @@ export function AboutContentForm({
 
   async function handleTranslate(field: Field, target: FormLang) {
     const otherLang: FormLang = FORM_LANGS.find((l) => l !== target && l !== "ro") === "en" ? "en" : "fr";
-    const ro = v[fieldKey(field, "ro")].trim();
-    const other = v[fieldKey(field, otherLang)].trim();
+    const ro = (v[fieldKey(field, "ro")] ?? "").trim();
+    const other = (v[fieldKey(field, otherLang)] ?? "").trim();
     const source = ro || other;
     if (!source) {
       toast.error(t("translate.empty"));
@@ -114,6 +120,10 @@ export function AboutContentForm({
         onChange={(lang, val) => set(fieldKey("description", lang), val)}
         renderInput={(value, onChange) => <RichTextEditor value={toEditableHtml(value)} onChange={onChange} rows={6} />}
       />
+
+      {withImages && (
+        <ImageGalleryField images={v.images ?? []} onChange={(images) => set("images", images)} />
+      )}
 
       {error && (
         <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-base text-destructive">
@@ -174,7 +184,7 @@ function TranslatableField({
                 </button>
               )}
             </div>
-            {renderInput(values[fieldKey(field, lang)], (val) => onChange(lang, val))}
+            {renderInput(values[fieldKey(field, lang)] ?? "", (val) => onChange(lang, val))}
           </div>
         ))}
       </div>

@@ -279,6 +279,60 @@ export type Database = {
         }
         Relationships: []
       }
+      istoria_content: {
+        Row: {
+          description: string
+          description_en: string | null
+          description_fr: string | null
+          id: number
+          title: string
+          title_en: string | null
+          title_fr: string | null
+          updated_at: string
+        }
+        Insert: {
+          description?: string
+          description_en?: string | null
+          description_fr?: string | null
+          id?: number
+          title?: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          description_en?: string | null
+          description_fr?: string | null
+          id?: number
+          title?: string
+          title_en?: string | null
+          title_fr?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      istoria_content_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       qr_code_exports: {
         Row: {
           building_id: string
