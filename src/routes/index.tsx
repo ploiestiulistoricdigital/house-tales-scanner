@@ -8,6 +8,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { PartnerLogo } from "@/components/PartnerLogo";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
+import { toPlainText } from "@/lib/rich-text";
 
 type AntitezaPair = {
   id: string;
@@ -203,7 +204,9 @@ function Home() {
     },
   ];
   const storyTitle = story ? pick(lang, story.title, story.title_en, story.title_fr) ?? story.title : null;
-  const storyExcerpt = story ? pick(lang, story.description, story.description_en, story.description_fr) : null;
+  const storyExcerpt = story
+    ? toPlainText(pick(lang, story.description, story.description_en, story.description_fr) ?? "") || null
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col">

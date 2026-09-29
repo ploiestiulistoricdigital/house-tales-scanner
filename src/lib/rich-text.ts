@@ -24,6 +24,23 @@ export function looksLikeHtml(text: string): boolean {
   return /<[a-z][\s\S]*>/i.test(text);
 }
 
+// For short, plain-text teasers (card excerpts, line-clamped summaries) where
+// embedding block-level HTML would fight the clamp: strips tags and collapses
+// the block-boundary whitespace they implied.
+export function toPlainText(text: string): string {
+  if (!looksLikeHtml(text)) return text;
+  return text
+    .replace(/<(p|div|li|br|blockquote)\b[^>]*>/gi, " ")
+    .replace(/<\/(p|div|li|blockquote)>/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
