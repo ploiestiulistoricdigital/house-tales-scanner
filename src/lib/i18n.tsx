@@ -304,7 +304,7 @@ const RO: Dict = {
   "comingSoon.body": "Această secțiune este în lucru. Revino în curând.",
 
   // Heritage items (public listing/detail pages)
-  "heritageItems.category.locuri_disparute": "Ploieștiul istoric",
+  "heritageItems.category.locuri_disparute": "Locuri care au dispărut",
   "heritageItems.category.oameni_povesti": "Oameni și povești",
   "heritageItems.category.documente_arhiva": "Documente din arhivă",
   "heritageItems.category.poveste_din_oras": "O poveste din oraș",
@@ -635,7 +635,7 @@ const EN: Dict = {
   "comingSoon.body": "This section is coming soon. Check back later.",
 
   // Heritage items (public listing/detail pages)
-  "heritageItems.category.locuri_disparute": "Historic Ploiești",
+  "heritageItems.category.locuri_disparute": "Places that vanished",
   "heritageItems.category.oameni_povesti": "People and stories",
   "heritageItems.category.documente_arhiva": "Archive documents",
   "heritageItems.category.poveste_din_oras": "A story from the city",
@@ -966,7 +966,7 @@ const FR: Dict = {
   "comingSoon.body": "Cette section arrive bientôt. Revenez plus tard.",
 
   // Heritage items (public listing/detail pages)
-  "heritageItems.category.locuri_disparute": "Ploiești historique",
+  "heritageItems.category.locuri_disparute": "Lieux disparus",
   "heritageItems.category.oameni_povesti": "Gens et histoires",
   "heritageItems.category.documente_arhiva": "Documents d'archive",
   "heritageItems.category.poveste_din_oras": "Une histoire de la ville",

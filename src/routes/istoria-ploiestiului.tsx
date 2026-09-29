@@ -5,7 +5,7 @@ export const Route = createFileRoute("/istoria-ploiestiului")({
   loader: () => fetchHeritageItems("locuri_disparute"),
   head: () => ({
     meta: [
-      { title: "Ploieștiul istoric — Ploieștiul Istoric Digital" },
+      { title: "Locuri care au dispărut — Ploieștiul Istoric Digital" },
       {
         name: "description",
         content: "Fotografii și povești ale unor locuri și clădiri care nu mai există în Ploiești.",
@@ -19,7 +19,7 @@ function IstoriaPloiestiuluiPage() {
   return (
     <HeritageListPage
       category="locuri_disparute"
-      titleKey="nav.locuriDisparute"
+      titleKey="heritageItems.category.locuri_disparute"
       introKey="heritageItems.istoriaPloiestiului.intro"
       items={Route.useLoaderData()}
     />
