@@ -121,7 +121,9 @@ function DespreProiect() {
         {team.length > 0 && (
           <>
             <div className="ornament-divider mb-10">
-              <span className="font-display text-accent text-xl">✦</span>
+              <h2 className="font-display text-accent text-xl sm:text-2xl font-semibold text-center">
+                {t("about.team.title")}
+              </h2>
             </div>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-10">
               {team.map((member) => {
