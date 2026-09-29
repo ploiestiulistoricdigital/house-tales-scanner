@@ -40,6 +40,8 @@ export const translateText = createServerFn({ method: "POST" })
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) throw new Error("Missing ANTHROPIC_API_KEY");
 
+    // Keys that aren't scoped to a workspace must name one per request.
+    const workspaceId = process.env.ANTHROPIC_WORKSPACE_ID;
     const targetName = TARGET_NAME[data.target];
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -47,6 +49,7 @@ export const translateText = createServerFn({ method: "POST" })
         "content-type": "application/json",
         "x-api-key": key,
         "anthropic-version": "2023-06-01",
+        ...(workspaceId ? { "anthropic-workspace-id": workspaceId } : {}),
       },
       body: JSON.stringify({
         model: "claude-sonnet-5",
