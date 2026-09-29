@@ -1,8 +1,9 @@
+import { useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { HeritageListPage, fetchHeritageItems, pick } from "@/components/HeritageListPage";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
-import { looksLikeHtml, sanitizeRichText } from "@/lib/rich-text";
+import { chunkRichText, sanitizeRichText, toEditableHtml } from "@/lib/rich-text";
 
 type IstoriaArticle = {
   title: string;
@@ -42,34 +43,75 @@ export const Route = createFileRoute("/istoria-ploiestiului")({
   component: IstoriaPloiestiuluiPage,
 });
 
+const PAGE_CHARS = 4000;
+
 function IstoriaArticleView({ article }: { article: IstoriaArticle }) {
   const { t, lang } = useI18n();
+  const [pageIndex, setPageIndex] = useState(0);
+  const topRef = useRef<HTMLElement>(null);
   const title = pick(lang, article.title, article.title_en, article.title_fr);
   const description = pick(lang, article.description, article.description_en, article.description_fr);
+  const pages = useMemo(
+    () => (description ? chunkRichText(sanitizeRichText(toEditableHtml(description)), PAGE_CHARS) : []),
+    [description],
+  );
   if (!title && !description && article.images.length === 0) return null;
 
+  const current = Math.min(pageIndex, Math.max(pages.length - 1, 0));
+  const isLast = current >= pages.length - 1;
+
+  function goTo(index: number) {
+    setPageIndex(index);
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
-    <article className="mb-16 sm:mb-20">
+    <article ref={topRef} className="mb-16 sm:mb-20 scroll-mt-6">
       <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">
         {title || t("istoria.article.title")}
       </h1>
-      {description &&
-        (looksLikeHtml(description) ? (
-          <div
-            className="rich-text-content mt-6 max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
-            dangerouslySetInnerHTML={{ __html: sanitizeRichText(description) }}
-          />
-        ) : (
-          <div className="rich-text-content mt-6 max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
-            {description
-              .split(/\n\s*\n/)
-              .filter(Boolean)
-              .map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-          </div>
-        ))}
-      {article.images.length > 0 && (
+      {pages.length > 0 && (
+        <div
+          className="rich-text-content mt-6 max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
+          dangerouslySetInnerHTML={{ __html: pages[current] }}
+        />
+      )}
+      {pages.length > 1 && (
+        <nav className="mt-8 flex flex-wrap items-center justify-center gap-2" aria-label={t("home.pagination.pageOf", { page: current + 1, total: pages.length })}>
+          <button
+            type="button"
+            onClick={() => goTo(current - 1)}
+            disabled={current === 0}
+            className="min-h-11 rounded-sm border border-border/70 px-4 text-sm uppercase tracking-widest hover:border-primary/60 disabled:opacity-40"
+          >
+            {t("home.pagination.prev")}
+          </button>
+          {pages.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-current={i === current ? "page" : undefined}
+              className={`min-h-11 min-w-11 rounded-sm border px-3 text-sm ${
+                i === current
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border/70 hover:border-primary/60"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => goTo(current + 1)}
+            disabled={isLast}
+            className="min-h-11 rounded-sm border border-border/70 px-4 text-sm uppercase tracking-widest hover:border-primary/60 disabled:opacity-40"
+          >
+            {t("home.pagination.next")}
+          </button>
+        </nav>
+      )}
+      {isLast && article.images.length > 0 && (
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {article.images.map((url) => (
             <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded bg-muted">
