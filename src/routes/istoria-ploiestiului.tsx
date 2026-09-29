@@ -56,11 +56,11 @@ function IstoriaArticleView({ article }: { article: IstoriaArticle }) {
       {description &&
         (looksLikeHtml(description) ? (
           <div
-            className="rich-text-content mt-6 max-w-3xl font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
+            className="rich-text-content mt-6 max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]"
             dangerouslySetInnerHTML={{ __html: sanitizeRichText(description) }}
           />
         ) : (
-          <div className="rich-text-content mt-6 max-w-3xl font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
+          <div className="rich-text-content mt-6 max-w-none font-serif text-foreground text-lg sm:text-xl leading-[1.7]">
             {description
               .split(/\n\s*\n/)
               .filter(Boolean)
