@@ -274,6 +274,8 @@ const RO: Dict = {
 
   "landing.story.eyebrow": "O poveste din oraș",
   "landing.story.cta": "Citește povestea",
+  "landing.story.prev": "Povestea anterioară",
+  "landing.story.next": "Povestea următoare",
 
   "landing.map.eyebrow": "Explorează harta",
   "landing.map.title": "Ploieștiul, pas cu pas",
@@ -602,6 +604,8 @@ const EN: Dict = {
 
   "landing.story.eyebrow": "A story from the city",
   "landing.story.cta": "Read the story",
+  "landing.story.prev": "Previous story",
+  "landing.story.next": "Next story",
 
   "landing.map.eyebrow": "Explore the map",
   "landing.map.title": "Ploiești, step by step",
@@ -930,6 +934,8 @@ const FR: Dict = {
 
   "landing.story.eyebrow": "Une histoire de la ville",
   "landing.story.cta": "Lire l'histoire",
+  "landing.story.prev": "Histoire précédente",
+  "landing.story.next": "Histoire suivante",
 
   "landing.map.eyebrow": "Explorer la carte",
   "landing.map.title": "Ploiești, pas à pas",

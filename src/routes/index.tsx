@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowRight, FileText, Landmark, ScrollText, Users, Compass } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, FileText, Landmark, ScrollText, Users, Compass } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { AtomLogo } from "@/components/AtomLogo";
 import { SiteNav } from "@/components/SiteNav";
@@ -47,18 +47,16 @@ type StorySummary = {
   image_url: string | null;
 };
 
-async function fetchFeaturedStory(): Promise<StorySummary | null> {
+async function fetchFeaturedStories(): Promise<StorySummary[]> {
   const { data, error } = await supabase
     .from("heritage_items")
     .select("slug, title, title_en, title_fr, description, description_en, description_fr, image_url")
     .eq("category", "poveste_din_oras")
     .order("sort_order")
-    .order("created_at")
-    .limit(1)
-    .maybeSingle();
+    .order("created_at");
   if (error) {
     console.error(error);
-    return null;
+    return [];
   }
   return data;
 }
@@ -90,12 +88,12 @@ async function fetchFeaturedHeritageItems(): Promise<Record<HeritageTeaserCatego
 }
 
 async function loadHomeData() {
-  const [story, heritageImages, antitezaPairs] = await Promise.all([
-    fetchFeaturedStory(),
+  const [stories, heritageImages, antitezaPairs] = await Promise.all([
+    fetchFeaturedStories(),
     fetchFeaturedHeritageItems(),
     fetchAntitezaPairs(),
   ]);
-  return { story, heritageImages, antitezaPairs };
+  return { stories, heritageImages, antitezaPairs };
 }
 
 function pick(
@@ -165,7 +163,12 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, lang } = useI18n();
-  const { story, heritageImages, antitezaPairs } = Route.useLoaderData();
+  const { stories, heritageImages, antitezaPairs } = Route.useLoaderData();
+  const [storyIndex, setStoryIndex] = useState(0);
+  const story = stories.length > 0 ? stories[storyIndex % stories.length] : null;
+  const showStoryArrows = stories.length > 1;
+  const goToPrevStory = () => setStoryIndex((i) => (i - 1 + stories.length) % stories.length);
+  const goToNextStory = () => setStoryIndex((i) => (i + 1) % stories.length);
   const [antitezaIndex, setAntitezaIndex] = useState(0);
   const antitezaPair = antitezaPairs.length > 0 ? antitezaPairs[antitezaIndex % antitezaPairs.length] : null;
 
@@ -364,14 +367,39 @@ function Home() {
                   {storyExcerpt}
                 </p>
               )}
-              <Link
-                to="/poveste/$slug"
-                params={{ slug: story.slug }}
-                className="mt-6 inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
-              >
-                {t("landing.story.cta")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/poveste/$slug"
+                  params={{ slug: story.slug }}
+                  className="inline-flex items-center gap-2 justify-center min-h-11 px-5 py-2.5 rounded-md border border-primary/60 text-primary text-sm font-medium uppercase tracking-wider hover:bg-primary/10 transition-colors"
+                >
+                  {t("landing.story.cta")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                {showStoryArrows && (
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={goToPrevStory}
+                      aria-label={t("landing.story.prev")}
+                      className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary/60 text-primary hover:bg-primary/10 transition-colors"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <span className="text-sm text-muted-foreground tabular-nums">
+                      {storyIndex + 1} / {stories.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={goToNextStory}
+                      aria-label={t("landing.story.next")}
+                      className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary/60 text-primary hover:bg-primary/10 transition-colors"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
