@@ -62,15 +62,11 @@ function IstoriaArticleView({ article }: { article: IstoriaArticle }) {
 
   function goTo(index: number) {
     setPageIndex(index);
-    // The site header is sticky, so aim below it or the first lines of the
-    // new page would end up hidden behind it.
-    const headerHeight = document.querySelector("header")?.getBoundingClientRect().height ?? 0;
-    const top = topRef.current ? topRef.current.getBoundingClientRect().top + window.scrollY : 0;
-    window.scrollTo({ top: Math.max(top - headerHeight - 16, 0), behavior: "smooth" });
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
-    <article ref={topRef} className="mb-16 sm:mb-20">
+    <article ref={topRef} className="mb-16 sm:mb-20 scroll-mt-6">
       <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">
         {title || t("istoria.article.title")}
       </h1>
