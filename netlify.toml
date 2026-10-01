@@ -7,3 +7,45 @@
   # and matches by value, so it fires on the intentional VITE_SUPABASE_URL
   # occurrence in the client bundle. Omit it from scanning.
   environment = { SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL" }
+
+# The app is served from /site (see vite.config.ts "base"); "/" is the static
+# holding page. These keep old/printed URLs working by rewriting them into /site.
+[[redirects]]
+  from = "/b/*"
+  to = "/site/b/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/mcp"
+  to = "/site/mcp"
+  status = 200
+
+[[redirects]]
+  from = "/.mcp/*"
+  to = "/site/.mcp/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/.well-known/*"
+  to = "/site/.well-known/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/site/admin"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/site/admin/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/auth"
+  to = "/site/auth"
+  status = 301
+
+[[redirects]]
+  from = "/reset-password"
+  to = "/site/reset-password"
+  status = 301

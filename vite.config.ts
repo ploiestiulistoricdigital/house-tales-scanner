@@ -28,14 +28,14 @@ export default defineConfig(async ({ command }) => {
           // the CDN, and serve stale content while a fresh copy revalidates
           // in the background so an editor's change is never blocked on a
           // cache miss.
-          "/b/**": {
+          "/site/b/**": {
             headers: {
               "cache-control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
             },
           },
           // Vite fingerprints these filenames with a content hash, so a
           // given URL never changes meaning — safe to cache for a year.
-          "/assets/**": {
+          "/site/assets/**": {
             headers: {
               "cache-control": "public, max-age=31536000, immutable",
             },
@@ -53,6 +53,10 @@ export default defineConfig(async ({ command }) => {
   plugins.push(viteReact(), mcpPlugin({ trustForwardedHost: false }));
 
   return {
+    // The real site lives under /site; "/" is a static "În construcție" page
+    // (holding/index.html, copied into dist by scripts/postbuild.mjs). Dev
+    // keeps serving from the root. Router basepath is derived from this.
+    base: command === "build" ? "/site/" : "/",
     resolve: {
       alias: { "@": new URL("./src", import.meta.url).pathname },
     },
