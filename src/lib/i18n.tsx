@@ -274,6 +274,8 @@ const RO: Dict = {
 
   "landing.story.eyebrow": "O poveste din oraș",
   "landing.story.cta": "Citește povestea",
+  "landing.compare.prev": "Perechea anterioară",
+  "landing.compare.next": "Perechea următoare",
   "landing.story.prev": "Povestea anterioară",
   "landing.story.next": "Povestea următoare",
 
@@ -614,6 +616,8 @@ const EN: Dict = {
 
   "landing.story.eyebrow": "A story from the city",
   "landing.story.cta": "Read the story",
+  "landing.compare.prev": "Previous pair",
+  "landing.compare.next": "Next pair",
   "landing.story.prev": "Previous story",
   "landing.story.next": "Next story",
 
@@ -954,6 +958,8 @@ const FR: Dict = {
 
   "landing.story.eyebrow": "Une histoire de la ville",
   "landing.story.cta": "Lire l'histoire",
+  "landing.compare.prev": "Paire précédente",
+  "landing.compare.next": "Paire suivante",
   "landing.story.prev": "Histoire précédente",
   "landing.story.next": "Histoire suivante",
 

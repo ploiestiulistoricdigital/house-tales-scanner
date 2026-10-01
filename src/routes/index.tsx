@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, ChevronLeft, ChevronRight, FileText, Landmark, ScrollText, Users, Compass } from "lucide-react";
@@ -173,13 +173,9 @@ function Home() {
   const [antitezaIndex, setAntitezaIndex] = useState(0);
   const antitezaPair = antitezaPairs.length > 0 ? antitezaPairs[antitezaIndex % antitezaPairs.length] : null;
 
-  useEffect(() => {
-    if (antitezaPairs.length <= 1) return;
-    const id = setInterval(() => {
-      setAntitezaIndex((i) => (i + 1) % antitezaPairs.length);
-    }, 10000);
-    return () => clearInterval(id);
-  }, [antitezaPairs.length]);
+  const showAntitezaArrows = antitezaPairs.length > 1;
+  const goToPrevAntiteza = () => setAntitezaIndex((i) => (i - 1 + antitezaPairs.length) % antitezaPairs.length);
+  const goToNextAntiteza = () => setAntitezaIndex((i) => (i + 1) % antitezaPairs.length);
   const categoryDefs = [
     {
       titleKey: "landing.categories.card1.title",
@@ -327,6 +323,29 @@ function Home() {
                 {t("landing.compare.title.a")} <br className="hidden sm:block" /> {t("landing.compare.title.b")}
               </h2>
               <p className="mt-4 text-foreground/80 font-serif leading-relaxed">{t("landing.compare.lead")}</p>
+              {showAntitezaArrows && (
+                <div className="mt-6 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={goToPrevAntiteza}
+                    aria-label={t("landing.compare.prev")}
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary/60 text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <span className="text-sm text-muted-foreground tabular-nums">
+                    {antitezaIndex + 1} / {antitezaPairs.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={goToNextAntiteza}
+                    aria-label={t("landing.compare.next")}
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary/60 text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
             </div>
             <BeforeAfterSlider
               key={antitezaPair.id}
