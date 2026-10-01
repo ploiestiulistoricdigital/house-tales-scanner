@@ -8,44 +8,44 @@
   # occurrence in the client bundle. Omit it from scanning.
   environment = { SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL" }
 
-# The app is served from /site (see vite.config.ts "base"); "/" is the static
-# holding page. These keep old/printed URLs working by rewriting them into /site.
+# The app is served from /alin (see vite.config.ts "base"); "/" is the static
+# holding page. These keep old/printed URLs working by rewriting them into /alin.
 [[redirects]]
   from = "/b/*"
-  to = "/site/b/:splat"
+  to = "/alin/b/:splat"
   status = 200
 
 [[redirects]]
   from = "/mcp"
-  to = "/site/mcp"
+  to = "/alin/mcp"
   status = 200
 
 [[redirects]]
   from = "/.mcp/*"
-  to = "/site/.mcp/:splat"
+  to = "/alin/.mcp/:splat"
   status = 200
 
 [[redirects]]
   from = "/.well-known/*"
-  to = "/site/.well-known/:splat"
+  to = "/alin/.well-known/:splat"
   status = 200
 
 [[redirects]]
   from = "/admin"
-  to = "/site/admin"
+  to = "/alin/admin"
   status = 301
 
 [[redirects]]
   from = "/admin/*"
-  to = "/site/admin/:splat"
+  to = "/alin/admin/:splat"
   status = 301
 
 [[redirects]]
   from = "/auth"
-  to = "/site/auth"
+  to = "/alin/auth"
   status = 301
 
 [[redirects]]
   from = "/reset-password"
-  to = "/site/reset-password"
+  to = "/alin/reset-password"
   status = 301
